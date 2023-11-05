@@ -119,21 +119,72 @@
 ?>
                                 <tr>
                                     <th style='text-align:start;' colspan="2">TOTAL</th>
-                                    <td style='text-align:end;'>₱ <?php echo  number_format($sum, 2);?></td>
+                                    <td style='text-align:end;' id="TPrice">₱<?php echo  number_format($sum, 2);?></td>
                                 </tr>
                                 <tr>
                                     <th style='text-align:start;' colspan="2">DOWNPAYMENT</th>
-                                    <td style='text-align:end;'>₱ <?php echo  number_format($sum*.5, 2);?></td>
+                                    <td style='text-align:end;' id="Dpayment">₱<?php echo  number_format($sum*.5, 2);?></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div style="text-align: center;  ">
-                        <input type="button" value="Save and Submit" class="submitbtn addbtn" onclick="EDIT()">
+                        <textarea name="" id="savevalues" cols="30" rows="10" style="display:none;"><?php echo $_SESSION["Newcustomerappointment"];?></textarea>
+                        <input type="button" value="Save and Submit" class="submitbtn addbtn" onclick="SAVE()">
                 </div>
             </div>
 
 <script>
+    async function SAVE() {
 
+
+
+
+
+        
+        const savevalues = document.getElementById("savevalues").value;
+        var jsonObject = JSON.parse(savevalues);
+
+        let insertguest = `INSERT INTO guests (GuestID, FirstName, LastName, Email, Phone, Address) VALUES 
+        (NULL, '${jsonObject["firstName"]}', '${jsonObject["lastName"]}', '${jsonObject["email"]}', '${jsonObject["phoneNumber"]}', '${jsonObject["address"]}')`
+
+        let selectguest = `SELECT GuestID FROM guests WHERE FirstName = '${jsonObject["firstName"]}' AND LastName = '${jsonObject["lastName"]}' AND Email = '${jsonObject["email"]}' ORDER BY Lastname DESC LIMIT 1;`
+
+   
+        const dataid =await AjaxSendv3(insertguest,"BREAKDOWNLOGIC",`&Process=UpdateGuest&sqlcode2=${selectguest}`)
+
+
+        var dateTimeString = jsonObject["Checkin"];
+        var dateOnly = dateTimeString.split('T')[0];
+        var datetime2 = jsonObject["Checkout"]; // Parse the string into a Date object
+        // Create a new Date object with the same year, month, and day, but set the time to midnight (00:00:00)
+        var dateOnly2 = datetime2.split('T')[0];
+
+        let TPrice = document.getElementById("TPrice").innerText.replace(/₱/g, '')
+        TPrice = TPrice.replace(/,/g, '')
+        let Dpayment = document.getElementById("Dpayment").innerText.replace(/₱/g, '')
+        Dpayment = Dpayment.replace(/,/g, '')
+        let roomnumbers = jsonObject["roomnumbers"].replace(/@/g, ',')
+
+
+        let insertreservation = `INSERT INTO reservations (ReservationID, GuestID, CheckInDate, CheckOutDate, RoomNumber, CottageTypeID, NumAdults, NumChildren, NumSeniors, NumExcessPax, TotalPrice, Downpayment) 
+        VALUES (NULL, '${dataid}', '${dateOnly}', '${dateOnly2}', '${roomnumbers}', '${jsonObject["Cottage"]}', '${jsonObject["No. of Adult"]}', '${jsonObject["No. of Kid"]}', '${jsonObject["No. of Seniors"]}', '0', '${TPrice}', '${Dpayment}');`
+
+        let selectreservation = `SELECT ReservationID FROM reservations WHERE CheckInDate = '${dateOnly}' AND RoomNumber = '${roomnumbers}' ORDER BY CheckInDate DESC LIMIT 1;`
+        
+        const dataid2 =await AjaxSendv3(insertreservation,"BREAKDOWNLOGIC",`&Process=UpdateReservation&sqlcode2=${selectreservation}`)
+
+
+        let roomnumbersarray = jsonObject["roomnumbers"].split("@")
+
+        for (let index = 0; index < roomnumbersarray.length; index++) {
+            let insertrooms = `INSERT INTO roomsreservation (greservationID, Room_num) VALUES ('${dataid2}', '${roomnumbersarray[index]}');`
+            await AjaxSendv3(insertrooms,"BREAKDOWNLOGIC",`&Process=Insertmore`)
+        }
+      
+
+        
+
+    }
 </script>
