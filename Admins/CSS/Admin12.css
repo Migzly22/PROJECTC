@@ -1,0 +1,724 @@
+
+
+*{
+    padding: 0;
+    margin: 0;
+}
+html,
+body{
+    position: relative;
+    width: 100%;
+}
+
+nav{
+    position: fixed;
+    top: 0;
+    max-height: 3em;
+    width: 98%;
+
+    background: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 1em 2em;
+    align-items: center;
+
+    z-index: 100;
+}
+a{
+    text-decoration: none;
+}
+ul{
+    list-style: none;
+}
+nav svg {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+
+/* Style the dropdown container */
+.dropdown {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+/* Style the main menu items */
+.dropdown > li {
+    display: inline-block;
+    position: relative;
+    margin-right: 20px;
+    
+}
+
+/* Style the submenu */
+.submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #333;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 5px;
+
+    z-index: 100;
+}
+
+/* Style submenu items */
+.submenu li {
+    padding: 10px;
+    min-width: 200px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+/* Show the submenu when hovering over the main menu item */
+.dropdown:hover .submenu {
+    display: block;
+}
+.submenu li:hover {
+    background-color: #9c9595;
+}
+.specialSMli{
+    color: white;
+    pointer-events: none;
+    border-bottom: 1px solid white;
+}
+.specialSMli p{
+    width: 100%;
+    text-align: center;
+
+}
+.submenu svg {
+    fill: #fff;
+    width: 1em;
+    height: 1em;
+}
+/* Style the links */
+.dropdown a {
+    text-decoration: none;
+    color: #fff;
+    fill: #fff;
+}
+
+
+main{
+    margin-top: 4em;
+    position: relative;
+}
+/*sidebar*/
+.sidebar{
+    min-width: 200px;
+    max-width: 250px;
+    min-height: 100dvh;
+
+    position: fixed;
+    overflow: hidden;
+    border-right: 2px solid grey;
+}
+.sidebar svg{
+    width: 1.3em;
+    height: 1.3em;
+}
+.sidebar ul  li{
+    color: black;
+    padding: 1em;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5em;
+} 
+.sidebar ul li:hover {
+    background-color: #9c9595;
+    color: #fff;
+}
+.sidebar ul li:hover a,.sidebar ul li:hover svg{
+    color: #fff;
+    fill: #fff;
+}
+.sidebar ul  li a{
+    color: black;
+}
+
+.sidebar ul .LIACTIVATE{
+    background: #333;
+    pointer-events: none;
+}
+.sidebar ul .LIACTIVATE a,.sidebar ul .LIACTIVATE svg{
+    color: #fff;
+    fill: #fff;
+}
+
+/*mainbody*/
+.mainbody{
+    margin-left: 200px;
+    padding: 1.5em;
+}
+
+
+/*List of Class*/
+.classHeader{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+.classHeader button{
+    background: transparent;
+    border-radius: 10px;
+}
+.classHeader button svg{
+    width: 1.5em;
+    height: 1.5em;
+    padding: .5em;
+ 
+}
+.classListbox{
+    padding: 1.5em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+    row-gap: 1.3em;
+}
+.classListbox .box{
+    width: 200px;
+    padding: 1.5em;
+    border-radius: 2em;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    max-height: 150px;
+
+
+    position: relative;
+
+}
+.classListbox .box:hover{
+    background: #9c9595;;
+    color:#fff;
+}
+.box code{
+    color: #333;
+}
+.boxboxlimitt{
+    overflow: hidden;
+    text-align: justify;
+    height: 100%;
+}
+.box h3{
+    text-align: center;
+    padding-bottom: 1em;
+}
+
+.classListbox .box 
+.ClassCODEID{
+    position: absolute;
+    bottom: -15%;
+    left: 50%;
+    background: red;
+    padding: .5em;
+    translate: -50% -50%;
+
+    border: 1px solid black;
+    background: white;
+    border-radius: 10px;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1em;
+
+    z-index: 10;
+}
+
+
+.ClassCODEID code{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    align-items: center;
+    overflow: hidden;
+}
+
+/*manage user*/
+
+
+.stafflistbox{
+    padding: 1.5em;
+}
+.box{
+    padding: 1.5em;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    min-height: 150px;
+    position: relative;
+
+}
+.box h2{
+    text-align: center;
+    padding-bottom: 1em;
+}
+.box .box2{
+    width: 100%;
+    /*max-height: 350px;*/
+    overflow: auto; 
+    position: relative;
+}
+.box2 .table thead th {
+    background-color: #f2f2f2; /* Optional: Add a background color for the header row */
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+/* Optional: Style the header row further */
+.box2 .table thead th {
+    text-align: left; /* Align text to the left in header cells */
+    padding: 10px; /* Add padding to header cells */
+}
+
+
+.ActionTABLE{
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+}
+.ActionTABLE button{
+    padding: .3em;
+    background: transparent;
+    
+    background: white;
+    border-radius: 5px;
+
+}
+
+.ACCESSTABLE{
+    text-align: center;
+}
+.ACCESSTABLE select{
+    padding: .3em;
+    background: transparent;
+    
+    background: white;
+    border-radius: 5px;
+    border: 1px solid #28a745;
+
+}
+
+
+
+
+/*Student reports*/
+
+.SRbox{
+    padding: 1.5em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+    row-gap: 1.3em;
+}
+.SRbox .box{
+    width: 200px;
+    padding: 1.5em;
+    border-radius: 2em;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    max-height: 50px;
+    position: relative;
+
+}
+
+
+.SRbox .box 
+.ClassCODEID{
+    position: absolute;
+    bottom: -30%;
+    left: 50%;
+    background: red;
+    padding: .5em;
+    translate: -50% -50%;
+
+    border: 1px solid black;
+    background: white;
+    border-radius: 10px;
+
+}
+
+/*SETTINGS*/
+
+
+.SETTINGS table{
+    margin-top: 1em;
+}
+.SETTINGS table th{
+    text-align: start;
+}
+.SETTINGS .box{
+    padding: 1.5em;
+    border-radius: 2em;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+    margin-bottom: 2em;
+}
+
+.SETTINGS .box p{
+    font-style: italic;
+}
+.SETTINGS .ActionTABLE{
+    justify-content: end;
+}
+
+/*Class_ITEM*/
+.Class_ITEM{
+    width: 100%;
+    height: 200px;
+
+    display: flex;
+    background-image: linear-gradient(to left bottom, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+    flex-direction: column; /* Change flex-direction to column */
+    justify-content: flex-end; /* Align items at the bottom */
+    border-radius: 20px;
+    overflow: hidden;
+
+    margin-bottom: 1.5em;
+}
+.CI_div1{
+    background: rgba(0, 0, 0, 0.278);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 1em 2em ;
+    color: #fff;
+}
+
+.Class_Mainbody{
+    padding: 1em;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    row-gap: 2em;
+}
+
+.Class_Mainbody .box{
+    align-content: center;
+    max-width: 500px;
+    border-radius: 20px;
+    padding: 1em;
+    margin: 0 auto;
+}
+.PCbox{
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    
+}
+.PCbox svg{
+    width: 2em;
+    height: 2em;
+}
+.PCbox .Userinformations{
+    display: flex;
+    flex-direction: column;
+}
+.FileClickables{
+    margin: .5em;
+    padding: 1em;
+    /*border: 1px solid #9c9595;*/
+    border-radius: 20px ;
+    display: grid;
+    grid-template-columns:  repeat(auto-fit, minmax(150px, 1fr)); /* Change the columns property */
+    column-gap: 1em;
+    row-gap: 1em;
+}
+.FileClickables a{
+    display: flex;
+    gap: 1em;
+    color: #333;
+    padding: .5em;
+}
+.FileClickables a:hover{
+    box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+}
+
+
+.CIMenu{
+    display: flex;
+    gap: 1em;
+    justify-content: end;
+    flex-wrap: wrap;
+    margin-bottom: .5em;
+}
+.classwork{
+    border: 2px solid transparent;
+    display: flex;
+    column-gap: .5em;
+    align-items: center;
+    background: transparent;
+}
+
+.classwork svg{
+    width: 1.5em;
+    height: 1.5em;
+    padding: .5em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Custom Dropdown*/
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Style the submenu */
+.custom-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #333;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 5px;
+
+    z-index: 100;
+    
+}
+
+/* Style submenu items */
+.custom-dropdown-menu li {
+    padding: 10px;
+    min-width: 150px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+
+
+.custom-dropdown-menu a {
+    text-decoration: none;
+    color: #fff; /* Text color for dropdown items */
+    display: block;
+}
+.custom-dropdown-menu li:hover {
+    background-color: #9c9595;
+}
+.custom-dropdown:hover .custom-dropdown-menu {
+    display: block;
+}
+
+
+
+
+
+
+
+
+/*SEARCHANDFILTRATION*/
+
+.SEARCHANDFILTRATION{
+    padding: 1.5em;
+}
+.SEARCHANDFILTRATION .box{
+    padding: 1.5em;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    min-height: 0px;
+    position: relative;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+    gap: .5em;
+
+}
+.searchingDIV button,.searchingDIV input{
+    border-radius: 0 !important;
+    border: 1px solid #333;
+}
+.searchingDIV button{
+    border-top-right-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+}
+.searchingDIV input{
+    padding: .5em;
+    border-top-left-radius: 5px !important;
+    border-bottom-left-radius: 5px !important;
+    border-right: 0px;
+    outline: none;
+}
+
+.searchingDIV .addbtn:hover{
+    border: 1px solid #333;
+    border-right: 0px;
+}
+.searchingDIV{
+    display: flex;
+}
+
+.SEARCHANDFILTRATION button{
+    padding: .5em;
+    background: transparent;
+    background: white;
+    border-radius: 5px;
+}
+
+
+
+
+/*SWEETALERT*/
+.sweetDIVBOX{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    overflow: auto;
+}
+
+.sweetDIVBOX > .SWEETFORMS{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+
+.SWALinput{
+    min-width: 12.2em;
+    height: 2em;
+    padding: 0 0.75em;
+
+    transition: border-color .1s,box-shadow .1s;
+    border: 1px solid #d9d9d9;
+    border-radius: 0.1875em;
+    background: rgba(0,0,0,0);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.06), 0 0 0 3px rgba(0,0,0,0);
+}
+
+.swalselect{
+    width: 13.8em;
+}
+
+
+.SWALinputdate{
+    height: 2em;
+    padding: 0 0.75em;
+    width: 12.2em;
+
+    transition: border-color .1s,box-shadow .1s;
+    border: 1px solid #d9d9d9;
+    border-radius: 0.1875em;
+    background: rgba(0,0,0,0);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.06), 0 0 0 3px rgba(0,0,0,0);
+}
+
+
+/*User Information*/
+.ViewAccount{
+    padding: 1em;
+}
+.ViewAccount h2 {
+    font-size: 24px;
+}
+.ViewAccount .box {
+    margin-bottom: 2em;
+}   
+
+.ViewAccount .credentialinfo,.ViewAccount .personalinfo{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+
+.ViewAccount .credentialinfo > .form-column,
+.ViewAccount .personalinfo > .form-column {
+    width: 300px;
+    padding: 0.5em;
+}
+.ViewAccount label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.ViewAccount input[type="text"],
+.ViewAccount input[type="password"],
+.ViewAccount input[type="datetime-local"],
+.ViewAccount input[type="email"],
+.ViewAccount input[type="date"],
+.ViewAccount input[type="tel"],
+.ViewAccount input[type="number"],
+.ViewAccount select {
+    width: 100%;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+
+.submitbtn {
+    padding: 1em;
+    color: #28a745;
+    border-radius: 4px;
+}
+
+.submitbtn:hover {
+    color: #fff;
+}
+
+.SwimPack{
+    display: block;
+}
+.EveVPack{
+    display: none;
+}
+.RoomPack{
+    display: none;
+}
+
+
+/*BUTTONS DESIGN*/
+.classwork:hover{
+    border-bottom: 2px solid #333;
+}
+.addbtn{
+    fill: #28a745;
+    border: 1px solid #28a745;
+}
+.addbtn:hover{
+    fill: #fff;
+    border: 1px solid #fff;
+    background: #28a745;
+}
+.Editbtn{
+    fill: #007bff;
+    border: 1px solid #007bff;
+}
+.Editbtn:hover{
+    fill: #fff;
+    border: 1px solid #fff;
+    background: #007bff;
+}
+.Deletebtn{
+    fill: #dc3545;
+    border: 1px solid #dc3545;
+}
+.Deletebtn:hover{
+    fill: #fff;
+    border: 1px solid #fff;
+    background: #dc3545;
+}

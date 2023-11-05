@@ -1,0 +1,81 @@
+
+
+*{
+    padding: 0;
+    margin: 0;
+}
+html,
+body{
+    position: relative;
+    width: 100%;
+}
+
+nav{
+    position: fixed;
+    top: 0;
+    max-height: 3em;
+    width: 98%;
+    background: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 1em 2em;
+    align-items: center;
+
+    z-index: 100;
+}
+a{
+    text-decoration: none;
+}
+ul{
+    list-style: none;
+}
+nav svg {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+
+/* Style the dropdown container */
+.dropdown {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+/* Style the main menu items */
+.dropdown > li {
+    display: inline-block;
+    position: relative;
+    margin-right: 20px;
+    border: 1px solid transparent;
+    padding: .5em;
+}
+/* Style the main menu items */
+.dropdown > li:hover {
+    border-bottom:1px solid #333;
+
+}
+
+main{
+    margin-top: 4.5em;
+}
+
+
+/*Virtual Tour*/
+.containerVBox{
+    padding: 1em;
+    display: flex;
+    justify-content: center;
+}
+.containerVBox .virtualtourdiv{
+    background: red;
+    min-width: 300px;
+    width: 60vw;
+    min-height: 400px;
+    height: 50dvh;
+    border: 5px solid red;
+    border-radius: 20px;
+    overflow: hidden;
+}

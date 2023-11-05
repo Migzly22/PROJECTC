@@ -1,0 +1,30 @@
+@import url(./Login.css);
+
+
+.form-2{
+    display: none;
+}
+
+button[type="button"] {
+    border-radius: var(--br);
+    padding-block: var(--spacing-top) var(--spacing-bottom);
+    padding-inline: var(--spacing-right) var(--spacing-left);
+    font: inherit;
+}
+button[type="button"] {
+    display: inline-block;
+    background-color: var(--clr-primary);
+    color: #fff;
+    border: 0;
+    cursor: pointer;
+}
+
+div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
+    border: 0;
+    border-radius: 0.25em;
+    background: initial;
+    background-color: #7066e0;
+    color: #fff;
+    font-size: 1em;
+    padding: 1em;
+}
