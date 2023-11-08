@@ -6,13 +6,13 @@ ob_start();
 
 $sqlcode = $_POST["sqlcode"];
 
-$sqlcode3 = "SELECT a.RoomNum, a.RoomType,d.*, b.*,
-IF(b.ReservationStatus IS NULL, 'Available', b.ReservationStatus) AS Status, 
+$sqlcode3 = "SELECT a.RoomNum, a.RoomType,e.*,b.*,IF(b.ReservationStatus IS NULL, 'Available', b.ReservationStatus) AS Status, 
 CASE 
         WHEN b.CheckInDate IS NULL THEN NULL
         ELSE CONCAT(b.CheckInDate, ' to ', b.CheckOutDate)
-END AS DT
-FROM rooms a LEFT JOIN reservations b ON a.RoomID = b.RoomID AND (CURRENT_DATE BETWEEN b.CheckInDate AND b.CheckOutDate) LEFT JOIN roomtypes d ON a.RoomType = d.RoomType
+END AS DT 
+FROM rooms a LEFT JOIN roomsreservation e ON a.RoomNum = e.Room_num LEFT JOIN reservations b ON e.greservationID = b.ReservationID
+AND CURDATE() BETWEEN b.CheckInDate AND b.CheckOutDate
 ORDER BY a.RoomID;";
 
 

@@ -4,7 +4,7 @@
     ob_start();
 
     if (!isset($_SESSION["USERID"]) || !isset($_SESSION["ACCESS"])){
-        header("Location: ./index.php");
+        header("Location: ../Client/login.php");
         ob_end_flush();
         exit;
     }

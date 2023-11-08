@@ -25,6 +25,7 @@
                 </div>
                 <div class="stafflistbox">
                     <div class="box">
+                        <div class="box2">
                         <table class="table" style="border-collapse: collapse;">
                             <caption>
                                 <h2>List of Reservations</h2>
@@ -35,24 +36,48 @@
                                     <th scope='col'>Name</th>
                                     <th scope='col'>Email</th>
                                     <th scope='col'>Reservation</th>
-                                    <th scope='col'>Arrival</th>
+                                    <th scope='col'>Checkout</th>
+                                    <th scope='col'>Price</th>
+                                    <th scope='col'>Downpament</th>
                                     <th scope='col'>Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>QWE</td>
-                                    <td>QWE</td>
-                                    <th scope='col' style='text-align: center;'>Reservation</th>
-                                    <th scope='col' style='text-align: center;'>Reservation</th>
-                                    <td class="ActionTABLE">
-                                        <button class="Editbtn">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/></svg>
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tbody id="TBODYELEMENT">
+<?php
+    $sqlbooking = "SELECT a.*, b.*, CONCAT(b.LastName,', ', b.FirstName) as Name FROM reservations a LEFT JOIN guests b ON a.GuestID = b.GuestID ORDER BY a.CheckInDate DESC;";
+    $querybooking = mysqli_query($conn,$sqlbooking);
+    $tbodydata = "";
+    while ($result = mysqli_fetch_assoc($querybooking)) {
+        # code...
+        $tbodydata .= "
+            <tr>
+                <td>".$result['Name']."</td>
+                <td>".$result['Email']."</td>
+                <td scope='col' style='text-align: center;'>".$result['CheckInDate']."</td>
+                <td scope='col' style='text-align: center;'>".$result['CheckOutDate']."</td>
+                <td scope='col' style='text-align: end;'>".$result['TotalPrice']."</td>
+                <td scope='col' style='text-align: end;'>".$result['Downpayment']."</td>
+                <td class='ActionTABLE' id='".$result['ReservationID']."'>
+                    <button class='Editbtn' onclick='EDIT(`".$result['ReservationStatus']."`,this)'>
+                        <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 512 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z'/></svg>
+                    </button>
+                </td>
+        </tr>
+        ";
+    }
+
+    if (mysqli_num_rows($querybooking) == 0) {
+        $tbodydata = "     <tr>
+            <td colspan='7' style='text-align:center; font-weight:bolder;'>No data </td>
+        </tr> ";
+    }
+    echo $tbodydata;
+
+?>
+                             
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
 
@@ -60,41 +85,33 @@
 
 <script>
     const SEARCHITEMINPUT = document.getElementById("SEARCHITEMINPUT");
-    const mainquery = `SELECT *, CONCAT(LastName, ', ', FirstName, ' ', UPPER(LEFT(MiddleName,1)), '.' ) AS fullname FROM userscredentials WHERE [CONDITION] ORDER BY Lastname, Firstname, Middlename;`
+    const mainquery = `SELECT a.*, b.*, CONCAT(b.LastName,', ', b.FirstName) as Name FROM reservations a LEFT JOIN guests b ON a.GuestID = b.GuestID WHERE [CONDITION]  ORDER BY a.CheckInDate DESC;`
     const TBODYELEMENT = document.getElementById('TBODYELEMENT')
-
-
 
     async function SEARCHING() {
         let item = SEARCHITEMINPUT.value;
         
         let searchcondition = `(
-            Email LIKE '%${item}%'
-            OR CONCAT(LastName, ' ' , FirstName, ' ', MiddleName ) LIKE '%${item}%'
-            OR FirstName LIKE '%${item}%'
-            OR LastName LIKE '%${item}%'
-            OR MiddleName LIKE '%${item}%'
-            OR Gender LIKE '%${item}%'
-            OR DateOfBirth LIKE '%${item}%'
-            OR Address LIKE '%${item}%'
-            OR City LIKE '%${item}%'
-            OR State LIKE '%${item}%'
-            OR PostalCode LIKE '%${item}%'
-            OR Country LIKE '%${item}%'
-            OR PhoneNumber LIKE '%${item}%'
-            OR Position LIKE '%${item}%'
-            OR HireDate LIKE '%${item}%'
-            OR Salary LIKE '%${item}%'
-            OR Access LIKE '%${item}%'
+            a.ReservationID LIKE '%${item}%' OR
+            a.GuestID LIKE '%${item}%' OR
+            a.RoomNumber LIKE '%${item}%' OR
+            a.CottageTypeID LIKE '%${item}%' OR
+            a.ReservationStatus LIKE '%${item}%' OR
+            b.FirstName LIKE '%${item}%' OR
+            b.LastName LIKE '%${item}%' OR
+            b.Email LIKE '%${item}%' OR
+            b.Phone LIKE '%${item}%' OR
+            CONCAT(b.LastName,', ', b.FirstName) LIKE '%${item}%' 
         )`;
         const formattedText = mainquery.replace(/\[CONDITION\]/, searchcondition);
         console.log(formattedText)
-        const Tabledata =await AjaxSendv3(formattedText,"MANSTAFFLOGIC","&Process=Search")
+        const Tabledata =await AjaxSendv3(formattedText,"BOOKINGLOGIC","&Process=Search")
         TBODYELEMENT.innerHTML = Tabledata
 
     }
     async function RESETTABLE() {
-        const Tabledata =await AjaxSendv3("","MANSTAFFLOGIC","&Process=Reset")
+        const Tabledata =await AjaxSendv3("","BOOKINGLOGIC","&Process=Reset")
+        console.log(Tabledata)
         SEARCHITEMINPUT.value = "";
         TBODYELEMENT.innerHTML = Tabledata
     }
@@ -107,21 +124,20 @@
                 <input type ="text" id="swal-input1" class="SWALinput" required>
             </div>
             <div class='SWEETFORMS'>
-                <label for='swal-input2'>Sex</label>
-                <select class='SWALinput swalselect' id='swal-input2' aria-label='Floating label select example'>
-                    <option value="-">-</option>
-                    <option value='Male'>Male</option>
-                    <option value='Female'>Female</option>
-                </select>
+                <label for='swal-input2'>Check in</label>
+                <input type ="date" id="swal-input2" class="SWALinput" required>
             </div>
             <div class='SWEETFORMS'>
-                <label for='swal-input3'>Access</label>
+                <label for='swal-input3'>Reservation Status</label>
                 <select class='SWALinput swalselect' id='swal-input3' aria-label='Floating label select example'>
                     <option value="-">-</option>
-                    <option value='ADMIN'>ADMIN</option>
-                    <option value='STAFF'>STAFF</option>
+                    <option value='BOOKED'>Booked</option>
+                    <option value='CHECKIN'>Checked in</option>
+                    <option value='CHECKOUT'>Checked out</option>
+                    <option value='CANCELLED'>Cancelled</option>
                 </select>
             </div>
+ 
 
         </div>`
 
@@ -132,100 +148,47 @@
 
             if(formValues[0] !== ""){
                 conditions.push(`(
-                    Username LIKE '%${formValues[0]}%'
-                    OR Email LIKE '%${formValues[0]}%'
-                    OR CONCAT(LastName, ' ' , FirstName, ' ', MiddleName ) LIKE '%${formValues[0]}%'
-                    OR FirstName LIKE '%${formValues[0]}%'
-                    OR LastName LIKE '%${formValues[0]}%'
-                    OR MiddleName LIKE '%${formValues[0]}%'
-                    OR DateOfBirth LIKE '%${formValues[0]}%'
-                    OR Address LIKE '%${formValues[0]}%'
-                    OR City LIKE '%${formValues[0]}%'
-                    OR State LIKE '%${formValues[0]}%'
-                    OR PostalCode LIKE '%${formValues[0]}%'
-                    OR Country LIKE '%${formValues[0]}%'
-                    OR PhoneNumber LIKE '%${formValues[0]}%'
-                    OR Position LIKE '%${formValues[0]}%'
-                    OR HireDate LIKE '%${formValues[0]}%'
+                    a.ReservationID LIKE '%${formValues[0]}%' OR
+                    a.GuestID LIKE '%${formValues[0]}%' OR
+                    a.RoomNumber LIKE '%${formValues[0]}%' OR
+                    a.CottageTypeID LIKE '%${formValues[0]}%' OR
+                    a.ReservationStatus LIKE '%${formValues[0]}%' OR
+                    b.FirstName LIKE '%${formValues[0]}%' OR
+                    b.LastName LIKE '%${formValues[0]}%' OR
+                    b.Email LIKE '%${formValues[0]}%' OR
+                    b.Phone LIKE '%${formValues[0]}%' OR
+                    CONCAT(b.LastName,', ', b.FirstName) LIKE '%${formValues[0]}%' 
                 )`);
             }
-            if(formValues[1] !== "-"){
-                conditions.push(`Gender = '${formValues[1]}'`)
+            if(formValues[1] !== ""){
+                conditions.push(`
+                    a.CheckInDate  = '${formValues[1]}'
+                `);
             }
             if(formValues[2] !== "-"){
-                conditions.push(`Access = '${formValues[2]}'`)
+                conditions.push(`a.ReservationStatus = '${formValues[2]}'`)
             }
 
             const joinedString = conditions.join(' AND ');
             const formattedText = mainquery.replace(/\[CONDITION\]/, joinedString);
 
-            const Tabledata =await AjaxSendv3(formattedText,"MANSTAFFLOGIC","&Process=Search")
+            const Tabledata =await AjaxSendv3(formattedText,"BOOKINGLOGIC","&Process=Search")
             TBODYELEMENT.innerHTML = Tabledata
 
         }
     }
     
-    async function DELETION(e){
-        let targetid = e.parentNode.id
-        let targetname = e.parentNode.parentNode.cells[0].innerHTML
-
-        Swal.fire({
-            title: `Do you want to delete user ${targetname}?`,
-            showDenyButton: true,
-            showCancelButton: false,
-            confirmButtonText: 'Yes',
-            denyButtonText: `No`,
-        }).then(async (result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                let sqlcode = `DELETE FROM userscredentials WHERE userID ='${targetid}';;`
-                //call for AjaxsSendv3
-                const Tabledata = await AjaxSendv3(sqlcode,"MANSTAFFLOGIC","&Process=DeleteUpdate")
-                TBODYELEMENT.innerHTML = Tabledata
-                SweetSuccess()
-            }
-
-        })
-    }
-
-    async function CHANGINGACCESS(e, id) {
-        let sqlcode = `UPDATE userscredentials SET Access = '${e.value}' WHERE userID = '${id}';`
-
-
-        let targetname = e.parentNode.parentNode.cells[0].innerHTML
-        Swal.fire({
-            title: `Do you want to change the Access of user ${targetname}?`,
-            showDenyButton: true,
-            showCancelButton: false,
-            confirmButtonText: 'Yes',
-            denyButtonText: `No`,
-        }).then(async (result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                const Tabledata = await AjaxSendv3(sqlcode,"MANSTAFFLOGIC","&Process=AccessUpdate")
-                TBODYELEMENT.innerHTML = Tabledata
-                SweetSuccess()
-            }else{
-                for (const option of e.options) {
-                    if (!option.selected) {
-                        option.selected = true;
-                        break
-                    }
-                }
-            }
-
-        })
-    }
-
     async function VIEW(e){
         let targetid = e.parentNode.id
         let targetname = e.parentNode.parentNode.cells[0].innerHTML
         location.href = `./Mainpage.php?nzlz=viewuserinfo&plk=5&ISU=${targetid}&qwe=true`;
     }
-    async function EDIT(e){
+    async function EDIT(status,e){
         let targetid = e.parentNode.id
         let targetname = e.parentNode.parentNode.cells[0].innerHTML
-        location.href = `./Mainpage.php?nzlz=viewuserinfo&plk=5&ISU=${targetid}`;
+
+        console.log(status,targetid)
+        //location.href = `./Mainpage.php?nzlz=viewuserinfo&plk=5&ISU=${targetid}`;
     }
     async function ADDSTAFF(){
         location.href = `./Mainpage.php?nzlz=reservationform&plk=2`;

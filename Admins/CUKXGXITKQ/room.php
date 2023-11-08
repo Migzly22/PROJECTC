@@ -45,14 +45,14 @@
 
                             <tbody id="TBODYELEMENT">
 <?php
-    $sqlcode3 = "SELECT a.RoomNum, a.RoomType,d.*, b.*,
-        IF(b.ReservationStatus IS NULL, 'Available', b.ReservationStatus) AS Status, 
-        CASE 
-                WHEN b.CheckInDate IS NULL THEN NULL
-                ELSE CONCAT(b.CheckInDate, ' to ', b.CheckOutDate)
-        END AS DT
-        FROM rooms a LEFT JOIN reservations b ON a.RoomID = b.RoomID AND (CURRENT_DATE BETWEEN b.CheckInDate AND b.CheckOutDate) LEFT JOIN roomtypes d ON a.RoomType = d.RoomType
-        ORDER BY a.RoomID;";
+    $sqlcode3 = "SELECT a.RoomNum, a.RoomType,e.*,b.*,IF(b.ReservationStatus IS NULL, 'Available', b.ReservationStatus) AS Status, 
+    CASE 
+            WHEN b.CheckInDate IS NULL THEN NULL
+            ELSE CONCAT(b.CheckInDate, ' to ', b.CheckOutDate)
+    END AS DT 
+FROM rooms a LEFT JOIN roomsreservation e ON a.RoomNum = e.Room_num LEFT JOIN reservations b ON e.greservationID = b.ReservationID
+AND CURDATE() BETWEEN b.CheckInDate AND b.CheckOutDate
+ORDER BY a.RoomID;";
     $querynum3 = mysqli_query($conn,$sqlcode3);
     $table5 = "";
 
@@ -95,16 +95,15 @@
 <script>
     const SEARCHITEMINPUT = document.getElementById("SEARCHITEMINPUT");
     const mainquery = `
-
-    SELECT a.RoomNum, a.RoomType,d.*, b.*,
-		IF(b.ReservationStatus IS NULL, 'Available', b.ReservationStatus) AS Status,
-        CASE 
-                WHEN b.CheckInDate IS NULL THEN NULL
-                ELSE CONCAT(b.CheckInDate, ' to ', b.CheckOutDate)
-        END AS DT
-        FROM rooms a LEFT JOIN reservations b ON a.RoomID = b.RoomID AND (CURRENT_DATE BETWEEN b.CheckInDate AND b.CheckOutDate) LEFT JOIN roomtypes d ON a.RoomType = d.RoomType
-        WHERE [CONDITION]
-        ORDER BY a.RoomID;
+        SELECT a.RoomNum, a.RoomType,e.*,b.*,IF(b.ReservationStatus IS NULL, 'Available', b.ReservationStatus) AS Status, 
+    CASE 
+            WHEN b.CheckInDate IS NULL THEN NULL
+            ELSE CONCAT(b.CheckInDate, ' to ', b.CheckOutDate)
+    END AS DT 
+FROM rooms a LEFT JOIN roomsreservation e ON a.RoomNum = e.Room_num LEFT JOIN reservations b ON e.greservationID = b.ReservationID
+AND CURDATE() BETWEEN b.CheckInDate AND b.CheckOutDate
+WHERE [CONDITION]
+ORDER BY a.RoomID;
         ;
     `
     const TBODYELEMENT = document.getElementById('TBODYELEMENT')
@@ -161,7 +160,7 @@
                 <select class='SWALinput swalselect' id='swal-input1' aria-label='Floating label select example'>
                     <option value="-">-</option>
                     <option value='Available'>Available</option>
-                    <option value='Booked'>Booked</option>
+                    <option value='BOOKED'>Booked</option>
                     <option value='Checked in'>Checked in</option>
                     <option value='Checked out'>Checked out</option>
                 </select>
