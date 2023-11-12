@@ -20,7 +20,7 @@
                         <button class="addbtn" onclick="ADDPERSON(`<?php echo $ReservationData['ReservationID'];?>`)">
                             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/></svg>
                         </button>
-                        <button class="addbtn" onclick="EDITStatus(`<?php echo $ReservationData['ReservationID'];?>`)">
+                        <button class="addbtn" onclick="EDITStatus(`<?php echo $ReservationData['ReservationID'];?>`,`<?php echo $userid;?>`)">
                             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96zM252 160c0 11 9 20 20 20h44v44c0 11 9 20 20 20s20-9 20-20V180h44c11 0 20-9 20-20s-9-20-20-20H356V96c0-11-9-20-20-20s-20 9-20 20v44H272c-11 0-20 9-20 20z"/></svg>
                         </button>
                     </div>
@@ -233,11 +233,20 @@
                             <table class="table" style="border-collapse: collapse;">
                             <thead>
 <?php 
-    $totalsumsql = "SELECT (a.TotalPrice + SUM(b.ChargeAmount)) AS TotalOverall  FROM reservations a LEFT JOIN guestextracharges b ON a.ReservationID = b.ReservationID WHERE a.ReservationID = '".$ReservationData['ReservationID']."';";
+    $totalsumsql = "SELECT
+    (a.TotalPrice +COALESCE(b.ExtraChargeSum, 0)) AS TotalOverall,
+    (a.TotalPrice +COALESCE(b.ExtraChargeSum, 0)) -SUM(c.AmountPaid) AS Balance
+FROM reservations a
+LEFT JOIN (
+    SELECT ReservationID, SUM(ChargeAmount) AS ExtraChargeSum
+    FROM guestextracharges
+    GROUP BY ReservationID) b ON a.ReservationID = b.ReservationID
+LEFT JOIN guestpayments c ON a.ReservationID = c.ReservationID
+WHERE a.ReservationID = '".$ReservationData['ReservationID']."';";
+
     $totalquery = mysqli_query($conn,$totalsumsql);
     $totalresult = mysqli_fetch_assoc($totalquery);
 
-    $balance = floatval($totalresult["TotalOverall"])-floatval($ReservationData["Downpayment"]);
         echo "
             <tr>
                 <th style='text-align:start;'>Total Price</th>
@@ -245,7 +254,7 @@
             </tr>
             <tr>
                 <th style='text-align:start;'>Balance</th>
-                <th style='text-align:end;'>₱ ".number_format($balance, 2, '.', '')."</th>
+                <th style='text-align:end;'>₱ ".$totalresult["Balance"]."</th>
             </tr>
         ";
 
@@ -312,7 +321,7 @@
             TBODYELEMENT.innerHTML = Tabledata
         }
     }
-    async function EDITStatus(params) {
-        location.href = `./Mainpage.php?nzlz=addItems&plk=2&ISU=${params}`;
+    async function EDITStatus(params,gid) {
+        location.href = `./Mainpage.php?nzlz=addItems&plk=2&ISU=${params}&GID=${gid}`;
     }
 </script>
