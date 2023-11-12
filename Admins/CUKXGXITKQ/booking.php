@@ -10,7 +10,7 @@
                             <div class="searchingDIV">
                                 <input type="search" name="" id="SEARCHITEMINPUT" class="Searchinput">
                                 <button class="addbtn" onclick="SEARCHING()">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
                                 </button>
                             </div>
                             
@@ -39,7 +39,8 @@
                                     <th scope='col'>Checkout</th>
                                     <th scope='col'>Price</th>
                                     <th scope='col'>Downpament</th>
-                                    <th scope='col'>Action</th>
+                                    <th scope='col'>Status</th>
+                                    <th scope='col' style="text-align: center;">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="TBODYELEMENT">
@@ -57,7 +58,11 @@
                 <td scope='col' style='text-align: center;'>".$result['CheckOutDate']."</td>
                 <td scope='col' style='text-align: end;'>".$result['TotalPrice']."</td>
                 <td scope='col' style='text-align: end;'>".$result['Downpayment']."</td>
-                <td class='ActionTABLE' id='".$result['GuestID']."'>
+                <td scope='col' >".$result['ReservationStatus']."</td>
+                <td class='ActionTABLE' id='".$result['ReservationID']."'>
+                    <button class='addbtn' onclick='VIEW(`".$result['ReservationStatus']."`,`".$result['GuestID']."`)'>
+                        <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 576 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z'/></svg>
+                    </button>
                     <button class='Editbtn' onclick='EDIT(`".$result['ReservationStatus']."`,this)'>
                         <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 512 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z'/></svg>
                     </button>
@@ -178,19 +183,50 @@
         }
     }
     
-    async function VIEW(e){
-        let targetid = e.parentNode.id
-        let targetname = e.parentNode.parentNode.cells[0].innerHTML
-        location.href = `./Mainpage.php?nzlz=viewuserinfo&plk=5&ISU=${targetid}&qwe=true`;
+    async function VIEW(status,e){
+        location.href = `./Mainpage.php?nzlz=reservationview&plk=2&ISU=${e}`;
     }
     async function EDIT(status,e){
         let targetid = e.parentNode.id
-        let targetname = e.parentNode.parentNode.cells[0].innerHTML
 
-        console.log(status,targetid)
+        let statuscheck = ["","","","",];
+        switch (status) {
+            case 'BOOKED':
+                statuscheck[0] = "selected"
+                break;
+            case 'CHECKIN':
+                statuscheck[1] = "selected"
+                break;
+            case 'CHECKOUT':
+                statuscheck[2] = "selected"
+                break;
+            case 'CANCELLED':
+                statuscheck[3] = "selected"
+                break;
+        }
 
-        
-        location.href = `./Mainpage.php?nzlz=reservationview&plk=2&ISU=${targetid}`;
+        let design = `
+        <div class='sweetDIVBOX'>
+            <div class='SWEETFORMS'>
+                <label for='swal-input1'>Reservation Status</label>
+                <select class='SWALinput swalselect' id='swal-input1' aria-label='Floating label select example'>
+                    <option value='BOOKED' ${statuscheck[0]}>Booked</option>
+                    <option value='CHECKIN' ${statuscheck[1]}>Checked in</option>
+                    <option value='CHECKOUT' ${statuscheck[2]}>Checked out</option>
+                    <option value='CANCELLED' ${statuscheck[3]}>Cancelled</option>
+                </select>
+            </div>
+        </div>`
+
+        let formValues =await POPUPCREATE("Filters",design,1)
+
+        if (formValues) {
+            let sqlcode123 =`UPDATE reservations SET ReservationStatus = '${formValues[0]}' WHERE ReservationID = '${targetid}';`
+                console.log(sqlcode123)
+            const Tabledata =await AjaxSendv3(sqlcode123,"BOOKINGLOGIC","&Process=AccessUpdate")
+            TBODYELEMENT.innerHTML = Tabledata
+
+        }
     }
 
     async function ADDSTAFF(){

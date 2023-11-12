@@ -2,9 +2,15 @@
     $readonly = (isset($_GET["qwe"])) ? "readonly":"";
     $userid = (isset($_GET["ISU"])) ? $_GET["ISU"]: $_SESSION["USERID"];
 
+
     $sqlcodeGuestinfo = "SELECT a.* FROM guests a WHERE a.GuestID = '$userid';";
     $GuestQuesry = mysqli_query($conn,$sqlcodeGuestinfo);
     $GuestInfo = mysqli_fetch_assoc($GuestQuesry);
+
+
+    $sqlReservation = "SELECT * FROM reservations WHERE GuestID = '$userid';";
+    $ReservationQuery = mysqli_query($conn,$sqlReservation);
+    $ReservationData = mysqli_fetch_assoc($ReservationQuery);
 
 ?>
 
@@ -48,28 +54,27 @@
 
             <div class="mainbodycontainer">
                 <div class="classHeader">
-                    <h1>Payments</h1>
+                    <h1>Expenditures</h1>
                 </div>
                 <div class="stafflistbox">
                     <div class="box">
-
+                    <div>
+                            <h3>-Summary-</h3>
+                        </div>
+                        <div class="box2">
+           
                         <table class="table" style="border-collapse: collapse;">
                             <thead>
                                 <tr>
                                     <th scope='col'></th>
-                                    <th scope='col'>Quantity</th>
-                                    <th scope='col'>Price</th>
+                                    <th scope='col' style='text-align:center;'>Quantity</th>
+                                    <th scope='col' style='text-align:center;'>Price</th>
                                 </tr>
                             </thead>
 
                             <tbody id="TBODYELEMENT">
 <?php
 
-    $sqlReservation = "SELECT * FROM reservations WHERE GuestID = '$userid';";
-    $ReservationQuery = mysqli_query($conn,$sqlReservation);
-    $ReservationData = mysqli_fetch_assoc($ReservationQuery);
-
-    
     $dateTime = new DateTime($ReservationData["CheckInDate"]);
     // Get the day of the week as a number (1 = Monday, 2 = Tuesday, etc.)
     $dayOfWeekNumber = $dateTime->format('N');
@@ -93,11 +98,16 @@
     $sql22query = mysqli_query($conn,$sql22);
     $kidsresult = mysqli_fetch_assoc($sql22query);
 
+    echo "<input type='hidden' id='valueid1' value='".$adultresult[$columnstring]."'>";
+    echo "<input type='hidden' id='valueid2' value='".$kidsresult[$columnstring]."'>";
+
     $sum = 0;
     $sum += $ReservationData["NumAdults"] * $adultresult[$columnstring];
     $sum += $ReservationData["NumChildren"] * $kidsresult[$columnstring];
     $sum += $ReservationData["NumSeniors"] * ($adultresult[$columnstring]-(($adultresult[$columnstring]*.2)));
 ?>
+
+
                                 <tr>
                                     <th style='text-align:start;'>No. of Adults</th>
                                     <td style='text-align:center;'><?php echo $ReservationData["NumAdults"];?></td>
@@ -178,15 +188,93 @@
 ?>
 
                                 <tr>
-                                    <th style='text-align:start;' colspan="2">TOTAL</th>
+                                    <th style='text-align:start;' colspan="2">Initial Total</th>
                                     <td style='text-align:end;' id="TPrice">₱<?php echo  $ReservationData["TotalPrice"];?></td>
                                 </tr>
                                 <tr>
-                                    <th style='text-align:start;' colspan="2">DOWNPAYMENT</th>
+                                    <th style='text-align:start;' colspan="2">Downpayment</th>
                                     <td style='text-align:end;' id="Dpayment">₱<?php echo $ReservationData["Downpayment"];?></td>
                                 </tr>
                             </tbody>
                         </table>
+
+                        
+                        </div>
+
+
+                        <div>
+                            <h3>-Extra Charges-</h3>
+                        </div>
+                        <div class="box2">
+                                                    <table class="table" style="border-collapse: collapse;">
+                            <thead>
+                                <tr>
+                                    <th scope='col'></th>
+                                    <th scope='col' style='text-align:center;'>Quantity</th>
+                                    <th scope='col' style='text-align:center;'>Price</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="TBODYELEMENT2">
+<?php 
+    $extrachargessql = "SELECT *, SUM(quantity) AS newQuantity, SUM(ChargeAmount) as newPrice FROM guestextracharges WHERE ReservationID = '".$ReservationData['ReservationID']."' GROUP BY ChargeDescription;";
+    $extrachargequery = mysqli_query($conn,$extrachargessql);
+    $extrachargestable = "";
+    while ($extrachargeresult = mysqli_fetch_assoc($extrachargequery)) {
+        $arraycharge =  explode(" - ", $extrachargeresult["ChargeDescription"]);
+        $extrachargestable .= "
+            <tr>
+                <th style='text-align:start;'>".$extrachargeresult["ChargeDescription"]."</th>
+                <td style='text-align:center;'>".$extrachargeresult["newQuantity"]."</td>
+                <td style='text-align:end;'>₱ ".$extrachargeresult["newPrice"]."</td>
+            </tr>
+        ";
+    }
+    echo $extrachargestable;
+
+?>
+                            </tbody>
+                        </table>
+
+                        </div>
+                        <div>
+                            <h3>-Total-</h3>
+                        </div>
+                        <div class="box2">
+                            <table class="table" style="border-collapse: collapse;">
+                            <thead>
+<?php 
+    $totalsumsql = "SELECT
+    (a.TotalPrice +COALESCE(b.ExtraChargeSum, 0)) AS TotalOverall,
+    (a.TotalPrice +COALESCE(b.ExtraChargeSum, 0)) -SUM(c.AmountPaid) AS Balance
+FROM reservations a
+LEFT JOIN (
+    SELECT ReservationID, SUM(ChargeAmount) AS ExtraChargeSum
+    FROM guestextracharges
+    GROUP BY ReservationID) b ON a.ReservationID = b.ReservationID
+LEFT JOIN guestpayments c ON a.ReservationID = c.ReservationID
+WHERE a.ReservationID = '".$ReservationData['ReservationID']."';";
+
+    $totalquery = mysqli_query($conn,$totalsumsql);
+    $totalresult = mysqli_fetch_assoc($totalquery);
+
+        echo "
+            <tr>
+                <th style='text-align:start;'>Total Price</th>
+                <th style='text-align:end;'>₱ ".$totalresult["TotalOverall"]."</th>
+            </tr>
+            <tr>
+                <th style='text-align:start;'>Balance</th>
+                <th style='text-align:end;'>₱ ".$totalresult["Balance"]."</th>
+            </tr>
+        ";
+
+
+?>
+                            </thead>
+                        </table>
+
+                        </div>
                     </div>
                 </div>
             </div>

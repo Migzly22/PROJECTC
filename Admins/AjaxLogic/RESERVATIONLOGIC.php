@@ -16,6 +16,24 @@ function PRINTING($conn,  $sqlcodeRF = "SELECT a.*,d.* FROM rooms a LEFT JOIN ro
     }
     echo $options;
 }
+function PRINTING2($conn,  $value2){
+    $sqlcodeRF = "SELECT * FROM guestextracharges WHERE ReservationID = '$value2';";
+    $extrachargestable = "";
+    $queryRF = mysqli_query($conn,$sqlcodeRF);
+    while ($extrachargeresult = mysqli_fetch_assoc($queryRF)) {
+
+        $arraycharge =  explode(" - ", $extrachargeresult["ChargeDescription"]);
+        $extrachargestable .= "
+            <tr>
+                <th style='text-align:start;'>".$arraycharge[0]."</th>
+                <td style='text-align:center;'>".$arraycharge[1]."</td>
+                <td style='text-align:end;'>₱ ".$extrachargeresult["ChargeAmount"]."</td>
+            </tr>
+        ";
+        # code...
+    }
+    echo $extrachargestable;
+}
 
 switch ($_POST["Process"]) {
     case 'Search':
@@ -35,6 +53,10 @@ switch ($_POST["Process"]) {
     case 'PaymentTime':
         $_SESSION["Newcustomerappointment"] = $sqlcode;
         break;       
+    case 'AdditionalPay':
+        mysqli_query($conn,$sqlcode);
+        PRINTING2($conn,$_POST["id2"]);
+        break;
     default:
         # code...
         break;
