@@ -217,7 +217,6 @@
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 await AjaxSendv3(datacontroller,"RESERVATIONLOGIC","&Process=PaymentTime")
-                await Swal.fire('Saved!', '', 'success')
                 location.href = "../Admins/Mainpage.php?nzlz=breakdown&plk=2";
             } 
         })

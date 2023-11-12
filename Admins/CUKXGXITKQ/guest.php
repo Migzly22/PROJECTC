@@ -185,7 +185,7 @@
     async function VIEW(e){
         let targetid = e.parentNode.id
         let targetname = e.parentNode.parentNode.cells[0].innerHTML
-        location.href = `./Mainpage.php?nzlz=viewuserinfo&plk=5&ISU=${targetid}&qwe=true`;
+        location.href = `./Mainpage.php?nzlz=guestview&plk=4&ISU=${targetid}&qwe=true`;
     }
     async function EDIT(status,e){
         let targetid = e.parentNode.id
