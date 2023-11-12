@@ -312,5 +312,7 @@
             TBODYELEMENT.innerHTML = Tabledata
         }
     }
-
+    async function EDITStatus(params) {
+        location.href = `./Mainpage.php?nzlz=addItems&plk=2&ISU=${params}`;
+    }
 </script>
