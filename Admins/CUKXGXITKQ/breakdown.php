@@ -241,9 +241,9 @@
             let insertrooms = `INSERT INTO roomsreservation (greservationID, Room_num) VALUES ('${dataid2}', '${roomnumbersarray[index]}');`
             await AjaxSendv3(insertrooms,"BREAKDOWNLOGIC",`&Process=Insertmore`)
         }
-        console.log(dataid2)
+
         let paymentdone = sqlcodepayment.replace(':ID:', `${dataid2}`)
-        console.log(paymentdone)
+
         await AjaxSendv3(paymentdone,"BREAKDOWNLOGIC",`&Process=Insertmore`)
 
         location.href = "../Admins/Mainpage.php?nzlz=booking&plk=2";
