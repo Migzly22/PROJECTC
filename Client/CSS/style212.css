@@ -317,3 +317,21 @@ footer .container{
     background: #3f9cc1;
 
 }
+
+.containerVBox{
+    padding: 1em;
+    margin: 2em 0;
+
+}
+.containerVBox .virtualtourdiv{
+    min-width: 300px;
+    width: 60vw;
+    min-height: 400px;
+    height: 50dvh;
+    border: 5px solid #333;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+
+

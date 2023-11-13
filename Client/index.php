@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EliJosh Resort & Event</title>
 
-    <link rel="stylesheet" href="./CSS/style.css">
+    <link rel="stylesheet" href="./CSS/style1.css">
     <link href="./CSS/style.scss" rel="stylesheet/scss" type="text/css">
     <link rel="stylesheet" href="./CSS/app.css">
     <link rel="stylesheet" href="./Calendar/app.css">
@@ -241,8 +241,12 @@
                 <h2>Virtual Tour</h2>
             </div>
             <div class="boxbox2">
-                <div class="containert2">
-                    
+                <div class="containerVBox">
+                    <div class="virtualtourdiv">
+                        <?php
+                            include_once "./nazarene/index3.html";
+                        ?>
+                    </div>
                 </div>
                 <div class="rightcontainert2">
                     <h3>🎮 How to Navigate</h3>
