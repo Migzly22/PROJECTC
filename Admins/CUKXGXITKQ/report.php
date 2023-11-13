@@ -7,7 +7,7 @@
         flex-wrap: wrap;
     }
     .box3{
-        width: 30%;
+        width: 25%;
         min-width: 300px;
         height: 200px;
         padding: 1em;
@@ -15,6 +15,15 @@
     .box3 canvas{
         width: 100% !important;
         height: 100% !important;
+    }
+    .bg1{
+        background: #007BFF;
+    }
+    .bg2{
+        background: #DC3545;
+    }
+    .bg3{
+        background: #6C757D;
     }
 </style>
 
@@ -25,11 +34,14 @@
                 </div>
                 <form action="" method="post" class="ViewAccount" id="FCONTAIN">
                     <div class="boxcontainer3">
-                        <div class="box3 box">
+                        <div class="box3 box bg1">
                             <canvas id="myChart"></canvas>
                         </div>
-                        <div class="box3 box">
+                        <div class="box3 box bg3">
                             <canvas id="myChart2"></canvas>
+                        </div>
+                        <div class="box3 box bg2">
+                            <canvas id="myChart3"></canvas>
                         </div>
                     </div>
                        
@@ -100,6 +112,7 @@
     // Get the canvas element
     var ctx = document.getElementById('myChart').getContext('2d');
     var ctx2 = document.getElementById('myChart2').getContext('2d');
+    var ctx3 = document.getElementById('myChart3').getContext('2d');
     const TBODYELEMENT = document.getElementById('TBODYELEMENT')
 
    // Function to generate month labels
@@ -149,7 +162,7 @@
                 label: 'Monthy Report',
                 data: arraydata,
                 fill: false,
-                borderColor: 'rgb(75, 192, 192)',
+                borderColor: 'rgb(14,255,0)',
                 tension: 0.1
             }]
         };
@@ -164,10 +177,78 @@
         // Create the chart
         var myChart = new Chart(ctx, config);
     }
+    async function OnlinevsCash (){
+        let sqlcode = `SELECT SUM(AmountPaid) AS monthamount, PaymentMethod AS month
+                        FROM guestpayments
+                        WHERE MONTH(PaymentDate) = MONTH(CURRENT_DATE)
+                        GROUP BY PaymentMethod;`
+        let datajson = await AjaxSendv3(sqlcode,"REPORTLOGIC",`&Process=Chart`,"json")
+        let arraydata = [
+            (datajson.hasOwnProperty('CASH')) ? datajson["CASH"] : 0,
+            (datajson.hasOwnProperty('ONLINE')) ? datajson["ONLINE"] : 0
+        ];
 
+
+        console.log(datajson)
+        let labels2 = ["Cash", "Online"];
+        const data = {
+            labels: labels2,
+            datasets: [{
+                label: 'Payment Method',
+                data: arraydata,
+                fill: false,
+                backgroundColor: [
+                'rgba(255, 193, 7, 0.7)',
+                'rgba(255, 159, 64, 0.7)'
+                ],
+                tension: 0.1
+            }]
+        };
+
+        
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.7)', // X-axis grid line color
+                        },
+                        ticks: {
+                            color: 'rgb(255, 255, 255)', // Y-axis label color
+                        },
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.7)', // X-axis grid line color
+                        },
+                        ticks: {
+                            color: 'rgb(255, 255, 255)', // X-axis label color
+                        },
+                    },
+                },
+                plugins: {
+                    legend: {
+                    labels: {
+                        color: 'rgb(255, 255, 255)', // Legend text color
+                    },
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(255, 99, 132, 0.8)', // Tooltip background color
+                        bodyColor: 'white', // Tooltip text color
+                    },
+                },
+            },
+        };
+        // Create the chart
+        var myChart = new Chart(ctx3, config);
+    }
 
     CurrentMonthtarget()
     CurrentWeektarget()
+    OnlinevsCash()
 
     async function CurrentWeektarget (){
 
@@ -186,7 +267,7 @@
                 label: 'Weekly Report',
                 data: arraydata,
                 fill: false,
-                borderColor: 'rgb(75, 192, 192)',
+                borderColor: 'rgb(14,255,0)',
                 tension: 0.1
             }]
         };
@@ -208,9 +289,30 @@
     var options = {
       scales: {
         y: {
-          beginAtZero: true
-        }
-      }
+            beginAtZero: true,
+            grid: {
+                color: 'rgba(255, 255, 255, 0.7)', // X-axis grid line color
+            },
+            ticks: {
+                color: 'rgb(255, 255, 255)', // Y-axis label color
+            },
+        },
+        x: {
+            grid: {
+                color: 'rgba(255, 255, 255, 0.7)', // X-axis grid line color
+            },
+            ticks: {
+                color: 'rgb(255, 255, 255)', // X-axis label color
+            },
+        },
+      },
+      plugins: {
+        legend: {
+          labels: {
+            color: 'rgb(255, 255, 255)', // Legend text color
+          },
+        },
+      },
     };
 
 
