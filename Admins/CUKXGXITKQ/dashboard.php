@@ -60,7 +60,7 @@
                 </div>
                 <div  class="ViewAccount" >
                     <?php
-                        $sqlcodecards = "SELECT COUNT(ReservationID) AS Reservation, (SUM(NumAdults)+SUM(NumChildren)+SUM(NumSeniors)) AS GuestTotal  FROM reservations WHERE DATE(CheckInDate) = CURRENT_DATE;";
+                        $sqlcodecards = "SELECT COUNT(ReservationID) AS Reservation, IF((SUM(NumAdults)+SUM(NumChildren)+SUM(NumSeniors)) IS NULL, 0, (SUM(NumAdults)+SUM(NumChildren)+SUM(NumSeniors))) AS GuestTotal FROM reservations WHERE DATE(CheckInDate) = CURRENT_DATE;";
                         $cardsquery = mysqli_query($conn,$sqlcodecards);
                         $cardsresult = mysqli_fetch_assoc($cardsquery);
 
