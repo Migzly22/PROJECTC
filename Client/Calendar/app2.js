@@ -124,16 +124,19 @@ function choosingtargetdate() {
     }
 
     let targetiddate = document.getElementById(calledfunc)
+
+  
+
     let paretnTIDD = targetiddate.parentNode.getAttribute("for")
     
     let targetinput = document.getElementById(paretnTIDD)
 
+
     const yearval = document.getElementById("year").innerText
     const monthpickerval = document.getElementById("month-picker").innerText
 
-
     //transform the string to DATE
-    const STRINGDATE = `${monthpickerval} ${this.innerText} ${yearval}`
+    const STRINGDATE = `${monthpickerval} ${parseInt(this.innerText) + 1} ${yearval}`
     const dateObject = new Date(STRINGDATE);
     const formattedDate = dateObject.toISOString().slice(0, 10); // Format the date as "YYYY-MM-DD"
     
@@ -146,4 +149,5 @@ function choosingtargetdate() {
     targetiddate.querySelector('.smallernumber').innerHTML =`/ ${firstTHREELetters} <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-352a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/></svg>`
 
     magicCalendar.style.display = "none"
+
 }

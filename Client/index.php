@@ -22,7 +22,7 @@
 
     <script src="./JS/design.js" defer ></script>
     <script src="./JS/script.js" defer></script>
-    <script src="./Calendar/app.js" defer></script>
+    <script src="./Calendar/app2.js" defer></script>
 
              
 </head>
@@ -89,7 +89,6 @@
             <p>Where Every Moment Becomes a Memory</p>
         </div>
         <div class="MiddleLOW">
-  
             <div class="formDTL notincluded ">
                 <div class="LABELTARGET">
                     CHECK-IN             
