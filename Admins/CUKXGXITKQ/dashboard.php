@@ -96,18 +96,25 @@
                                 <p>Total : <?php echo $cardsresult2['Cancelled'];?></p>
                             </div>
                         </div>
-                    </div>   
-                    <div class="boxcontainer3">
-                        <div class="box3 box">
-                            <canvas id="myChart"></canvas>
-                        </div>
-                        <div class="box3 box">
-                            <canvas id="myChart2"></canvas>
-                        </div>
-                        <div class="box3 box">
-                            <canvas id="myChart3"></canvas>
-                        </div>
-                    </div>    
+                    </div>  
+                    <?php
+                        if($_SESSION["ACCESS"] == "ADMIN"){
+                    ?>
+                        <div class="boxcontainer3">
+                            <div class="box3 box">
+                                <canvas id="myChart"></canvas>
+                            </div>
+                            <div class="box3 box">
+                                <canvas id="myChart2"></canvas>
+                            </div>
+                            <div class="box3 box">
+                                <canvas id="myChart3"></canvas>
+                            </div>
+                        </div>    
+
+                    <?php
+                        }
+                    ?>
                 </div>
 
             </div>
