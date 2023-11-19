@@ -113,7 +113,7 @@
                     </div>
                     <div class="buttonclass">
                         <div style="text-align: center;margin-bottom:1em;">
-                            <input type="button" value="Proceed" class="submitbtn addbtn" onclick="EDIT()">
+                            <input type="button" value="Proceed" class="submitbtn addbtn" onclick="Proceed()">
                         </div>
                         <div style="text-align: center;margin-bottom:1em;">
                             <input type="button" value="Expenditures" class="submitbtn addbtn" onclick="SHOWNHIDE()">
@@ -555,7 +555,9 @@
 
     }
 
-
+    function Proceed(){
+        location.href = "../Admins/Composer/mystripe.php";
+    }   
 </script>
 
 </body>
