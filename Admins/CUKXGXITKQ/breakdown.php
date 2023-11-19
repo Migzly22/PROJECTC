@@ -17,7 +17,6 @@
         $columnstring = "WeekendsHolidays".$arraynew["timapackage"];
     }
 
-
 ?>
             <div class="mainbodycontainer">
                 <div class="classHeader">
@@ -91,7 +90,7 @@
 
     if($arraynew["numromocu"] > 0 ){
         $roomnumberlist = explode("@", $arraynew["roomnumbers"]);
-
+        $roomname = array();
         for ($i=0; $i < count($roomnumberlist) ; $i++) { 
             # code...
             $sqlloop = "SELECT a.*, b.* FROM rooms a LEFT JOIN roomtypes b ON a.RoomType = b.RoomType  WHERE a.RoomNum = '".$roomnumberlist[$i]."';";
@@ -105,7 +104,7 @@
             }else{
                 $number = $resultloop["Hours22"];
             }
-
+            $roomname[] = $resultloop["RoomType"];
             $sum += $number;
             echo "<tr>
                 <th style='text-align:start;'>ROOM-".$resultloop["RoomNum"]." ".$resultloop["RoomType"]."</th>
@@ -114,6 +113,8 @@
             </tr>";
 
         }
+
+        $arraynew['ROOM'] = join(", ", $roomname);;
     }
     if($arraynew["evplace"] != "None" ){
             $pax = $arraynew["No. of Adult"] + $arraynew["No. of Kid"] + $arraynew["No. of Seniors"];
@@ -132,6 +133,10 @@
             </tr>";
 
     }
+
+    $arraynew['TOTAL'] = $sum;
+    $arraynew['DPAYMENT'] = $sum*.5;
+    $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
 ?>
 
                                 <tr>
@@ -226,7 +231,6 @@
         Dpayment = Dpayment.replace(/,/g, '')
         let roomnumbers = jsonObject["roomnumbers"].replace(/@/g, ',')
 
-        console.log(jsonObject)
         let insertreservation = `INSERT INTO reservations (ReservationID, GuestID, CheckInDate, CheckOutDate, RoomNumber, CottageTypeID, NumAdults, NumChildren, NumSeniors, NumExcessPax, timapackage, Eventplace, TotalPrice, Downpayment) 
         VALUES (NULL, '${dataid}', '${dateOnly}', '${dateOnly2}', '${roomnumbers}', '${jsonObject["Cottage"]}', '${jsonObject["No. of Adult"]}', '${jsonObject["No. of Kid"]}', '${jsonObject["No. of Seniors"]}', '0', '${jsonObject["timapackage"]}', '${jsonObject["evplace"]}', '${TPrice}', '${Dpayment}');`
 
@@ -246,7 +250,7 @@
 
         await AjaxSendv3(paymentdone,"BREAKDOWNLOGIC",`&Process=Insertmore`)
 
-        location.href = "../Admins/Mainpage.php?nzlz=booking&plk=2";
+        location.href = "../Admins/Composer/docxphp.php";
     }
 
 
