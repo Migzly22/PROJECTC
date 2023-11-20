@@ -114,8 +114,11 @@
 
         }
 
-        $arraynew['ROOM'] = join(", ", $roomname);;
+        $arraynew['ROOM'] = join(", ", $roomname);
+    }else{
+        $arraynew['ROOM'] = "";
     }
+
     if($arraynew["evplace"] != "None" ){
             $pax = $arraynew["No. of Adult"] + $arraynew["No. of Kid"] + $arraynew["No. of Seniors"];
             # code...
@@ -137,6 +140,7 @@
     $arraynew['TOTAL'] = $sum;
     $arraynew['DPAYMENT'] = $sum*.5;
     $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
+
 ?>
 
                                 <tr>
@@ -250,7 +254,23 @@
 
         await AjaxSendv3(paymentdone,"BREAKDOWNLOGIC",`&Process=Insertmore`)
 
-        location.href = "../Admins/Composer/docxphp.php";
+        //location.href = "../Admins/Composer/docxphp.php";
+
+        $.ajax({
+            url:`./Composer/docxphp.php`,
+            type:"GET",
+            beforeSend:function(){
+                location.href = "../Admins/Composer/docxphp.php";
+            },
+            error: function(e) 
+            {
+
+            },
+            success:function(){
+                location.href = "../Admins/Mainpage.php?nzlz=booking&plk=2";
+            }
+        }); 
+
     }
 
 

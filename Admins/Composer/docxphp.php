@@ -16,6 +16,9 @@ if (file_exists($templateFile)) {
     
     // Replace placeholders with values
     $document->setValue('{{NAME}}', $arraynew["lastName"].", ".$arraynew["firstName"]." ".$arraynew["middleName"]);
+    $document->setValue('{{ADDR}}', $arraynew["address"]);
+    $document->setValue('{{NUMCONTENT}}', $arraynew["phoneNumber"]);
+    $document->setValue('{{EMAILCONTENT}}', $arraynew["email"]);
     $document->setValue('{{CHECKIN}}', $arraynew["Checkin"]);
     $document->setValue('{{CHECKOUT}}', $arraynew["Checkout"]);
     $document->setValue('{{ROOM}}', $arraynew["ROOM"]);
@@ -25,8 +28,6 @@ if (file_exists($templateFile)) {
     $document->setValue('{{SENIOR}}', $arraynew["No. of Seniors"]);
     $document->setValue('{{TOTAL}}', $arraynew["TOTAL"]);
     $document->setValue('{{DPAYMENT}}', $arraynew["DPAYMENT"]);
-
-    $document->setValue('{{ADDR}}', $arraynew["address"]);
     
     // Save the modified document
     $outputFile = 'export.docx';
@@ -40,10 +41,16 @@ if (file_exists($templateFile)) {
     
     // Output the file content
     readfile($outputFile);
-    exit;
-}else{
-    echo "1334";
+     // Clean output buffer
+    ob_end_flush();
+
+    /// Set a session flash message
+    $_SESSION['redirect_message'] = 'Redirect after download';
+    
+    exit();
 }
+
+
 
 
 

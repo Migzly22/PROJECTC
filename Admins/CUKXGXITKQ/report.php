@@ -388,31 +388,7 @@
 
 
     function PRINT() {
-        console.log(ALLSQLCODE)
-        location.href = `./Composer/speadsheet.php?sqlcode=${ALLSQLCODE}`
-        /*
-        $.ajax({
-            url:`./Printing/printing.php`,
-            type:"POST",
-            data:'sqlcode='+ALLSQLCODE,
-            beforeSend:function(){
-                location.href = `./Printing/printing.php?sqlcode=${ALLSQLCODE}`
-            },
-            error: function() 
-            {
-                SweetError();
-                reject("An error occurred.");
-            },
-            success:function(data){
-              
-                Swal.fire({
-                    title: "",
-                    text: "Downloaded",
-                    icon: "success"
-                });
-            }
-        }); 
-        */
+        location.href = `./Composer/paymentreport.php?sqlcode=${ALLSQLCODE}`
     }
 
 </script>
