@@ -5,6 +5,8 @@
 
     $usertoken = !isset($_SESSION["USERID"]) ?  null : $_SESSION["USERID"];
     $linksref = !isset($_SESSION["USERID"]) ?  "./login.php" : "./booking.php";
+
+    error_reporting(E_ERROR | E_PARSE);
 ?>
 
 
