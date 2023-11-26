@@ -182,8 +182,8 @@
             <div class="heading">
               <h5>RAISING COMFOMRT TO THE HIGHEST LEVEL</h5>
               <h2>Welcome to Elijosh Resort and Events Place</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-              <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+              <p>Immerse yourself in the lap of luxury with our well-appointed accommodations, designed for comfort and elegance. Whether you're here for a romantic getaway, a family vacation, or a corporate retreat, Elijosh offers a range of rooms and suites to suit every need.</p>
+              <p>Elijosh Resort and Events Place isn't just a retreat; it's a destination where memories are made, and experiences are cherished. Come, indulge in the extraordinary, and let us redefine your concept of leisure and luxury.</p>
             </div>
           </div>
     </section>
@@ -194,7 +194,7 @@
             <div class="container">
               <div class="text">
                 <h2>Our Amenities</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                <p>Discover a world of luxury and tranquility at Elijosh Resort and Event Place. Our amenities are designed to provide you with an unforgettable experience. Dive into our crystal-clear pools, surrounded by lush greenery  for the ultimate relaxation. Enjoy exquisite dining at our on-site restaurants.  At Elijosh, we redefine hospitality, ensuring your stay is filled with comfort, elegance, and lasting memories.</p>
         
                 <div class="content">
                   <div class="box flex">
@@ -203,31 +203,23 @@
                   </div>
                   <div class="box flex">
                     <i class="fas fa-dumbbell"></i>
-                    <span>Gym & yogo</span>
+                    <span>Karaoke & KTV</span>
                   </div>
                   <div class="box flex">
                     <i class="fas fa-spa"></i>
-                    <span>Spa & massage</span>
+                    <span>Cottages</span>
                   </div>
                   <div class="box flex">
                     <i class="fas fa-ship"></i>
-                    <span>Boat Tours</span>
+                    <span>Bar</span>
                   </div>
                   <div class="box flex">
                     <i class="fas fa-swimmer"></i>
-                    <span>Surfing Lessons</span>
+                    <span>Gym & yoga</span>
                   </div>
                   <div class="box flex">
                     <i class="fas fa-microphone"></i>
-                    <span>Conference room</span>
-                  </div>
-                  <div class="box flex">
-                    <i class="fas fa-water"></i>
-                    <span>Diving & smorking</span>
-                  </div>
-                  <div class="box flex">
-                    <i class="fas fa-umbrella-beach"></i>
-                    <span>Private Beach</span>
+                    <span>Pavilion</span>
                   </div>
                 </div>
               </div>

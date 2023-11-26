@@ -17,7 +17,7 @@
 
 <div class="mainbodycontainer">
                 <div class="classHeader">
-                    <h1>Guest</h1>
+                    <h1>Guest Information</h1>
                    
                 </div>
                 <form action="" method="post" class="ViewAccount" id="FCONTAIN">

@@ -81,7 +81,7 @@
             </div>
             <p><a class="link" href="./ResetPass.php">Forgot password?</a></p>
             <button type="submit" name="Loginbtn" id="Loginbtn">Continue</button>
-            <p class="text-center" style="display: none;">Don't have an account? 
+            <p class="text-center" >Don't have an account? 
               <a class="link" href="./Registration.php">Sign up</a>    
             </p>
         </form>

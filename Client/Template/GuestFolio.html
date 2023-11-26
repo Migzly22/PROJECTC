@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuestFolio</title>
+
+    <style>
+        table{
+            width: 100%;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th{
+           font-weight: bolder;
+           font-style: italic;
+        }
+        th, td{
+            border: 1px solid black;
+            padding: 1em;
+        }
+        td:nth-child(3),td:nth-child(5),td:nth-child(4),.totalprice{
+           text-align: end;
+        }
+        td:nth-child(1){
+            text-align: center;
+        }
+        
+        thead th,tfoot td{
+            border: 2px solid black;
+        }
+        tbody td:nth-child(1){
+            border-left: 2px solid black;
+        }
+        tbody td:nth-child(5){
+            border-right: 2px solid black;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div>
+        <p>Name : {{NAME}}</p>
+        <p>Room No. : {{ROOMNO}}</p>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Breakdown</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{TABLEDATA}}
+            <tr>
+                <td>2020-06-01</td>
+                <td>Bag</td>
+                <td>1</td>
+                <td>100.00</td>
+                <td>200.00</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Shoe</td>
+                <td>1</td>
+                <td>100.00</td>
+                <td>100.00</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3"></td>
+                <td class="totalprice">{{TOTALPRICE}}</td>
+                <td>{{TOTALREMAINS}}</td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>

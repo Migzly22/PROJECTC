@@ -215,8 +215,8 @@
         const savevalues = document.getElementById("savevalues").value;
         var jsonObject = JSON.parse(savevalues);
 
-        let insertguest = `INSERT INTO guests (GuestID, FirstName, LastName, Email, Phone, Address) VALUES 
-        (NULL, '${jsonObject["firstName"]}', '${jsonObject["lastName"]}', '${jsonObject["email"]}', '${jsonObject["phoneNumber"]}', '${jsonObject["address"]}')`
+        let insertguest = `INSERT INTO guests (GuestID, FirstName, MiddleName, LastName, Email, Phone, Address) VALUES 
+        (NULL, '${jsonObject["firstName"]}', '${jsonObject["middleName"]}' , '${jsonObject["lastName"]}', '${jsonObject["email"]}', '${jsonObject["phoneNumber"]}', '${jsonObject["address"]}')`
 
         let selectguest = `SELECT GuestID FROM guests WHERE FirstName = '${jsonObject["firstName"]}' AND LastName = '${jsonObject["lastName"]}' AND Email = '${jsonObject["email"]}' ORDER BY GuestID DESC LIMIT 1;`
         const dataid =await AjaxSendv3(insertguest,"BREAKDOWNLOGIC",`&Process=UpdateGuest&sqlcode2=${selectguest}`)
