@@ -35,7 +35,7 @@ if (file_exists($templateFile)) {
     
     // Set headers for file download
     header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-    header('Content-Disposition: attachment; filename="modified_document.docx"');
+    header('Content-Disposition: attachment; filename="Elijosh_Docu.docx"');
     header('Content-Length: ' . filesize($outputFile));
     header('Connection: close');
     

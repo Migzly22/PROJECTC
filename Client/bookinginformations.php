@@ -83,13 +83,13 @@
         <div class="mainbodycontainer">
                 <div class="classHeader">
                     <h1>My Reservations</h1>
-                    <button class="addbtn" onclick="ADDSTAFF()">
+                    <button class="addbtn" onclick="ADDBOOKING()">
                         <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/></svg>
                     </button>
                 </div>
                 <div class="SEARCHANDFILTRATION">
                     <div class="box">
-                            <button class="Editbtn" onclick="FILTERING()">
+                            <button class="Editbtn" onclick="FILTERING(`<?php echo $_SESSION['USERID']; ?>`)">
                             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M3.9 54.9C10.5 40.9 24.5 32 40 32H472c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6V320.9L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z"/></svg>
                             </button>
                             <button class="Editbtn" onclick="RESETTABLE()">
@@ -118,7 +118,7 @@
                             </thead>
                             <tbody id="TBODYELEMENT">
 <?php
-    $sqlbooking = "SELECT a.*, b.*, CONCAT(b.LastName,', ', b.FirstName) as Name FROM reservations a LEFT JOIN guests b ON a.GuestID = b.GuestID ORDER BY a.CheckInDate DESC;";
+    $sqlbooking = "SELECT  a.*, b.*, IF(b.Description = 'Downpayment', 'Done', 'Pending') AS STATUSHEHE FROM reservations a LEFT JOIN guestpayments b ON a.ReservationID = b.ReservationID WHERE a.UserID = '".$_SESSION["USERID"]."' AND b.Description ='Downpayment' ORDER BY a.ReservationID DESC;";
     $querybooking = mysqli_query($conn,$sqlbooking);
     $tbodydata = "";
     while ($result = mysqli_fetch_assoc($querybooking)) {
@@ -129,19 +129,18 @@
                 <td scope='col' style='text-align: center;'>".$result['CheckOutDate']."</td>
                 <td scope='col' style='text-align: end;'>".$result['TotalPrice']."</td>
                 <td scope='col' style='text-align: end;'>".$result['Downpayment']."</td>
-                <td scope='col' >".$result['ReservationStatus']."</td>
+                <td scope='col' style='text-align: center;'>".$result['STATUSHEHE']."</td>
                 <td class='ActionTABLE' id='".$result['ReservationID']."'>
-                    <button class='addbtn' onclick='VIEW(`".$result['ReservationStatus']."`,`".$result['GuestID']."`)'>
-                        <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 576 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z'/></svg>
+                    <button class='addbtn' onclick='PRINT(`".$result['ReservationID']."`)'>
+                    <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 512 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z'/></svg>
                     </button>
                 </td>
-        </tr>
+            </tr>
         ";
     }
-
     if (mysqli_num_rows($querybooking) == 0) {
         $tbodydata = "     <tr>
-            <td colspan='7' style='text-align:center; font-weight:bolder;'>No data </td>
+            <td colspan='6' style='text-align:center; font-weight:bolder;'>No data </td>
         </tr> ";
     }
     echo $tbodydata;
@@ -172,7 +171,100 @@
                 anchorElement.click();
             }
         }
-    </script>
+
+        function ADDBOOKING(){
+            location.href = "./booking.php"
+        }
+</script>
+
+<script>
+    const mainquery = `SELECT  a.*, b.*, IF(b.Description = 'Downpayment', 'Done', 'Pending') AS STATUSHEHE FROM reservations a LEFT JOIN guestpayments b ON a.ReservationID = b.ReservationID WHERE [CONDITION] ORDER BY a.ReservationID DESC;`
+    const TBODYELEMENT = document.getElementById('TBODYELEMENT')
+
+    async function RESETTABLE() {
+        const Tabledata =await AjaxSendv3("","BINFOLOGIC","&Process=Reset")  
+        console.log(Tabledata)
+        TBODYELEMENT.innerHTML = Tabledata
+    }
+
+    async function FILTERING(e){
+        let design = `
+        <div class='sweetDIVBOX'>
+            <div class='SWEETFORMS'>
+                <label for='swal-input1'>Check in</label>
+                <input type ="date" id="swal-input1" class="SWALinput" required>
+            </div>
+            <div class='SWEETFORMS'>
+                <label for='swal-input2'>Check out</label>
+                <input type ="date" id="swal-input2" class="SWALinput" required>
+            </div>
+            <div class='SWEETFORMS'>
+                <label for='swal-input3'>Payment Status</label>
+                <select class='SWALinput swalselect' id='swal-input3' aria-label='Floating label select example'>
+                    <option value="-">-</option>
+                    <option value='Done'>Done</option>
+                    <option value='Pending'>Pending</option>
+                </select>
+            </div>
+        </div>`
+
+        let formValues =await POPUPCREATE("Filters",design,3)
+
+        if (formValues) {
+            let conditions = [`a.UserID = '${e}'`, "b.Description ='Downpayment'"];
+
+            if(formValues[0] !== ""){
+                conditions.push(`
+                    a.CheckInDate  <= '${formValues[0]}'
+                `);
+            }
+            if(formValues[1] !== ""){
+                conditions.push(`
+                    a.CheckOutDate  >= '${formValues[1]}'
+                `);
+            }
+            if(formValues[2] !== "-"){
+                conditions.push(`IF(b.Description = 'Downpayment', 'Done', 'Pending') = '${formValues[2]}'`)
+            }
+
+            const joinedString = conditions.join(' AND ');
+            const formattedText = mainquery.replace(/\[CONDITION\]/, joinedString);
+
+            console.log(formattedText)
+
+            const Tabledata =await AjaxSendv3(formattedText,"BINFOLOGIC","&Process=Search")
+            TBODYELEMENT.innerHTML = Tabledata
+
+        }
+    }
+    
+    async function PRINT(e){
+        console.log(e)
+        location.href = `../Admins/Composer/docxphp2.php?id=${e}`
+        /*
+        $.ajax({
+            url:``,
+            type:"POST",
+            data:'sqlcode='+e,
+            beforeSend:function(){
+                location.href = `./`
+            },
+            error: function() 
+            {
+
+            },
+            success:function(data){
+
+            }
+        }); 
+        */
+    }
+
+</script>
+
+
+
+
 
 </body>
 </html>
