@@ -298,7 +298,7 @@
       jsondata["city"] = selects[2].value+", "+selects[1].value.split("[]")[1]
 
       if(errcount == 0){
-        //let sqlcode= `INSERT INTO userscredentials (Password, Email, FirstName, LastName, MiddleName, Address, City, Country, PhoneNumber) 
+        let sqlcode= `INSERT INTO userscredentials (Password, Email, FirstName, LastName, MiddleName, Address, City, Country, PhoneNumber) 
         VALUES ('${jsondata.password}', '${jsondata.email}', '${jsondata.fname}', '${jsondata.lname}', '${jsondata.mname}','${jsondata.address}', '${jsondata.city}', 'PH', '${jsondata.pnum}');`;
         
         await AjaxSendv3(sqlcode,"REGISTERLOGIC","")

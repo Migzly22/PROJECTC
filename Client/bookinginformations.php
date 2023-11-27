@@ -80,121 +80,80 @@
 
     <main>
         <section class="mainbody" style="padding: 1em 3em;">
-
-            <div class="mainbodycontainer">
+        <div class="mainbodycontainer">
                 <div class="classHeader">
-                    <h1>Settings</h1>
+                    <h1>My Reservations</h1>
+                    <button class="addbtn" onclick="ADDSTAFF()">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/></svg>
+                    </button>
                 </div>
-                <div class="stafflistbox SETTINGS" id="tbody">
+                <div class="SEARCHANDFILTRATION">
                     <div class="box">
-                        <h1>Basic Information</h1>
-                        <p>Manage and update your Personal Information</p>
+                            <button class="Editbtn" onclick="FILTERING()">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M3.9 54.9C10.5 40.9 24.5 32 40 32H472c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6V320.9L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z"/></svg>
+                            </button>
+                            <button class="Editbtn" onclick="RESETTABLE()">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z"/></svg>
+                            </button>
+
+                    </div>
+                </div>
+                <div class="stafflistbox">
+                    <div class="box">
                         <div class="box2">
-                            <table class="table" style="border-collapse: collapse;">
-                                <tbody>
-                                   
-                                <tr>
-                                    <th scope="row">Name</th>
-                                    <td id="namecontainer">
-                                        <span id='name'><?php echo $result["StaffFname"]; ?></span>
-                                        <span id='mname'><?php echo $result["StaffMname"]; ?></span>
-                                        <span id='lname'><?php echo $result["StaffLname"]; ?></span>
-
-
-
-                                    </td>
-                                    <td class="ActionTABLE">
-                                        <button class="Editbtn" onclick="Editdata(this,<?php echo $_SESSION['USERID'];?>)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/></svg>
-                                        </button>
-                
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" >Phone Number</th>
-                                    <td id="Phonenumber">
-                                        <span><?php echo $result["StaffPhonenumber"]; ?></span>
-                                    </td>
-                                    <td class="ActionTABLE">
-                                        <button class="Editbtn" onclick="Editdata(this,<?php echo $_SESSION['USERID'];?>)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/></svg>
-                                        </button>
-                
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" >Address</th>
-                                    <td id="Address">
-                                        <span ><?php echo $result["StaffAddress"]; ?></span>
-                                    </td>
-                                    
-                                    <td class="ActionTABLE">
-                                        <button class="Editbtn" onclick="Editdata(this,<?php echo $_SESSION['USERID'];?>)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/></svg>
-                                        </button>
-                
-                                    </td>
-                                </tr>
+                        <table class="table" style="border-collapse: collapse;">
+                            <caption>
+                                <h2>List of Reservations</h2>
                                 
+                            </caption>
+                            <thead>
+                                <tr>
+                                    <th scope='col' style="text-align: center;">Reservation</th>
+                                    <th scope='col' style="text-align: center;">Checkout</th>
+                                    <th scope='col' style="text-align: center;">Price</th>
+                                    <th scope='col' style="text-align: center;">Downpament</th>
+                                    <th scope='col' style="text-align: center;">Status</th>
+                                    <th scope='col' style="text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="TBODYELEMENT">
+<?php
+    $sqlbooking = "SELECT a.*, b.*, CONCAT(b.LastName,', ', b.FirstName) as Name FROM reservations a LEFT JOIN guests b ON a.GuestID = b.GuestID ORDER BY a.CheckInDate DESC;";
+    $querybooking = mysqli_query($conn,$sqlbooking);
+    $tbodydata = "";
+    while ($result = mysqli_fetch_assoc($querybooking)) {
+        # code...
+        $tbodydata .= "
+            <tr>
+                <td scope='col' style='text-align: center;'>".$result['CheckInDate']."</td>
+                <td scope='col' style='text-align: center;'>".$result['CheckOutDate']."</td>
+                <td scope='col' style='text-align: end;'>".$result['TotalPrice']."</td>
+                <td scope='col' style='text-align: end;'>".$result['Downpayment']."</td>
+                <td scope='col' >".$result['ReservationStatus']."</td>
+                <td class='ActionTABLE' id='".$result['ReservationID']."'>
+                    <button class='addbtn' onclick='VIEW(`".$result['ReservationStatus']."`,`".$result['GuestID']."`)'>
+                        <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 576 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z'/></svg>
+                    </button>
+                </td>
+        </tr>
+        ";
+    }
 
+    if (mysqli_num_rows($querybooking) == 0) {
+        $tbodydata = "     <tr>
+            <td colspan='7' style='text-align:center; font-weight:bolder;'>No data </td>
+        </tr> ";
+    }
+    echo $tbodydata;
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <h1>Login Information</h1>
-                        <p>Manage and update your Login Information</p>
-                        <div class="box2">
-                            <table class="table" style="border-collapse: collapse;">
-                                <tbody>
-                                <tr>
-                                    <th scope="row">Email</th>
-                                    <td id="Email">
-                                        <span><?php echo $result["Email"]; ?></span>
-                                    </td>
-                                    <td class="ActionTABLE">
-                                        <button class="Editbtn" onclick="Editdata(this,<?php echo $_SESSION['USERID'];?>)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/></svg>
-                                        </button>
-                
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Password</th>
-                                    <td id="Password">
-                                        <span id="pass">*************</span>
-                                    </td>
-                                    <td class="ActionTABLE">
-                                        <button class="Editbtn" onclick="Editdata(this,<?php echo $_SESSION['USERID'];?>)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/></svg>
-                                        </button>
-                
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <h1>User Data Deletion</h1>
-                        <p>Deletion of account details</p>
-                        <div class="box2">
-                            <table class="table" style="border-collapse: collapse;">
-                                <tbody>
-                                <tr>
-                                    <th scope="row">Delete This Account</th>
-                                    <td class="ActionTABLE">
-                                        <button class='Deletebtn' onclick="DELETIONBTN(this,<?php echo $_SESSION['USERID'];?>)">
-                                            <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 448 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z'/></svg>
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+?>
+                             
+                            </tbody>
+                        </table>
                         </div>
                     </div>
                 </div>
+
             </div>
 
 
