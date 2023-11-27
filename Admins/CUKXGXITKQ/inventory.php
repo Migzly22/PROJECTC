@@ -1,7 +1,7 @@
             <!--Manage User-->
             <div class="mainbodycontainer">
                 <div class="classHeader">
-                    <h1>Inventory</h1>
+                    <h1>Hotel Items</h1>
                     <?php
                         if($_SESSION["ACCESS"] == "ADMIN"){
                     ?>

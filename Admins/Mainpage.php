@@ -4,6 +4,8 @@
     session_start();
     ob_start();
 
+    date_default_timezone_set('Asia/Shanghai');
+
     if (!isset($_SESSION["USERID"]) || !isset($_SESSION["ACCESS"])){
         header("Location: ../Client/login.php");
         ob_end_flush();

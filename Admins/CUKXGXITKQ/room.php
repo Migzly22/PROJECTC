@@ -45,41 +45,42 @@
                                     <th scope='col'>Type</th>
                                     <th scope='col'>Status</th>
                                     <th scope='col'>Date & Time</th>
-                                    <th scope='col' style="text-align: center;">Action</th>
+                                    <?php
+                                        if ($_SESSION["ACCESS"] == "ADMIN"){
+                                            echo "<th scope='col' style='text-align: center;'>Action</th>";
+                                        }else{
+                                            $tablebuttnon = "";
+                                        }
+                                    ?>
+                                    
                                 </tr>
                             </thead>
 
                             <tbody id="TBODYELEMENT">
 <?php
-    $sqlcode3 = "SELECT a.RoomNum, a.RoomType,e.*,b.*,IF(b.ReservationStatus IS NULL, 'Available', b.ReservationStatus) AS Status, 
-    CASE 
-            WHEN b.CheckInDate IS NULL THEN NULL
-            ELSE CONCAT(b.CheckInDate, ' to ', b.CheckOutDate)
-    END AS DT 
-FROM rooms a LEFT JOIN roomsreservation e ON a.RoomNum = e.Room_num LEFT JOIN reservations b ON e.greservationID = b.ReservationID
-AND CURDATE() BETWEEN b.CheckInDate AND b.CheckOutDate
-ORDER BY a.RoomID;";
+    $sqlcode3 = "SELECT a.*, d.* FROM rooms a 
+    LEFT JOIN (SELECT  b.*, IF(c.ReservationStatus IS NULL, 'Available', c.ReservationStatus) AS Status, CONCAT(c.CheckInDate, ' to ', c.CheckOutDate) AS DT FROM roomsreservation b LEFT JOIN reservations c ON b.greservationID = c.ReservationID  WHERE CURDATE() BETWEEN c.CheckInDate AND c.CheckOutDate) d ON a.RoomNum = d.Room_num
+    ORDER BY a.RoomID;";
     $querynum3 = mysqli_query($conn,$sqlcode3);
     $table5 = "";
 
     while($result3 = mysqli_fetch_assoc($querynum3)){
+        if ($_SESSION["ACCESS"] == "ADMIN"){
+            $tablebuttnon = "<td class='ActionTABLE' id='".$result3["RoomID"]."'>
+                <button class='Deletebtn' onclick='DELETION(this)'>
+                    <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 448 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z'/></svg>
+                </button>
+            </td>";
+        }else{
+            $tablebuttnon = "";
+        }
         $table5 .= "
             <tr>
                 <td>".$result3["RoomNum"]."</td>
                 <td>".$result3["RoomType"]."</td>
                 <td>".$result3["Status"]."</td>
                 <td style='text-align: center;'>".$result3["DT"]."</td>
-                <td class='ActionTABLE' id='".$result3["RoomID"]."|".$result3["ReservationID"]."|".$result3["GuestID"]."'>
-                    <button class='addbtn'>
-                        <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 448 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z'/></svg>
-                    </button>
-                    <button class='Editbtn'>
-                        <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 512 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z'/></svg>
-                    </button>
-                    <button class='Deletebtn'>
-                        <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 448 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z'/></svg>
-                    </button>
-                </td>
+                $tablebuttnon
             </tr>
                 ";
         }
@@ -100,14 +101,8 @@ ORDER BY a.RoomID;";
 
 <script>
     const SEARCHITEMINPUT = document.getElementById("SEARCHITEMINPUT");
-    const mainquery = `
-        SELECT a.RoomNum, a.RoomType,e.*,b.*,IF(b.ReservationStatus IS NULL, 'Available', b.ReservationStatus) AS Status, 
-    CASE 
-            WHEN b.CheckInDate IS NULL THEN NULL
-            ELSE CONCAT(b.CheckInDate, ' to ', b.CheckOutDate)
-    END AS DT 
-FROM rooms a LEFT JOIN roomsreservation e ON a.RoomNum = e.Room_num LEFT JOIN reservations b ON e.greservationID = b.ReservationID
-AND CURDATE() BETWEEN b.CheckInDate AND b.CheckOutDate
+    const mainquery = `SELECT a.*, d.* FROM rooms a 
+    LEFT JOIN (SELECT  b.*, IF(c.ReservationStatus IS NULL, 'Available', c.ReservationStatus) AS Status, CONCAT(c.CheckInDate, ' to ', c.CheckOutDate) AS DT FROM roomsreservation b LEFT JOIN reservations c ON b.greservationID = c.ReservationID  WHERE CURDATE() BETWEEN c.CheckInDate AND c.CheckOutDate) d ON a.RoomNum = d.Room_num
 WHERE [CONDITION]
 ORDER BY a.RoomID;
         ;
@@ -115,38 +110,6 @@ ORDER BY a.RoomID;
     const TBODYELEMENT = document.getElementById('TBODYELEMENT')
 
 
-    /*
-    async function SEARCHING() {
-        let item = SEARCHITEMINPUT.value;
-        
-        let searchcondition = `(
-            Username LIKE '%${item}%'
-            OR Email LIKE '%${item}%'
-            OR CONCAT(LastName, ' ' , FirstName, ' ', MiddleName ) LIKE '%${item}%'
-            OR FirstName LIKE '%${item}%'
-            OR LastName LIKE '%${item}%'
-            OR MiddleName LIKE '%${item}%'
-            OR Gender LIKE '%${item}%'
-            OR DateOfBirth LIKE '%${item}%'
-            OR Address LIKE '%${item}%'
-            OR City LIKE '%${item}%'
-            OR State LIKE '%${item}%'
-            OR PostalCode LIKE '%${item}%'
-            OR Country LIKE '%${item}%'
-            OR PhoneNumber LIKE '%${item}%'
-            OR Position LIKE '%${item}%'
-            OR HireDate LIKE '%${item}%'
-            OR Salary LIKE '%${item}%'
-            OR Access LIKE '%${item}%'
-        )`;
-        const formattedText = mainquery.replace(/\[CONDITION\]/, searchcondition);
-        
-        const Tabledata =await AjaxSendv3(formattedText,"ROOMSLOGIC","&Process=Search")
-        TBODYELEMENT.innerHTML = Tabledata
-
-    }
-
-    */
     async function RESETTABLE() {
         const Tabledata =await AjaxSendv3("","ROOMSLOGIC","&Process=Reset")
         if(SEARCHITEMINPUT){
@@ -191,7 +154,7 @@ ORDER BY a.RoomID;
             let conditions = [];
 
             if(formValues[0] !== "-"){
-                conditions.push(`IF(b.ReservationStatus IS NULL, 'Available', b.ReservationStatus) =  '${formValues[0]}'`);
+                conditions.push(`d.Status =  '${formValues[0]}'`);
             }
             if(formValues[1] !== "-"){
                 conditions.push(`a.RoomType = '${formValues[1]}'`);
@@ -201,19 +164,20 @@ ORDER BY a.RoomID;
             const joinedString = conditions.join(' AND ');
             const formattedText = mainquery.replace(/\[CONDITION\]/, joinedString);
 
-
+            console.log(formattedText)
             const Tabledata =await AjaxSendv3(formattedText,"ROOMSLOGIC","&Process=Search")
             TBODYELEMENT.innerHTML = Tabledata
 
         }
     }
-    /*
+
     async function DELETION(e){
         let targetid = e.parentNode.id
         let targetname = e.parentNode.parentNode.cells[0].innerHTML
+        let targetname1 = e.parentNode.parentNode.cells[1].innerHTML
 
         Swal.fire({
-            title: `Do you want to delete user ${targetname}?`,
+            title: `Remove Room ${targetname} ${targetname1}?`,
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'Yes',
@@ -221,7 +185,8 @@ ORDER BY a.RoomID;
         }).then(async (result) => {
            
             if (result.isConfirmed) {
-                let sqlcode = `DELETE FROM userscredentials WHERE userID ='${targetid}';;`
+                let sqlcode = `DELETE FROM rooms WHERE RoomNum ='${targetname}';`
+                console.log(sqlcode)
                 //call for AjaxsSendv3
                 const Tabledata = await AjaxSendv3(sqlcode,"ROOMSLOGIC","&Process=DeleteUpdate")
                 TBODYELEMENT.innerHTML = Tabledata
@@ -230,7 +195,7 @@ ORDER BY a.RoomID;
 
         })
     }
-    */
+
     async function ADDROOM(){
 
         const rowCount = (TBODYELEMENT.rows.length )+1;
