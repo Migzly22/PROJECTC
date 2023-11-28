@@ -113,12 +113,15 @@
 
     const FCONTAIN = document.getElementById("FCONTAIN")
 
-    var sqlc = `SELECT a.*,d.*, b.*, c.* FROM rooms a LEFT JOIN roomsreservation b ON a.RoomNum = b.Room_num LEFT JOIN greservations c ON b.greservationID = c.ReservationID LEFT JOIN roomtypes d ON a.RoomType = d.RoomType
-    WHERE c.CheckInDate > '[chosen_checkout_datetime]'
-    OR c.CheckOutDate < '[chosen_checkin_datetime]'
-    OR c.CheckInDate IS NULL
-    OR c.CheckOutDate IS NULL
-    ORDER BY a.RoomID`
+    var sqlc = `
+    SELECT a.*, d.*, b.* FROM rooms a
+LEFT JOIN (SELECT  b.*,c.CheckInDate,c.CheckOutDate, IF(c.ReservationStatus IS NULL, 'Available', c.ReservationStatus) AS Status, CONCAT(c.CheckInDate, ' to ', c.CheckOutDate) AS DT FROM roomsreservation b LEFT JOIN reservations c ON b.greservationID = c.ReservationID  WHERE CURDATE() BETWEEN c.CheckInDate AND c.CheckOutDate) d ON a.RoomNum = d.Room_num 
+LEFT JOIN roomtypes b ON a.RoomType = b.RoomType
+				WHERE d.CheckInDate > '[chosen_checkout_datetime]'
+                OR d.CheckOutDate < '[chosen_checkin_datetime]'
+                OR d.CheckInDate IS NULL
+                OR d.CheckOutDate IS NULL
+ORDER BY a.RoomID;`
 
 
     var dataholder = ""
@@ -144,12 +147,14 @@
     async function datachange() {
         const FCONTAIN2 = document.getElementById("FCONTAIN")
         if(FCONTAIN2.Checkin.value !== "" && FCONTAIN2.Checkout.value !== ""){
-             sqlc = `SELECT a.*,d.*, b.*, c.* FROM rooms a LEFT JOIN roomsreservation b ON a.RoomNum = b.Room_num LEFT JOIN greservations c ON b.greservationID = c.ReservationID LEFT JOIN roomtypes d ON a.RoomType = d.RoomType
-                WHERE c.CheckInDate > '${FCONTAIN2.Checkout.value}'
-                OR c.CheckOutDate < '${FCONTAIN2.Checkin.value}'
-                OR c.CheckInDate IS NULL
-                OR c.CheckOutDate IS NULL
-                ORDER BY a.RoomID`
+             sqlc = `SELECT a.*, d.*, b.* FROM rooms a
+LEFT JOIN (SELECT  b.*,c.CheckInDate,c.CheckOutDate, IF(c.ReservationStatus IS NULL, 'Available', c.ReservationStatus) AS Status, CONCAT(c.CheckInDate, ' to ', c.CheckOutDate) AS DT FROM roomsreservation b LEFT JOIN reservations c ON b.greservationID = c.ReservationID  WHERE CURDATE() BETWEEN c.CheckInDate AND c.CheckOutDate) d ON a.RoomNum = d.Room_num 
+LEFT JOIN roomtypes b ON a.RoomType = b.RoomType
+				WHERE d.CheckInDate > '${FCONTAIN2.Checkout.value}'
+                OR d.CheckOutDate < '${FCONTAIN2.Checkin.value}'
+                OR d.CheckInDate IS NULL
+                OR d.CheckOutDate IS NULL
+ORDER BY a.RoomID;`
             const Tabledata =await AjaxSendv3(sqlc,"RESERVATIONLOGIC","&Process=Search")
             let changeable = document.querySelector("select[name='RNUM']")
             //changeable.innerHTML = Tabledata

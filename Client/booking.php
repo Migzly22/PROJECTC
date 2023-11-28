@@ -107,9 +107,9 @@
                         <div class="form-column">
                             <label for="noSenior">Time</label>
                             <select name="TND" id="TND" onchange="ResetFilter()">
-                                <option value="DAY">Day Time (8:00 AM - 5:00 PM)</option>
-                                <option value="NIGHT">Night Time (7:00 PM - 7:00 AM)</option>
-                                <option value="WHOLE">22 Hrs (2:00 PM - 12:00 PM)</option>
+                                <option value="DayPrice">Day Time (8:00 AM - 5:00 PM)</option>
+                                <option value="NightPrice">Night Time (7:00 PM - 7:00 AM)</option>
+                                <option value="22Hrs">22 Hrs (2:00 PM - 12:00 PM)</option>
                             </select>
                         </div>
                     </div>
@@ -178,7 +178,7 @@
                                     }
                                     $datainsertedCottages .= "
                                     <div class='SO-item'>
-                                        <input type='checkbox' id='".$result["ServiceTypeName"]."' value='".$result['ServiceTypeName']."||".$result['ServiceTypeID']."||".$result['DayPrice']."||".$result['NightPrice']."||".$result['NightPrice']."' name='SOItemSelect'>
+                                        <input type='checkbox' id='".$result["ServiceTypeName"]."' value='".$result['ServiceTypeName']."||".$result['ServiceTypeID']."||".$result['DayPrice']."||".$result['NightPrice']."||".$result['NightPrice']."||Cottage' name='SOItemSelect'>
                                         <div class='addtocart2' onclick='activateClick(`".$result["ServiceTypeName"]."`)'>
                                             <img src='./Images/c1.jpg' alt=''>
                                             <div class='textareapart'>
@@ -225,7 +225,7 @@
                         }
                         $datainsertedCottages .= "
                             <div class='SO-item'>
-                                <input type='checkbox' id='".$result["RoomType"]."' value='".$result['RoomType']."||".$result['id']."||".$result['DayTimePrice']."||".$result['NightTimePrice']."||".$result['Hours22']."' name='SOItemSelect'>
+                                <input type='checkbox' id='".$result["RoomType"]."' value='".$result['RoomType']."||".$result['id']."||".$result['DayTimePrice']."||".$result['NightTimePrice']."||".$result['Hours22']."||Room' name='SOItemSelect'>
                                 <div class='addtocart2' onclick='activateClick(`".$result["RoomType"]."`)'>
                                     <img src='./Images/c1.jpg' alt=''>
                                     <div class='textareapart'>
@@ -255,7 +255,7 @@
                     
                     echo "
                     <div class='SO-item'>
-                        <input type='checkbox' id='Pavilion' value='Pavilion||".$result['Evntid']."||".$result['Pavilion']."||".$result['Pavilion']."||".$result['Pavilion']."' name='SOItemSelect'>
+                        <input type='checkbox' id='Pavilion' value='Pavilion||".$result['Evntid']."||".$result['Pavilion']."||".$result['Pavilion']."||".$result['Pavilion']."||Pavilion' name='SOItemSelect'>
                         <div class='addtocart2' onclick='activateClick(`Pavilion`)'>
                             <img src='./Images/c1.jpg' alt=''>
                             <div class='textareapart'>
@@ -268,7 +268,7 @@
                         </div>
                     </div>
                     <div class='SO-item'>
-                        <input type='checkbox' id='Grand Pavilion' value='Grand Pavilion||".$result['Evntid']."||".$result['Grand Pavilion']."||".$result['Grand Pavilion']."||".$result['Grand Pavilion']."' name='SOItemSelect'>
+                        <input type='checkbox' id='Grand Pavilion' value='Grand Pavilion||".$result['Evntid']."||".$result['Grand Pavilion']."||".$result['Grand Pavilion']."||".$result['Grand Pavilion']."||Pavilion' name='SOItemSelect'>
                         <div class='addtocart2' onclick='activateClick(`Grand Pavilion`)'>
                             <img src='./Images/c1.jpg' alt=''>
                             <div class='textareapart'>
@@ -382,23 +382,44 @@
             $('#TBODY').html(data);
         } else {
             if(lastCheckedCheckbox !== null){
-                let [name, STID, dayp,nightp, wholep] = lastCheckedCheckbox.value.split("||")
+                let [name, STID, dayp,nightp, wholep,typeofr] = lastCheckedCheckbox.value.split("||")
+
+                let TND2= document.getElementById('TND').value
+                let priceval = 0;
+
+                switch (TND2) {
+                    case "DayPrice":
+                        priceval = dayp
+                        break;
+                    case "NightPrice":
+                        priceval = nightp
+                        break;
+                    case "22Hrs":
+                        priceval = wholep
+                        break;                        
+                    default:
+                        priceval = 0
+                        break;
+                }
 
                 let containerrows = `
                             <tr>
                                 <td scope='row' id="${STID}" >${name}</td>
-                                <td scope='row' style='text-align:end'>${dayp}</td>
+                                <td scope='row' style='text-align:end'>${priceval}</td>
                                 <td scope='row' style='text-align:center'>
                                     <input type="number" name="" id="" value ="1" class="Inputnumbercss" onchange="Inputnum(this)">
                                 </td>
     
                                 <td scope='row' style='text-align:end'>
-                                    ${dayp}
+                                    ${priceval}
                                 </td>
                                 <td scope='row' style='display:flex;justify-content:center;'>
                                     <button onclick='Deletebtn(this,"${name}||${STID}||${dayp}||${nightp}||${wholep}")' class='Deletebtn'>
                                         <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 448 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z'/></svg>
                                     </button>
+                                </td>
+                                <td scope='row' style='text-align:end;display:none;'>
+                                    ${typeofr}
                                 </td>
                             </tr>
                             `
@@ -556,9 +577,57 @@
         }
 
     }
+  
 
-    function Proceed(){
-        location.href = "../Admins/Composer/mystripe.php";
+    async function Proceed(){
+        //location.href = "../Admins/Composer/mystripe.php";
+        //location.href = "./asdasd.php";
+
+
+        const FCONTAIN = document.getElementById('FCONTAIN')
+        const JSONDATA = {
+          Checkin  : FCONTAIN.Checkin.value,
+          Checkout  : FCONTAIN.Checkout.value,
+          noAdult  : FCONTAIN.noAdult.value,
+          noKid  : FCONTAIN.noKid.value,
+          noSenior  : FCONTAIN.noSenior.value,
+          TND  : FCONTAIN.TND.value
+        }
+
+        const TBODY = document.getElementById("TBODY");
+
+        let Expenditures = []
+
+        // Iterate over each row in the table
+        if(TBODY.rows[0].cells[0].innerText.replace(/\s+/g, ' ') !== "No Data"){
+            for (var i = 0; i < TBODY.rows.length; i++) {
+            var row = TBODY.rows[i];
+
+            let jsonObject = {
+                TYpeofR : row.cells[5].innerText.replace(/\s+/g, ' '),
+                nameitem : row.cells[0].innerText.replace(/\s+/g, ' '),
+                price : row.cells[1].innerText.replace(/\s+/g, ' '),
+                total : row.cells[2].children[0].value
+            }
+            Expenditures.push(jsonObject);
+        }
+        }
+        JSONDATA["EXPENDITURES"] =Expenditures
+
+
+        var jsonString = JSON.stringify(JSONDATA);
+        $.ajax({
+            url:`./asdasd.php`,
+            type:"POST",
+            data:'sqlcode='+jsonString,
+            beforeSend:function(){
+               location.href = `./asdasd.php?sqlcode=${jsonString}`;
+            },
+            error: function() 
+            {
+
+            }
+        }); 
     }   
 </script>
 
