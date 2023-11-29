@@ -138,7 +138,7 @@
 
         let password = FCONTAIN.firstName.value+FCONTAIN.lastName.value+FCONTAIN.phoneNumber.value
         
-        let sqlcode1 = `INSERT INTO userscredentials( Password, Email, FirstName, LastName, MiddleName, Gender, DateOfBirth, mFirstName, mMiddleName, mLastName, fFirstName, fMiddleName, fLastName, Address, City, State, PostalCode, Country, PhoneNumber, HireDate) 
+        let sqlcode1 = `INSERT INTO userscredentials( Password, Email, FirstName, LastName, MiddleName, Gender, DateOfBirth, mFirstName, mMiddleName, mLastName, fFirstName, fMiddleName, fLastName, Address, City, State, PostalCode, Country, PhoneNumber, HireDate, Access) 
         VALUES ( '${password}',
           '${FCONTAIN.email.value}', 
           '${FCONTAIN.firstName.value}', 
@@ -158,7 +158,8 @@
                 '${FCONTAIN.postalCode.value}', 
                 '${FCONTAIN.country.value}',
                  '${FCONTAIN.phoneNumber.value}',
-                  CURRENT_DATE);`
+                  CURRENT_DATE,
+                  'STAFF');`
 
         const Tabledata = await AjaxSendv3(sqlcode1,"INSERTLOGIC",``)
         await eval(Tabledata)
