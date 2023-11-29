@@ -7,3 +7,5 @@ ob_start();
 $sqlcode = $_POST["sqlcode"];
 
 mysqli_query($conn, $sqlcode);
+
+//echo $sqlcode;
