@@ -17,7 +17,6 @@ require('./Database.php');
 
 
 function sending($to,$html){
-  echo 123;
   $mail = new PHPMailer();
   $mail->SMTPAuth   = TRUE;
   $mail->SMTPSecure = "tls"; //ssl
@@ -39,7 +38,7 @@ function sending($to,$html){
   'verify_peer_name' => false,
   ]
   );
-  $mail ->Subject = "Password Reset";
+  $mail ->Subject = "Payment Confirmation and Documents";
   $mail ->AddAddress($to,'');
   $mail ->Body = $html;
   

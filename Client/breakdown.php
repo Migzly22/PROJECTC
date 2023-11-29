@@ -479,6 +479,7 @@
             error:function(response){
                 // Remove the loading screen
                 console.log(response)
+                
             },
             success: async function(response) {
 
