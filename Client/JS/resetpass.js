@@ -25,7 +25,7 @@ EmailSendbtn.addEventListener('click',async (e)=>{
 
     $.ajax({    
         type: "post",
-        url: "/PROJECTC/Send.php",             
+        url: "/Send.php",             
         data: "Email="+ email,    
         dataType: 'json',   
         beforeSend:function(){
