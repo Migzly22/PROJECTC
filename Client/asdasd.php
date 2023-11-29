@@ -21,6 +21,7 @@
     $cottagequanarr = array();
     $roomarr = array();
     $roomquanarr = array();
+    $evtnquan = array();
     $cottagecounter = 0;
     $roomcounter = 0;
     $arraynew["evplace"] = "None";
@@ -40,6 +41,7 @@
             case ' Pavilion ':
                 # code...
                     $arraynew["evplace"] =$expendituresvalues[$i]["nameitem"];
+                    $evtnquan[] = $expendituresvalues[$i]["total"];
                 break;
             default:
 
@@ -193,12 +195,14 @@
                         if($arraynew["evplace"] != "None" ){
                                 $pax = $arraynew["noAdult"] + $arraynew["noKid"] + $arraynew["noSenior"];
                                 # code...
-                                $sqlloop2 = "SELECT ".$arraynew["evplace"]." FROM eventplace WHERE PAX >= $pax ORDER BY PAX ASC LIMIT 1";
+                                $sqlloop2 = "SELECT `".$arraynew["evplace"]."` FROM eventplace WHERE PAX >= $pax ORDER BY PAX ASC LIMIT 1";
 
+    
                                 $sqlqueryloop = mysqli_query($conn,$sqlloop2);
                                 $resultloop2 = mysqli_fetch_assoc($sqlqueryloop);
 
-                                $number = $resultloop2[$arraynew["evplace"]];
+
+                                $number = $resultloop2[$arraynew["evplace"]] *$evtnquan[0] ;
                                 $sum += $number;
                                 echo "<tr>
                                     <th style='text-align:start;'>".$arraynew["evplace"]."</th>

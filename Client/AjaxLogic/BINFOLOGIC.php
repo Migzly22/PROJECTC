@@ -6,7 +6,7 @@ ob_start();
 
 $sqlcode = $_POST["sqlcode"];
 
-$sqlcode3 = "SELECT  a.*, b.*, IF(b.Description = 'Downpayment', 'Done', 'Pending') AS STATUSHEHE FROM reservations a LEFT JOIN guestpayments b ON a.ReservationID = b.ReservationID WHERE a.UserID = 16 AND b.Description ='Downpayment' ORDER BY a.ReservationID DESC;";
+$sqlcode3 = "SELECT  a.*, b.*, IF(b.Description = 'Pending', 'Pending', 'Done') AS STATUSHEHE FROM reservations a LEFT JOIN guestpayments b ON a.ReservationID = b.ReservationID WHERE a.UserID = 16 AND b.Description is NOT NULL ORDER BY a.ReservationID DESC;";
 
 
 function PRINTING($conn, $sqlcode3){

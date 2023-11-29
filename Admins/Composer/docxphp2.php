@@ -7,7 +7,7 @@ ob_start();
 use PhpOffice\PhpWord\TemplateProcessor;
 
 
-$id = $_SESSION["USERID"];
+$id = isset($_GET["uid"]) ? $_GET['uid']: $_SESSION["USERID"];
 $reserveid = $_GET["id"];
 
 $SQLCODE = "SELECT  a.*, c.* FROM reservations a LEFT JOIN userscredentials c ON a.UserID = c.userID WHERE a.UserID = '$id' AND a.ReservationID = '$reserveid' ORDER BY a.ReservationID DESC;";

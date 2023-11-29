@@ -621,7 +621,7 @@
             type:"POST",
             data:'sqlcode='+jsonString,
             beforeSend:function(){
-               location.href = `./asdasd.php?sqlcode=${jsonString}`;
+               location.href = `./breakdown.php?sqlcode=${jsonString}`;
             },
             error: function() 
             {

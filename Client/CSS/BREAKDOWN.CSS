@@ -1,0 +1,21 @@
+.stafflistbox{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.stafflistbox > .box{
+    min-width: 300px;
+    width: 50%;
+}
+.stafflistbox > .hehezzz{
+    min-width: 300px;
+    width: 30%;
+    padding: 2em 1em;
+}
+
+@media screen and (max-width: 890px) {
+    .stafflistbox > .box,
+    .stafflistbox > .hehezzz {
+        width: 100%;
+    }
+}

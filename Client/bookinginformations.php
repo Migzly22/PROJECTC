@@ -118,7 +118,7 @@
                             </thead>
                             <tbody id="TBODYELEMENT">
 <?php
-    $sqlbooking = "SELECT  a.*, b.*, IF(b.Description = 'Downpayment', 'Done', 'Pending') AS STATUSHEHE FROM reservations a LEFT JOIN guestpayments b ON a.ReservationID = b.ReservationID WHERE a.UserID = '".$_SESSION["USERID"]."' AND b.Description ='Downpayment' ORDER BY a.ReservationID DESC;";
+    $sqlbooking = "SELECT  a.*, b.*, IF(b.Description = 'Pending', 'Pending', 'Done') AS STATUSHEHE FROM reservations a LEFT JOIN guestpayments b ON a.ReservationID = b.ReservationID WHERE a.UserID = '".$_SESSION["USERID"]."' AND b.Description is NOT NULL ORDER BY a.ReservationID DESC;";
     $querybooking = mysqli_query($conn,$sqlbooking);
     $tbodydata = "";
     while ($result = mysqli_fetch_assoc($querybooking)) {
@@ -178,7 +178,7 @@
 </script>
 
 <script>
-    const mainquery = `SELECT  a.*, b.*, IF(b.Description = 'Downpayment', 'Done', 'Pending') AS STATUSHEHE FROM reservations a LEFT JOIN guestpayments b ON a.ReservationID = b.ReservationID WHERE [CONDITION] ORDER BY a.ReservationID DESC;`
+    const mainquery = `SELECT  a.*, b.*, IF(b.Description = 'Pending', 'Pending', 'Done') AS STATUSHEHE FROM reservations a LEFT JOIN guestpayments b ON a.ReservationID = b.ReservationID WHERE [CONDITION] ORDER BY a.ReservationID DESC;`
     const TBODYELEMENT = document.getElementById('TBODYELEMENT')
 
     async function RESETTABLE() {
@@ -211,7 +211,7 @@
         let formValues =await POPUPCREATE("Filters",design,3)
 
         if (formValues) {
-            let conditions = [`a.UserID = '${e}'`, "b.Description ='Downpayment'"];
+            let conditions = [`a.UserID = '${e}'`, "b.Description is NOT NULL"];
 
             if(formValues[0] !== ""){
                 conditions.push(`
@@ -224,7 +224,7 @@
                 `);
             }
             if(formValues[2] !== "-"){
-                conditions.push(`IF(b.Description = 'Downpayment', 'Done', 'Pending') = '${formValues[2]}'`)
+                conditions.push(`IF(b.Description = 'Pending', 'Pending', 'Done') = '${formValues[2]}'`)
             }
 
             const joinedString = conditions.join(' AND ');
@@ -241,23 +241,6 @@
     async function PRINT(e){
         console.log(e)
         location.href = `../Admins/Composer/docxphp2.php?id=${e}`
-        /*
-        $.ajax({
-            url:``,
-            type:"POST",
-            data:'sqlcode='+e,
-            beforeSend:function(){
-                location.href = `./`
-            },
-            error: function() 
-            {
-
-            },
-            success:function(data){
-
-            }
-        }); 
-        */
     }
 
 </script>
