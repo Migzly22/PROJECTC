@@ -446,8 +446,6 @@
 
         await AjaxSendv3(paymentdone,"BREAKDOWNLOGIC",`&Process=Insertmore`)
 
-
-
         $.ajax({
             url:`../Admins/Composer/docxphp.php`,
             type:"GET",
@@ -462,7 +460,7 @@
                 await sendinggmailnotif(dataid2, paymentdescription,jsonObject["email"],jsonObject["userID"])
                 //location.href = "../Admins/Composer/docxphp.php";dataid2, paymentdescription
                 
-                location.href = "./bookinginformations.php";
+                //location.href = "./bookinginformations.php";
             }
         }); 
 
@@ -488,6 +486,7 @@
                     text: "Transaction successful! Thank you for your reservation.",
                     icon: "success"
                 });
+                location.href = "./bookinginformations.php";
             }
 
 
