@@ -25,7 +25,7 @@ EmailSendbtn.addEventListener('click',async (e)=>{
 
     $.ajax({    
         type: "post",
-        url: "/Send.php",             
+        url: "https://elijoshresortandeventsplace.com/Send.php",             
         data: "Email="+ email,    
         dataType: 'json',   
         beforeSend:function(){
