@@ -390,20 +390,35 @@ ul li:hover:not(.HOMETITLELI) a{
     width: 50%;
     padding: 1em;
     /* From https://css.glass */
-    background: rgba(17, 17, 17, 0.28);
+    background: #003ee98a;
     border-radius: 16px;
     backdrop-filter: blur(15.3px);
     -webkit-backdrop-filter: blur(15.3px);
-
-
+    color : #fff;
 }
 .formcontainer{
     display: flex;
     flex-direction: column;
 }
 .formcontainer button{
+    padding: 1em;
+    background-color: #C1B086;
+    color: #fff;
+    border: 0;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 1em;
+    font-weight: bolder;
+}
+.formcontainer button:hover{
+    padding: 1em;
+    background-color: #ead5a0;
+    color: #000;
+    border: 0;
+    cursor: pointer;
     margin-top: 20px;
 }
+
 
 .formcontainer input[type="email"],.formcontainer input[type="email"],.formcontainer textarea{
    border: 0;

@@ -139,6 +139,7 @@
 
     $arraynew['TOTAL'] = $sum;
     $arraynew['DPAYMENT'] = $sum*.5;
+    print_r($arraynew);
     $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
 
 ?>

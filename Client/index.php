@@ -17,7 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EliJosh Resort & Event</title>
 
-    <link rel="stylesheet" href="./CSS/style1.css">
+    <link rel="stylesheet" href="./CSS/style111.css">
     <link href="./CSS/style.scss" rel="stylesheet/scss" type="text/css">
     <link rel="stylesheet" href="./CSS/app.css">
     <link rel="stylesheet" href="./Calendar/app.css">
@@ -314,14 +314,21 @@
             <div class="boxbox2">
                 <div class="containerbb2">
                     <form action="" method="post">
-                        <div class="formcontainer">
-                            <label for="">Name</label>
-                            <input type="email" name="Email" id="">
-                        </div>
-                        <div class="formcontainer">
-                            <label for="">Email</label>
-                            <input type="email" name="Email" id="">
-                        </div>
+                        <?php
+                            if(!isset($_SESSION["USERID"])){
+
+                        ?>
+                            <div class="formcontainer">
+                                <label for="">Name</label>
+                                <input type="email" name="Email" id="">
+                            </div>
+                            <div class="formcontainer">
+                                <label for="">Email</label>
+                                <input type="email" name="Email" id="">
+                            </div>
+                        <?php
+                            }
+                        ?>
                         <div class="formcontainer">
                             <label for="">Message</label>
                             <textarea name="" id="" cols="30" rows="5"></textarea>
