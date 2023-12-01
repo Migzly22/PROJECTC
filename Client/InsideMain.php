@@ -3,7 +3,7 @@
     session_start();
     ob_start();
 
-    error_reporting(E_ERROR | E_PARSE);
+    //error_reporting(E_ERROR | E_PARSE);
 
     $usertoken = !isset($_SESSION["USERID"]) ?  null : $_SESSION["USERID"];
     $linksref = !isset($_SESSION["USERID"]) ?  "./login.php" : "./booking.php";
@@ -298,17 +298,13 @@
         })
 
         if (pass) {
+            console.log(userid)
 
-
-            let sqlcodecheck = `SELECT * FROM userscredentials WHERE userID = '${userid}' AND Password = '${pass}';`
+            let sqlcodecheck = `DELETE FROM userscredentials WHERE userID = '${userid}' AND Password = '${pass}';`
             let throwns = await AjaxSendv3(sqlcodecheck,"SETTING","&table=deletion")
-            await eval(throwns.split("{00}")[0])
+            await Swal.fire(``, 'The Account Has Been Delete Successfully', 'success')
+            location.href = "./logOut.php"
 
-            console.log(throwns.split("{00}")[0].includes("success"))
-
-            if(throwns.split("{00}")[0].includes("success")){
-                location.href = "./logOut.php"
-            }
 
         }
     }
