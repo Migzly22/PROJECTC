@@ -58,8 +58,8 @@
 
                             <tbody id="TBODYELEMENT">
 <?php
-    $sqlcode3 = "SELECT a.*, d.* FROM rooms a 
-    LEFT JOIN (SELECT  b.*, IF(c.ReservationStatus IS NULL, 'Available', c.ReservationStatus) AS Status, CONCAT(c.CheckInDate, ' to ', c.CheckOutDate) AS DT FROM roomsreservation b LEFT JOIN reservations c ON b.greservationID = c.ReservationID  WHERE CURDATE() BETWEEN c.CheckInDate AND c.CheckOutDate) d ON a.RoomNum = d.Room_num
+    $sqlcode3 = "SELECT a.*, d.*, if(d.Status1 IS NULL, 'Available', d.Status1) AS Status FROM rooms a 
+    LEFT JOIN (SELECT  b.*, IF(c.ReservationStatus IS NULL, 'Available', c.ReservationStatus) AS Status1, CONCAT(c.CheckInDate, ' to ', c.CheckOutDate) AS DT FROM roomsreservation b LEFT JOIN reservations c ON b.greservationID = c.ReservationID  WHERE CURDATE() BETWEEN c.CheckInDate AND c.CheckOutDate) d ON a.RoomNum = d.Room_num
     ORDER BY a.RoomID;";
     $querynum3 = mysqli_query($conn,$sqlcode3);
     $table5 = "";
@@ -101,10 +101,10 @@
 
 <script>
     const SEARCHITEMINPUT = document.getElementById("SEARCHITEMINPUT");
-    const mainquery = `SELECT a.*, d.* FROM rooms a 
-    LEFT JOIN (SELECT  b.*, IF(c.ReservationStatus IS NULL, 'Available', c.ReservationStatus) AS Status, CONCAT(c.CheckInDate, ' to ', c.CheckOutDate) AS DT FROM roomsreservation b LEFT JOIN reservations c ON b.greservationID = c.ReservationID  WHERE CURDATE() BETWEEN c.CheckInDate AND c.CheckOutDate) d ON a.RoomNum = d.Room_num
-WHERE [CONDITION]
-ORDER BY a.RoomID;
+    const mainquery = `SELECT a.*, d.*, if(d.Status1 IS NULL, 'Available', d.Status1) AS Status FROM rooms a 
+    LEFT JOIN (SELECT  b.*, IF(c.ReservationStatus IS NULL, 'Available', c.ReservationStatus) AS Status1, CONCAT(c.CheckInDate, ' to ', c.CheckOutDate) AS DT FROM roomsreservation b LEFT JOIN reservations c ON b.greservationID = c.ReservationID  WHERE CURDATE() BETWEEN c.CheckInDate AND c.CheckOutDate) d ON a.RoomNum = d.Room_num
+    WHERE [CONDITION]
+    ORDER BY a.RoomID;;
         ;
     `
     const TBODYELEMENT = document.getElementById('TBODYELEMENT')
@@ -154,7 +154,7 @@ ORDER BY a.RoomID;
             let conditions = [];
 
             if(formValues[0] !== "-"){
-                conditions.push(`d.Status =  '${formValues[0]}'`);
+                conditions.push(`if(d.Status1 IS NULL, 'Available', d.Status1) =  '${formValues[0]}'`);
             }
             if(formValues[1] !== "-"){
                 conditions.push(`a.RoomType = '${formValues[1]}'`);
