@@ -80,6 +80,6 @@ sending($data4,$html);
 
 
 
-echo json_encode($array1);
+echo "good";
 
 ?>

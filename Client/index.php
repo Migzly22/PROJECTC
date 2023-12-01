@@ -473,7 +473,7 @@
         data3 = specialSubject.value
         data4 = specialmessage.value
 
-        await sendinggmailnotif(data3, data4, data1,data2 )
+        sendinggmailnotif(data3, data4, data1,data2 )
     })
 
     async function sendinggmailnotif (data1, data2, data3 = "", data4=""){
@@ -481,20 +481,22 @@
             type: "post",
             url: "../Contactus.php",             
             data: `data1=${data1}&&data2=${data2}&&data3=${data3}&&data4=${data4}`,    
-            dataType: 'json',   
-            beforeSend:function(){
-
+            beforeSend: async function(){
+                await Swal.fire({
+                    text: "Send Successfully",
+                    icon: "success"
+                });
             }, 
             error:function(response){
                 // Remove the loading screen
                 console.log(response)
             },
             success: async function(response) {
+                console.log(response)
                 await Swal.fire({
                     text: "Send Successfully",
                     icon: "success"
                 });
-                location.href = "./bookinginformations.php";
             }
 
 
