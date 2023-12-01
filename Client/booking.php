@@ -180,7 +180,7 @@
                                     <div class='SO-item'>
                                         <input type='checkbox' id='".$result["ServiceTypeName"]."' value='".$result['ServiceTypeName']."||".$result['ServiceTypeID']."||".$result['DayPrice']."||".$result['NightPrice']."||".$result['NightPrice']."||Cottage' name='SOItemSelect'>
                                         <div class='addtocart2' onclick='activateClick(`".$result["ServiceTypeName"]."`)'>
-                                            <img src='./RoomsEtcImg/Cottages/".$result['ServiceTypeName']."' alt=''>
+                                            <img src='./RoomsEtcImg/Cottages/".$result['ServiceTypeName'].".jpg' alt=''>
                                             <div class='textareapart'>
                                                 <h2>".$result["ServiceTypeName"]."</h2>
                                                 <div class='smallinfos'>
