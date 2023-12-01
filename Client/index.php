@@ -17,13 +17,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EliJosh Resort & Event</title>
 
-    <link rel="stylesheet" href="./CSS/style111.css">
+    <link rel="stylesheet" href="./CSS/style1111.css">
     <link href="./CSS/style.scss" rel="stylesheet/scss" type="text/css">
     <link rel="stylesheet" href="./CSS/app.css">
     <link rel="stylesheet" href="./Calendar/app.css">
 
+    <script src="../SweetAlert/node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="../SweetAlert/node_modules/sweetalert2/dist/sweetalert2.min.css">
+
+    <!--Jquery-->
+    <script src="../Jquery/node_modules/jquery/dist/jquery.js"></script>
+    <script src="../Jquery/node_modules/jquery/dist/jquery.min.js"></script>
+
     <script src="./JS/design.js" defer ></script>
-    <script src="./JS/script.js" defer></script>
+    <script src="./JS/script1.js" defer></script>
     <script src="./Calendar/app2.js" defer></script>
 
              
@@ -313,28 +320,37 @@
             </div>
             <div class="boxbox2">
                 <div class="containerbb2">
-                    <form action="" method="post">
+                    <form action="" method="post" id="CONTACTFORM">
                         <?php
+                            
                             if(!isset($_SESSION["USERID"])){
 
                         ?>
                             <div class="formcontainer">
                                 <label for="">Name</label>
-                                <input type="email" name="Email" id="">
+                                <input type="text" name="nameuser"  id="specialName" required>
                             </div>
                             <div class="formcontainer">
                                 <label for="">Email</label>
-                                <input type="email" name="Email" id="">
+                                <input type="email" name="Email" id="specialEmail" required>
                             </div>
                         <?php
+                            }else{
+                                $contactus = "SELECT CONCAT(LastName, ', ', FirstName, ' ', MiddleName) as NAME, Email FROM userscredentials WHERE userID = '".$_SESSION["USERID"]."';";
+                                $contactusquery = mysqli_query($conn,$contactus);
+                                $_SESSION["BasicContactinfo"] = mysqli_fetch_assoc($contactusquery);
                             }
                         ?>
                         <div class="formcontainer">
-                            <label for="">Message</label>
-                            <textarea name="" id="" cols="30" rows="5"></textarea>
+                            <label for="">Subject</label>
+                            <input type="text" name="subject" id="specialSubject" required>
                         </div>
                         <div class="formcontainer">
-                            <button>Send</button>
+                            <label for="">Message</label>
+                            <textarea name="" id="specialmessage" cols="30" rows="5" required></textarea>
+                        </div>
+                        <div class="formcontainer">
+                            <button type="submit">Send</button>
                         </div>
                     </form>
                 </div>
@@ -434,7 +450,60 @@
         location.href = `./${link}?cin=${Checkin}&cout=${Checkout}`;
         
     }
+    const CONTACTFORM = document.getElementById('CONTACTFORM')
 
+    CONTACTFORM.addEventListener('submit',async (e)=>{
+        e.preventDefault()
+
+        const specialmessage = document.getElementById('specialmessage')
+        const specialEmail = document.getElementById('specialEmail')
+        const specialName = document.getElementById('specialName')
+        const specialSubject = document.getElementById('specialSubject')
+
+        let data1 = ""
+        let data2 = ""
+        let data3 = ""
+        let data4 = ""
+        if(specialName && specialEmail){
+    
+            data1 = specialName.value
+            data2 = specialEmail.value
+        }
+
+        data3 = specialSubject.value
+        data4 = specialmessage.value
+
+        await sendinggmailnotif(data3, data4, data1,data2 )
+    })
+
+    async function sendinggmailnotif (data1, data2, data3 = "", data4=""){
+        console.log("exist")
+
+        $.ajax({    
+            type: "post",
+            url: "https://elijoshresortandeventsplace.com/Contactus.php",             
+            data: `data1=${data1}&&data2=${data2}&&data3=${data3}&&data4=${data4}`,    
+            dataType: 'json',   
+            beforeSend:function(){
+                console.log(1234123123)
+            },  
+            error:function(response){
+                // Remove the loading screen
+                console.log(response)
+            },
+            success: async function(response) {
+                console.log(response)
+                await Swal.fire({
+                    text: "Send Successfully",
+                    icon: "success"
+                });
+                location.href = "./bookinginformations.php";
+            }
+
+
+        });
+    }
+</script>
 </script>
     
 </body>

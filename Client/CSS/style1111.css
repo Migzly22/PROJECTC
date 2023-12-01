@@ -420,7 +420,7 @@ ul li:hover:not(.HOMETITLELI) a{
 }
 
 
-.formcontainer input[type="email"],.formcontainer input[type="email"],.formcontainer textarea{
+.formcontainer input[type="email"],.formcontainer input[type="text"],.formcontainer textarea{
    border: 0;
    outline: none;
    padding: 1em;

@@ -1,5 +1,7 @@
 <?php
-
+    error_reporting(E_ERROR | E_PARSE);
+    session_start();
+    ob_start();
 
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -17,9 +19,6 @@ require('./Database.php');
 
 
 function sending($to,$html){
-
-
-
 
   $mail = new PHPMailer();
   $mail->SMTPAuth   = TRUE;
@@ -52,44 +51,34 @@ function sending($to,$html){
 
 //sending($_POST['to'],$_POST['subject'],$_POST['message']);
 $array1 = array("text"=>"Sent Successfully","icon"=>"success");
-$email = $_POST['Email'];
-$randomnum = rand(1000000, 9999999);
 
+$data1 = $_POST['data1'];//subject
+$data2 = $_POST['data2'];//message
+$data3 = $_POST['data3'];//name
+$data4 = $_POST['data4'];//email
 
-$sqlcode =  "SELECT * FROM userscredentials WHERE Email = '$email';";
-$queryrun = mysqli_query($conn, $sqlcode);
+if($_POST["data3"] !== "" && $_POST["data4"] !== ""){
+  $data3 = $_SESSION["BasicContactinfo"]["NAME"];
+  $data4 = $_SESSION["BasicContactinfo"]["Email"];
+}
 
-if(mysqli_num_rows($queryrun) == null){
-  $array1["text"] = "Email Doesnt Exist";
-  $array1["icon"] = "error";
-}else{
-
-  $otp = $randomnum;
-  // Set the duration for the cookie (10 minutes = 600 seconds)
-  $duration = 600;
-
-  // Calculate the expiration time by adding the duration to the current time
-  $expirationTime = time() + $duration;
-
-  // Set the cookie with the name "OTP", the value of the OTP, and the expiration time
-  setcookie('OTP', $otp, $expirationTime);
-
-
-  
-
-  $html = file_get_contents("./Client/Template/OTPTemplate.html");
+  $html = file_get_contents("./Client/Template/contactus.html");
   $needtochange = [
-      "{{ACCOUNT}}",
-      "{{CODE}}"
+      "{{SENDERNAME}}",
+      "{{SENDERSUBJECT}}",
+      "{{SENDEREMAIL}}",
+      "{{SENDERMSG}}",
   ];
   $valuetochange = [
-      $email,
-      $otp
+      $data3,
+      $adata1,
+      $adata4,
+      $adata2,
   ];
 
-  $html = str_replace($needtochange, $valuetochange, $html);
-  sending($email,$html);
-}
+$html = str_replace($needtochange, $valuetochange, $html);
+sending($email,$html);
+
 
 
 echo json_encode($array1);
