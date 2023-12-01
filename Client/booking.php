@@ -257,7 +257,7 @@
                     <div class='SO-item'>
                         <input type='checkbox' id='Pavilion' value='Pavilion||".$result['Evntid']."||".$result['Pavilion']."||".$result['Pavilion']."||".$result['Pavilion']."||Pavilion' name='SOItemSelect'>
                         <div class='addtocart2' onclick='activateClick(`Pavilion`)'>
-                            <img src='./Images/c1.jpg' alt=''>
+                            <img src='./RoomsEtcImg/Pavilion/Pavilion.jpg' alt=''>
                             <div class='textareapart'>
                                 <h2>Pavilion</h2>
                                 <div class='smallinfos'>

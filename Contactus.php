@@ -1,7 +1,5 @@
 <?php
-    error_reporting(E_ERROR | E_PARSE);
-    session_start();
-    ob_start();
+
 
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -13,7 +11,8 @@ require 'PHPMailer/src/SMTP.php';
 
 require('./Database.php');
 
-
+session_start();
+ob_start();
 
 
 
@@ -41,7 +40,7 @@ function sending($to,$html){
   'verify_peer_name' => false,
   ]
   );
-  $mail ->Subject = "Password Reset";
+  $mail ->Subject = "Message from $to";
   $mail ->AddAddress($to,'');
   $mail ->Body = $html;
   
@@ -57,7 +56,7 @@ $data2 = $_POST['data2'];//message
 $data3 = $_POST['data3'];//name
 $data4 = $_POST['data4'];//email
 
-if($_POST["data3"] !== "" && $_POST["data4"] !== ""){
+if($_POST["data3"] === "" && $_POST["data4"] === ""){
   $data3 = $_SESSION["BasicContactinfo"]["NAME"];
   $data4 = $_SESSION["BasicContactinfo"]["Email"];
 }
@@ -71,13 +70,13 @@ if($_POST["data3"] !== "" && $_POST["data4"] !== ""){
   ];
   $valuetochange = [
       $data3,
-      $adata1,
-      $adata4,
-      $adata2,
+      $data1,
+      $data4,
+      $data2,
   ];
 
 $html = str_replace($needtochange, $valuetochange, $html);
-sending($email,$html);
+sending($data4,$html);
 
 
 

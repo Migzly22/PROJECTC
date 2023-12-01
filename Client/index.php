@@ -477,22 +477,19 @@
     })
 
     async function sendinggmailnotif (data1, data2, data3 = "", data4=""){
-        console.log("exist")
-
         $.ajax({    
             type: "post",
-            url: "https://elijoshresortandeventsplace.com/Contactus.php",             
+            url: "../Contactus.php",             
             data: `data1=${data1}&&data2=${data2}&&data3=${data3}&&data4=${data4}`,    
             dataType: 'json',   
             beforeSend:function(){
-                console.log(1234123123)
-            },  
+
+            }, 
             error:function(response){
                 // Remove the loading screen
                 console.log(response)
             },
             success: async function(response) {
-                console.log(response)
                 await Swal.fire({
                     text: "Send Successfully",
                     icon: "success"
