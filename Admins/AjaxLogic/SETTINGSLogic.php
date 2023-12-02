@@ -10,11 +10,6 @@
         $result = mysqli_fetch_assoc($querySettings);
     
 ?>
-                <div class="mainbodycontainer">
-                    <div class="classHeader">
-                        <h1>Settings</h1>
-                    </div>
-                    <div class="stafflistbox SETTINGS" id="tbody">
                         <div class="box">
                             <h1>Basic Information</h1>
                             <p>Manage and update your Personal Information</p>
@@ -123,5 +118,3 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
-                </div>
