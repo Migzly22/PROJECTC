@@ -92,7 +92,7 @@
 
 
 
-        <script src="https://www.paypal.com/sdk/js?client-id=AT5hayGPfCenF8pOB0oMvKEXD67u_BrLvgg6hZ6xX7VdwygRQNnd2-5vza2rYScl5uTAcRrhp_VWFlqw"></script>
+        <script src="https://www.paypal.com/sdk/js?client-id=ASOqstSFrYa4HOtKpsdNhQV8_RvIiHFc0447LO_Vm-QMLhHObWY8dclfI84oymETpgdVBgWo4zgdLc3V"></script>
         <link rel="stylesheet" href="./CSS/BREAKDOWN.CSS">
 </head>
 <body>
@@ -470,7 +470,7 @@
 
         $.ajax({    
             type: "post",
-            url: "https://elijoshresortandeventsplace.com/Send2.php",             
+            url: "../Send2.php",             
             data: "reservationvalue="+ reserveid+"&&pid="+paymentdescription+"&&email="+email+"&&ids="+ids,    
             dataType: 'json',   
             beforeSend:function(){

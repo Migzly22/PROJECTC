@@ -34,7 +34,7 @@ $sqlcode = (int)$_POST["sqlcode"];
                                     <div class='SO-item'>
                                         <input type='checkbox' id='".$result["ServiceTypeName"]."' value='".$result['ServiceTypeName']."||".$result['ServiceTypeID']."||".$result['DayPrice']."||".$result['NightPrice']."||".$result['NightPrice']."||Cottage' name='SOItemSelect'>
                                         <div class='addtocart2' onclick='activateClick(`".$result["ServiceTypeName"]."`)'>
-                                            <img src='./Images/c1.jpg' alt=''>
+                                            <img src='./RoomsEtcImg/Cottages/".$result['ServiceTypeName'].".jpg' alt=''>
                                             <div class='textareapart'>
                                                 <h2>".$result["ServiceTypeName"]."</h2>
                                                 <div class='smallinfos'>
@@ -81,7 +81,7 @@ $sqlcode = (int)$_POST["sqlcode"];
                             <div class='SO-item'>
                                 <input type='checkbox' id='".$result["RoomType"]."' value='".$result['RoomType']."||".$result['RoomType']."||".$result['DayTimePrice']."||".$result['NightTimePrice']."||".$result['Hours22']."||Room' name='SOItemSelect'>
                                 <div class='addtocart2' onclick='activateClick(`".$result["RoomType"]."`)'>
-                                    <img src='./Images/c1.jpg' alt=''>
+                                    <img  src='./RoomsEtcImg/Rooms/".$result['RoomType'].".jpeg' alt=''>
                                     <div class='textareapart'>
                                         <h2>".$result["RoomType"]."</h2>
                                         <div class='smallinfos'>
@@ -111,7 +111,7 @@ $sqlcode = (int)$_POST["sqlcode"];
                     <div class='SO-item'>
                         <input type='checkbox' id='Pavilion' value='Pavilion||".$result['Evntid']."||".$result['Pavilion']."||".$result['Pavilion']."||".$result['Pavilion']."||Pavilion' name='SOItemSelect'>
                         <div class='addtocart2' onclick='activateClick(`Pavilion`)'>
-                            <img src='./Images/c1.jpg' alt=''>
+                            <img src='./RoomsEtcImg/Pavilion/Pavilion.jpg' alt=''>
                             <div class='textareapart'>
                                 <h2>Pavilion</h2>
                                 <div class='smallinfos'>
@@ -124,7 +124,7 @@ $sqlcode = (int)$_POST["sqlcode"];
                     <div class='SO-item'>
                         <input type='checkbox' id='Grand Pavilion' value='Grand Pavilion||".$result['Evntid']."||".$result['Grand Pavilion']."||".$result['Grand Pavilion']."||".$result['Grand Pavilion']."||Pavilion' name='SOItemSelect'>
                         <div class='addtocart2' onclick='activateClick(`Grand Pavilion`)'>
-                            <img src='./Images/c1.jpg' alt=''>
+                            <img src='./RoomsEtcImg/Pavilion/GrandPavilion.jpeg' alt=''>
                             <div class='textareapart'>
                                 <h2>Grand Pavilion</h2>
                                 <div class='smallinfos'>

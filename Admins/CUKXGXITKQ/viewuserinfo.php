@@ -109,13 +109,14 @@
         PhoneNumber = '${FCONTAIN.phoneNumber.value}',
         Address = '${FCONTAIN.address.value}', 
         City = '${FCONTAIN.city.value}', 
-        PostalCode = '${FCONTAIN.postalCode.value}',
+        PostalCode = '${FCONTAIN.postalCode.value}'
         WHERE userID = '${FCONTAIN.userID.value}';`;
 
-        
+        console.log(sqlcode)
         const Tabledata = await AjaxSendv3(sqlcode,"VIEWUSERINFOLOGIC",`&ISU=${FCONTAIN.userID.value}`)
-        FCONTAIN.innerHTML = Tabledata
-        SweetSuccess()
+        //FCONTAIN.innerHTML = Tabledata
+        await SweetSuccess()
+        location.href = "http://localhost/PROJECTC/Admins/Mainpage.php?nzlz=settingsADMIN&plk=8";
     }
 </script>
 
