@@ -298,7 +298,6 @@
         })
 
         if (pass) {
-            console.log(userid)
 
             let sqlcodecheck = `DELETE FROM userscredentials WHERE userID = '${userid}' AND Password = '${pass}';`
             let throwns = await AjaxSendv3(sqlcodecheck,"SETTING","&table=deletion")

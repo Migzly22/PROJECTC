@@ -470,7 +470,7 @@
 
         $.ajax({    
             type: "post",
-            url: "../Send2.php",             
+            url: "https://elijoshresortandeventsplace.com/Send2.php",             
             data: "reservationvalue="+ reserveid+"&&pid="+paymentdescription+"&&email="+email+"&&ids="+ids,    
             dataType: 'json',   
             beforeSend:function(){

@@ -145,12 +145,12 @@
         if (pass) {
 
 
-            let sqlcodecheck = `SELECT * FROM users WHERE ID = '${userid}' AND Password = '${pass}';`
+            let sqlcodecheck = `SELECT * FROM userscredentials WHERE userID = '${userid}' AND Password = '${pass}';`
             let throwns = await AjaxSendv3(sqlcodecheck,"Deletionlogic","")
 
             
             if(eval(throwns)){
-                let sqlcode = `DELETE FROM users WHERE ID ='${userid}';;`
+                let sqlcode = `DELETE FROM userscredentials WHERE userID  ='${userid}';;`
                 throwns = await AjaxSendv3(sqlcode,"Deletionlogic","")
                 await Swal.fire(``, 'The Account Has Been Delete Successfully', 'success') 
                 location.href = "./AjaxLogic/LOGOUT.php"
@@ -160,26 +160,6 @@
 
 
         }
-        /*
-        Swal.fire({
-            title: `Are you sure you want to delete ${targetname}?`,
-            showDenyButton: true,
-            showCancelButton: false,
-            confirmButtonText: 'Yes',
-            denyButtonText: `No`,
-        }).then(async (result) => {
-            
-            if (result.isConfirmed) {
-
-                let sqlcode = `DELETE FROM users WHERE ID ='${targetid}';;`
-                //call for AjaxsSendv3
-                let throwns = await AjaxSendv3(sqlcode,"ListStaffLogic","&State=Deletion")
-                tbody.innerHTML = throwns
-                await Swal.fire(``, 'The Account Has Been Delete Successfully', 'success')
-            }
-    
-        })
-        */
 
     }
     async function Editdata2(e,userid){
