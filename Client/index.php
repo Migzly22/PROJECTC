@@ -71,7 +71,7 @@
                 <?php
                     if($_SESSION["ACCESS"] != "CLIENT"){
                 ?>
-                    <li><a href="../Admins/Mainpage.php">Booking Information</a></li>
+                    <li><a href="../Admins/Mainpage.php">Admin</a></li>
                 <?php
                     }
                 ?>
