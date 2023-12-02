@@ -116,7 +116,7 @@
         const Tabledata = await AjaxSendv3(sqlcode,"VIEWUSERINFOLOGIC",`&ISU=${FCONTAIN.userID.value}`)
         //FCONTAIN.innerHTML = Tabledata
         await SweetSuccess()
-        location.href = "http://localhost/PROJECTC/Admins/Mainpage.php?nzlz=settingsADMIN&plk=8";
+        location.href = "..Admins/Mainpage.php?nzlz=settingsADMIN&plk=8";
     }
 </script>
 
