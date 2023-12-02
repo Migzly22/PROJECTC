@@ -43,7 +43,6 @@
                                     <th scope='col' style="text-align: start;">#</th>
                                     <th scope='col'>Item Name</th>
                                     <th scope='col'>Price</th>
-                                    <th scope='col'>Quantity</th>
                                     <th scope='col' style="text-align: center;">Action</th>
                                 </tr>
                             </thead>
@@ -60,7 +59,6 @@
                 <td>$i</td>
                 <td>".$result7["ItemName"]."</td>
                 <td style='text-align: end;'>".$result7["Price"]."</td>
-                <td style='text-align: center;'>".$result7["QuantityAvailable"]."</td>
                 <td class='ActionTABLE' id='".$result7["ExtraID"]."'>
                     <button class='Editbtn' onclick='EDITFUNC(this)'>
                         <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 512 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z'/></svg>
@@ -188,10 +186,6 @@
                 <input type ="number" id="swal-input2" class="SWALinput" required>
             </div>
             <div class='SWEETFORMS'>
-                <label for='swal-input3'>Quantity</label>
-                <input type ="number" id="swal-input3" class="SWALinput" required>
-            </div>
-            <div class='SWEETFORMS'>
                 <label for='swal-input4'>Package For</label>
                 <select class='SWALinput swalselect' id='swal-input4' aria-label='Floating label select example'>
                     <option value='ALL' selected>All</option>
@@ -201,7 +195,7 @@
             </div>
         </div>`
 
-        let formValues =await POPUPCREATE("Filters",design,4)
+        let formValues =await POPUPCREATE("Filters",design,3)
 
         if (formValues) {
             if(formValues[0] === "" && formValues[1] === "" && formValues[2] === ""){
@@ -212,7 +206,7 @@
                 SweetError()
                 return 0
             }
-            let formattedText =`INSERT INTO extracharges VALUES (NULL, '${formValues[0]}', '${formValues[1]}', '${formValues[2]}', '${formValues[3]}');`
+            let formattedText =`INSERT INTO extracharges VALUES (NULL, '${formValues[0]}', '${formValues[1]}', '0', '${formValues[2]}');`
             const Tabledata =await AjaxSendv3(formattedText,"INVETORYLOGIC",`&Process=AccessUpdate`)
             TBODYELEMENT.innerHTML = Tabledata
 
@@ -252,10 +246,6 @@
                 <input type ="number" id="swal-input2" class="SWALinput" required value='${targetprice}'>
             </div>
             <div class='SWEETFORMS'>
-                <label for='swal-input3'>Quantity</label>
-                <input type ="number" id="swal-input3" class="SWALinput" required value='${targetquan}'>
-            </div>
-            <div class='SWEETFORMS'>
                 <label for='swal-input4'>Package For</label>
                 <select class='SWALinput swalselect' id='swal-input4' aria-label='Floating label select example'>
                     <option value='ALL' ${case1}>All</option>
@@ -278,7 +268,7 @@
                 return 0
             }
 
-            let  formattedText = `UPDATE extracharges SET ItemName = '${formValues[0]}', Price = '${formValues[1]}', QuantityAvailable = '${formValues[2]}', PackageFor = '${formValues[3]}' WHERE ExtraID = '${targetid}';`
+            let  formattedText = `UPDATE extracharges SET ItemName = '${formValues[0]}', Price = '${formValues[1]}', PackageFor = '${formValues[2]}' WHERE ExtraID = '${targetid}';`
             console.log(formattedText)
             
             const Tabledata =await AjaxSendv3(formattedText,"INVETORYLOGIC",`&Process=AccessUpdate`)
