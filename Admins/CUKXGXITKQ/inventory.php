@@ -217,8 +217,7 @@
         let targetid = e.parentNode.id
         let targetname = e.parentNode.parentNode.cells[1].innerText
         let targetprice = e.parentNode.parentNode.cells[2].innerText
-        let targetquan = e.parentNode.parentNode.cells[3].innerText
-        let targetPack = e.parentNode.parentNode.cells[5].innerText
+        let targetPack = e.parentNode.parentNode.cells[4].innerText
 
 
 
