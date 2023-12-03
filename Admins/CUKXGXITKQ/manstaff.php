@@ -225,9 +225,34 @@
     }
     async function EDIT(e){
         let targetid = e.parentNode.id
-        let targetname = e.parentNode.parentNode.cells[0].innerHTML
-        location.href = `./Mainpage.php?nzlz=viewuserinfo&plk=5&ISU=${targetid}`;
+        let targetname = e.parentNode.parentNode.cells[2].innerText.trim()
+
+        let design = `
+        <div class='sweetDIVBOX'>
+            <div class='SWEETFORMS'>
+                <label for='swal-input2'>User Access</label>
+                <select class='SWALinput swalselect' id='swal-input1' aria-label='Floating label select example'>
+                    <option value='ADMIN' >Admin</option>
+                    <option value='CLIENT'>Client</option>
+                    <option value='STAFF' selected>Staff</option>
+                </select>
+            </div>
+
+        </div>`
+
+        let formValues =await POPUPCREATE("Filters",design,1)
+
+        if (formValues) {
+
+            const formattedText = `UPDATE userscredentials SET Access = '${formValues[0]}' WHERE userID = '${targetid}';`
+        
+            console.log(formattedText)
+            const Tabledata =await AjaxSendv3(formattedText,"ADDINGSTAFF2","&Process=AccessUpdate")
+            TBODYELEMENT.innerHTML = Tabledata
+
+        }
     }
+
     async function ADDSTAFF(){
         location.href = `./Mainpage.php?nzlz=addfromliststaff&plk=5`;
     }

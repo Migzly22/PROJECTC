@@ -246,7 +246,7 @@
             </div>
             <div class='SWEETFORMS'>
                 <label for='swal-input4'>Package For</label>
-                <select class='SWALinput swalselect' id='swal-input4' aria-label='Floating label select example'>
+                <select class='SWALinput swalselect' id='swal-input3' aria-label='Floating label select example'>
                     <option value='ALL' ${case1}>All</option>
                     <option value='ROOMS' ${case2}>Rooms</option>
                     <option value='VENUE' ${case3}>Venue</option>
