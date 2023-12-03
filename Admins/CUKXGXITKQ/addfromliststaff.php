@@ -1,10 +1,7 @@
  <!--Manage User-->
  <div class="mainbodycontainer">
                 <div class="classHeader">
-                    <h1>Staff</h1>
-                    <button class="addbtn" onclick="ADDSTAFF()">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/></svg>
-                    </button>
+                    <h1>Adding Staff</h1>
                 </div>
                 <div class="SEARCHANDFILTRATION">
                     <div class="box">
@@ -14,12 +11,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
                                 </button>
                             </div>
-<!--
-                            <button class="Editbtn" onclick="FILTERING()">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M3.9 54.9C10.5 40.9 24.5 32 40 32H472c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6V320.9L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z"/></svg>
-                            </button>
-
--->
+                        
                             <button class="Editbtn" onclick="RESETTABLE()">
                             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z"/></svg>
                             </button>
@@ -33,13 +25,14 @@
                         <div class="box2">
                         <table class="table" style="border-collapse: collapse;">
                             <caption>
-                                <h2>List of Staff</h2>
+                                <h2>List of Users</h2>
                                 
                             </caption>
                             <thead>
                                 <tr>
                                     <th scope='col'>Name</th>
                                     <th scope='col'>Email</th>
+                                    <th scope='col'>Access</th>
                                     <th scope='col' style="text-align:center;">Action</th>
                                 </tr>
                             </thead>
@@ -47,22 +40,16 @@
                             <tbody id="TBODYELEMENT">
 
 <?php
-    $sqlcode = "SELECT *, CONCAT(LastName, ', ', FirstName, ' ', UPPER(LEFT(MiddleName,1)), '.' ) AS fullname FROM userscredentials WHERE Access = 'STAFF' ORDER BY Lastname, Firstname, Middlename;";
+    $sqlcode = "SELECT *, CONCAT(LastName, ', ', FirstName, ' ', UPPER(LEFT(MiddleName,1)), '.' ) AS fullname FROM userscredentials WHERE userID <> '".$_SESSION["USERID"]."' ORDER BY Lastname, Firstname, Middlename;";
     $query5 = mysqli_query($conn,$sqlcode);
     $table5 = "";
     while ($result5 = mysqli_fetch_assoc($query5)) {
-        # code...
-        $pick1 = "";
-        $pick2 = "";
-        if($result5["Access"] == "STAFF"){
-            $pick2 = "selected";
-        }else{
-            $pick1 = "selected";
-        }
+ 
         $table5 .= "
                 <tr>
                     <td>".$result5["fullname"]."</td>
                     <td>".$result5["Email"]."</td>
+                    <td>".$result5["Access"]."</td>
                     <td class='ActionTABLE' id='".$result5["userID"]."'>
                         <button class='addbtn' onclick='VIEW(this)'>
                         <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 576 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z'/></svg>
@@ -76,7 +63,6 @@
                     </td>
                 </tr>
         ";
-
     }
 
     if (mysqli_num_rows($query5) == 0) {
@@ -99,7 +85,7 @@
 <script>
     const SEARCHITEMINPUT = document.getElementById("SEARCHITEMINPUT");
     const mainquery = `
-    SELECT *, CONCAT(LastName, ', ', FirstName, ' ', UPPER(LEFT(MiddleName,1)), '.' ) AS fullname FROM userscredentials WHERE Access = 'STAFF' [CONDITION] ORDER BY Lastname, Firstname, Middlename;`
+    SELECT *, CONCAT(LastName, ', ', FirstName, ' ', UPPER(LEFT(MiddleName,1)), '.' ) AS fullname FROM userscredentials WHERE  [CONDITION] ORDER BY Lastname, Firstname, Middlename;`
     const TBODYELEMENT = document.getElementById('TBODYELEMENT')
 
 
@@ -107,7 +93,7 @@
     async function SEARCHING() {
         let item = SEARCHITEMINPUT.value;
         
-        let searchcondition = `AND (
+        let searchcondition = `(
             Email LIKE '%${item}%'
             OR CONCAT(LastName, ' ' , FirstName, ' ', MiddleName ) LIKE '%${item}%'
             OR FirstName LIKE '%${item}%'
@@ -128,68 +114,53 @@
         )`;
         const formattedText = mainquery.replace(/\[CONDITION\]/, searchcondition);
         console.log(formattedText)
-        const Tabledata =await AjaxSendv3(formattedText,"MANSTAFFLOGIC","&Process=Search")
+        const Tabledata =await AjaxSendv3(formattedText,"ADDINGSTAFF2","&Process=Search")
         TBODYELEMENT.innerHTML = Tabledata
 
     }
     async function RESETTABLE() {
-        const Tabledata =await AjaxSendv3("","MANSTAFFLOGIC","&Process=Reset")
+        const Tabledata =await AjaxSendv3("","ADDINGSTAFF2","&Process=Reset")
         SEARCHITEMINPUT.value = "";
         TBODYELEMENT.innerHTML = Tabledata
     }
 
-    async function FILTERING(){
+    async function EDIT(e){
+        let targetid = e.parentNode.id
+        let targetname = e.parentNode.parentNode.cells[2].innerText.trim()
+        let accessval = ["","",""]
+        switch(targetname){
+            case "ADMIN":
+                accessval[0] = "selected";
+                break;
+            case "STAFF":
+                accessval[1] = "selected";
+                break;
+            case "CLIENT":
+                accessval[2] = "selected";
+                break;
+        }
+
         let design = `
         <div class='sweetDIVBOX'>
             <div class='SWEETFORMS'>
-                <label for='swal-input1'>Search</label>
-                <input type ="text" id="swal-input1" class="SWALinput" required>
-            </div>
-            <div class='SWEETFORMS'>
-                <label for='swal-input2'>Sex</label>
-                <select class='SWALinput swalselect' id='swal-input2' aria-label='Floating label select example'>
-                    <option value="-">-</option>
-                    <option value='Male'>Male</option>
-                    <option value='Female'>Female</option>
+                <label for='swal-input2'>User Access</label>
+                <select class='SWALinput swalselect' id='swal-input1' aria-label='Floating label select example'>
+                    <option value='ADMIN' ${accessval[0]}>Admin</option>
+                    <option value='CLIENT' ${accessval[2]}>Client</option>
+                    <option value='STAFF' ${accessval[1]}>Staff</option>
                 </select>
             </div>
 
         </div>`
 
-        let formValues =await POPUPCREATE("Filters",design,2)
+        let formValues =await POPUPCREATE("Filters",design,1)
 
         if (formValues) {
-            let conditions = [];
 
-            if(formValues[0] !== ""){
-                conditions.push(`(
-                    Email LIKE '%${formValues[0]}%'
-                    OR CONCAT(LastName, ' ' , FirstName, ' ', MiddleName ) LIKE '%${formValues[0]}%'
-                    OR FirstName LIKE '%${formValues[0]}%'
-                    OR LastName LIKE '%${formValues[0]}%'
-                    OR MiddleName LIKE '%${formValues[0]}%'
-                    OR DateOfBirth LIKE '%${formValues[0]}%'
-                    OR Address LIKE '%${formValues[0]}%'
-                    OR City LIKE '%${formValues[0]}%'
-                    OR State LIKE '%${formValues[0]}%'
-                    OR PostalCode LIKE '%${formValues[0]}%'
-                    OR Country LIKE '%${formValues[0]}%'
-                    OR PhoneNumber LIKE '%${formValues[0]}%'
-                    OR Position LIKE '%${formValues[0]}%'
-                    OR HireDate LIKE '%${formValues[0]}%'
-                )`);
-            }
-            if(formValues[1] !== "-"){
-                conditions.push(`Gender = '${formValues[1]}'`)
-            }
-
-            conditions.unshift("")
-            const joinedString = conditions.join(' AND ');
-            const formattedText = mainquery.replace(/\[CONDITION\]/, joinedString);
-            
-
+            const formattedText = `UPDATE userscredentials SET Access = '${formValues[0]}' WHERE userID = '${targetid}';`
+        
             console.log(formattedText)
-            const Tabledata =await AjaxSendv3(formattedText,"MANSTAFFLOGIC","&Process=Search")
+            const Tabledata =await AjaxSendv3(formattedText,"ADDINGSTAFF2","&Process=AccessUpdate")
             TBODYELEMENT.innerHTML = Tabledata
 
         }
@@ -210,7 +181,7 @@
             if (result.isConfirmed) {
                 let sqlcode = `DELETE FROM userscredentials WHERE userID ='${targetid}';;`
                 //call for AjaxsSendv3
-                const Tabledata = await AjaxSendv3(sqlcode,"MANSTAFFLOGIC","&Process=DeleteUpdate")
+                const Tabledata = await AjaxSendv3(sqlcode,"ADDINGSTAFF2","&Process=DeleteUpdate")
                 TBODYELEMENT.innerHTML = Tabledata
                 SweetSuccess()
             }
@@ -223,12 +194,5 @@
         let targetname = e.parentNode.parentNode.cells[0].innerHTML
         location.href = `./Mainpage.php?nzlz=viewuserinfo&plk=5&ISU=${targetid}&qwe=true`;
     }
-    async function EDIT(e){
-        let targetid = e.parentNode.id
-        let targetname = e.parentNode.parentNode.cells[0].innerHTML
-        location.href = `./Mainpage.php?nzlz=viewuserinfo&plk=5&ISU=${targetid}`;
-    }
-    async function ADDSTAFF(){
-        location.href = `./Mainpage.php?nzlz=addfromliststaff&plk=5`;
-    }
+
 </script>
