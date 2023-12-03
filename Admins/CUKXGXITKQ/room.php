@@ -212,7 +212,6 @@
                 <select class='SWALinput swalselect' id='swal-input2' aria-label='Floating label select example'>
                     <option value='Superior Room' selected>Superior Room</option>
                     <option value='Standard Room'>Standard Room</option>
-                    <option value='Checked in'>Checked in</option>
                     <option value='Family Room'>Family Room</option>
                     <option value='Barkada Room'>Barkada Room</option>
                 </select>
