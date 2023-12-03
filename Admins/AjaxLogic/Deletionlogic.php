@@ -8,7 +8,7 @@ $sqlcode = $_POST["sqlcode"];
 
 
 
-switch ($_POST["success"]) {
+switch ($_POST["Process"]) {
     case 'check':
         $rowquery = mysqli_query($conn,$sqlcode);
         if(mysqli_num_rows($rowquery) > 0){

@@ -146,14 +146,14 @@
 
 
             let sqlcodecheck = `SELECT * FROM userscredentials WHERE userID = '${userid}' AND Password = '${pass}';`
-            let throwns = await AjaxSendv3(sqlcodecheck,"Deletionlogic","&&Process=check")
+            let throwns = await AjaxSendv3(sqlcodecheck,"Deletionlogic","&Process=check")
 
 
             if(throwns.includes("success")){
-                let sqlcode = `DELETE FROM userscredentials WHERE userID  ='${userid}';;`
-                throwns = await AjaxSendv3(sqlcode,"Deletionlogic","&&Process=delete")
+                let sqlcode = `DELETE FROM userscredentials WHERE userID  ='${userid}';`
+                throwns = await AjaxSendv3(sqlcode,"Deletionlogic","&Process=delete")
                 await Swal.fire(``, 'The Account Has Been Delete Successfully', 'success') 
-                location.href = "./AjaxLogic/LOGOUT.php"
+                location.href = "./AjaxLogic/LOGOUTLOGIC.php"
             }else{
                 SweetError("Incorrect Password, Account Deletion has been Aborted")
             }

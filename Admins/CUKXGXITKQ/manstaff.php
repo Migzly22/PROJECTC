@@ -248,7 +248,7 @@
         
             console.log(formattedText)
             const Tabledata =await AjaxSendv3(formattedText,"ADDINGSTAFF2","&Process=AccessUpdate")
-            TBODYELEMENT.innerHTML = Tabledata
+            RESETTABLE()
 
         }
     }
