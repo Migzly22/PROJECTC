@@ -435,7 +435,7 @@
         let roomnumbers = jsonObject["roomnumbers"].replace(/@/g, ',')
 
         let insertreservation = `INSERT INTO reservations (ReservationID, GuestID, CheckInDate, CheckOutDate, RoomNumber, CottageTypeID, NumAdults, NumChildren, NumSeniors, NumExcessPax, timapackage, Eventplace, TotalPrice, Downpayment, UserID) 
-        VALUES (NULL, '${dataid}', '${dateOnly}', '${dateOnly2}', '${roomnumbers}', '${jsonObject["Cottage"]}', '${jsonObject["No. of Adult"]}', '${jsonObject["No. of Kid"]}', '${jsonObject["No. of Seniors"]}', '0', '${jsonObject["timapackage"]}', '${jsonObject["evplace"]}', '${TPrice}', '${Dpayment}','${jsonObject["userID"]}');`
+        VALUES (NULL, '${dataid}', '${dateOnly}', '${dateOnly2}', '${roomnumbers}', '${jsonObject["Cottage"]}', '${jsonObject["No. of Adult"]}', '${jsonObject["No. of Kid"]}', '${jsonObject["No. of Seniors"]}', '0', '${jsonObject["TND"]}', '${jsonObject["evplace"]}', '${TPrice}', '${Dpayment}','${jsonObject["userID"]}');`
 
         let selectreservation = `SELECT ReservationID FROM reservations WHERE CheckInDate = '${dateOnly}' AND GuestID = '${dataid}' ORDER BY ReservationID DESC LIMIT 1;`
 
