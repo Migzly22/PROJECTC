@@ -308,6 +308,16 @@
           text: "Registered Successfully",
           icon: "success"
         });
+
+        let cururl = location.href;
+        
+        if(cururl.includes("?")){
+          let cururl = location.href
+          let data = cururl.split("?")[1]
+          sessionStorage.setItem("MissedBooked", data);
+          //REGFORM.action = `./breakdownv2.php?${data}`
+        }
+
         REGFORM.submit();
       }else{
         Swal.fire({
