@@ -83,14 +83,26 @@
             <p><a class="link" href="./ResetPass.php">Forgot password?</a></p>
             <button type="submit" name="Loginbtn" id="Loginbtn">Continue</button>
             <p class="text-center" >Don't have an account? 
-              <a class="link" href="./Registration.php">Sign up</a>    
+              <?php
+                $specialcase = isset(explode('?', $_SERVER['REQUEST_URI'])[1]) ? explode('?', $_SERVER['REQUEST_URI'])[1] : "";
+                echo "<a class='link' href='./Registration.php?$specialcase'>Sign up</a>  ";
+              ?>    
             </p>
         </form>
     </section>
 
 
     </div>
-
+    <script>
+          let cururl = location.href;
+          
+          if(cururl.includes('?')){
+            let cururl = location.href
+            let data = cururl.split('?')[1]
+            sessionStorage.setItem('MissedBooked', data);
+            //REGFORM.action = `./breakdownv2.php?`+data
+          }
+    </script>
       
 </body>
 </html>

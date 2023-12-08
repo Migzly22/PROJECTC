@@ -71,19 +71,19 @@ switch ($_GET['tRANGE']) {
 <nav class="Mainnavigation glassylink">
     <ul class="smoothmenu">
             <li class="creator">
-                <a href="#HOME" class="textkainit">HOME</a>
+                <a href="./index2.php#HOME" class="textkainit">HOME</a>
             </li>
             <li>
-                <a href="#ABOUT" class="textkainit">ABOUT</a>
+                <a href="./index2.php#ABOUT" class="textkainit">ABOUT</a>
             </li>
             <li>
-                <a href="#TOUR" class="textkainit">TOUR</a>
+                <a href="./index2.php#TOUR" class="textkainit">TOUR</a>
             </li>
             <li>
-                <a href="#SERVICE" class="textkainit">SERVICES</a>
+                <a href="./index2.php#SERVICE" class="textkainit">SERVICES</a>
             </li>
             <li>
-                <a href="#CONTACT" class="textkainit">CONTACT</a>
+                <a href="./index2.php#CONTACT" class="textkainit">CONTACT</a>
             </li>
             <li class=" dropdown">
                 <a href="<?php echo $linksref;?>" class="textkainit">ACCOUNT</a>
@@ -118,7 +118,6 @@ switch ($_GET['tRANGE']) {
   </nav>
 
 
-
 <?php
     $dateTime = new DateTime($_GET['cin']);
     // Get the day of the week as a number (1 = Monday, 2 = Tuesday, etc.)
@@ -144,6 +143,7 @@ switch ($_GET['tRANGE']) {
       $entrance[] = $result[$columnstring];
     }
 
+    $guesttotalnumber = $_GET['na']+$_GET['nk']+$_GET['ns']
 ?>
   <main>
     <section class="mainbody" style="padding: 1em 3em;">
@@ -170,7 +170,7 @@ switch ($_GET['tRANGE']) {
             <tr>
               <td><b>No. of Paxs</b></td>
               <td><b>:</b></td>
-              <td><?php echo $_GET['na']+$_GET['nk']+$_GET['ns']; ?></td>
+              <td><?php echo $guesttotalnumber; ?></td>
             </tr>
         </table>
       </div>
@@ -182,11 +182,15 @@ switch ($_GET['tRANGE']) {
 
         <div class="SOitemlist" id="SOITEMList">
                 <?php
-                                $sqlcottage = "SELECT b.*, CONCAT(b.CottageType, '-', b.Cottagenum) AS cottagename,d.* ,c.* FROM cottage b 
-                                LEFT JOIN cottagetypes d ON b.CottageType = d.ServiceTypeName LEFT JOIN cottagereservation c ON b.Cottagenum = c.cottagenum 
-                                LEFT JOIN reservations a ON c.reservationID = a.ReservationID AND a.CheckInDate = '".$_GET['cin']."' AND a.timapackage = '".$_GET['tRANGE']."' 
-                                WHERE c.cr_id IS NULL;";
-
+                                $sqlcottage = "SELECT a.*, f.*, CONCAT(a.CottageType, '-', a.Cottagenum) AS cottagename, g.TOTAL
+                                FROM (SELECT b.*, c.* FROM cottage b LEFT JOIN cottagetypes c ON b.CottageType = c.ServiceTypeName) a 
+                                LEFT JOIN (SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate FROM cottagereservation d LEFT JOIN reservations e ON d.reservationID = e.ReservationID 
+                                WHERE e.CheckInDate = '".$_GET['cin']."' AND (e.timapackage = '".$_GET['tRANGE']."' OR e.timapackage = '22Hrs')) f ON a.Cottagenum = f.cottagenum LEFT JOIN
+                                
+                                (SELECT  a.CottageType, SUM(a.MaxPersons) AS TOTAL
+                                FROM (SELECT b.*, c.* FROM cottage b LEFT JOIN cottagetypes c ON b.CottageType = c.ServiceTypeName) a 
+                                LEFT JOIN (SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate FROM cottagereservation d LEFT JOIN reservations e ON d.reservationID = e.ReservationID 
+                                WHERE e.CheckInDate = '".$_GET['cin']."' AND (e.timapackage = '".$_GET['tRANGE']."' OR e.timapackage = '22Hrs')) f ON a.Cottagenum = f.cottagenum WHERE f.cr_id IS NULL  GROUP BY a.MaxPersons) g ON a.CottageType = g.CottageType WHERE f.cr_id IS NULL AND g.TOTAL >= '$guesttotalnumber';";
                                 $query1 = mysqli_query($conn, $sqlcottage);
                                 $datainsertedCottages = "";
 
@@ -204,7 +208,7 @@ switch ($_GET['tRANGE']) {
                                     }
                                     $datainsertedCottages .= "
                                       <div class='SO-item'>
-                                          <input type='checkbox' id='".$result["cottagename"]."' value='".$result["cottagename"]."-".$result[$pricename]."' name='SOItemSelect'>
+                                          <input type='checkbox' id='".$result["cottagename"]."' value='".$result["cottagename"]."-".$result[$pricename]."-".$result['MaxPersons']."' name='SOItemSelect'>
                                           <div class='addtocart2' onclick='activateClick(`".$result["ServiceTypeName"]."`)'>
                                               <img src='./RoomsEtcImg/Cottages/".$result['ServiceTypeName'].".jpg' alt=''>
                                               <div class='textareapart'>
@@ -227,7 +231,7 @@ switch ($_GET['tRANGE']) {
                             ?>
                 </div>
         <div class="box3">
-          <h1>Total : ₱ <span id="TOTALINIT"><?php echo $entrance[0];?></span></h1>
+          <h1>Total : ₱ <span id="TOTALINIT"><?php echo $_GET['tinit'];?></span></h1>
         </div>
 
         <div class="specials123" style="display: flex;justify-content: center;">
@@ -257,6 +261,7 @@ switch ($_GET['tRANGE']) {
                     price :  arrval[2],
                     name :  arrval[0],
                     num :  arrval[1],
+                    max : arrval[3]
                   }
                   console.log(datacontainer)
                   updatePrice()
@@ -268,7 +273,7 @@ switch ($_GET['tRANGE']) {
         });
 
         function updatePrice() {
-          let basesum = <?php echo $entrance[0]?>;
+          let basesum = <?php echo $_GET['tinit'];?>;
 
           let total = 0 
           for (let key in datacontainer) {
@@ -290,6 +295,23 @@ switch ($_GET['tRANGE']) {
           if(Object.keys(datacontainer).length <= 0){
             await Swal.fire({
               text: "Pick a Cottage First",
+              icon: "info"
+            });
+            return;
+          }
+
+          let totalnumperson = 0;
+          for (let key in datacontainer) {
+            if (datacontainer.hasOwnProperty(key)) {
+              // Convert the price to a number and add it to the total
+              totalnumperson += parseFloat(datacontainer[key].max);
+            }
+          }
+          let clientstotalnumber = parseInt(`<?php echo $guesttotalnumber; ?>`)
+          console.log(totalnumperson)
+          if(totalnumperson < clientstotalnumber){
+            await Swal.fire({
+              text: "The max people in the cottage is less than the guest numbers",
               icon: "info"
             });
             return;

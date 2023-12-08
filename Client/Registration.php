@@ -113,7 +113,11 @@
             </div>
             
             <p class="text-center">Already have an account? 
-              <a class="link" href="./login.php">Sign in</a>    
+              <?php
+                $specialcase = isset(explode('?', $_SERVER['REQUEST_URI'])[1]) ?   explode('?', $_SERVER['REQUEST_URI'])[1] : "";
+                echo "<a class='link' href='./login.php?$specialcase'>Sign in</a>  ";
+              ?>    
+                
             </p>
         </form>
     </section>

@@ -17,7 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EliJosh Resort & Event</title>
 
-    <link rel="stylesheet" href="./CSS/style11111.css">
+    <link rel="stylesheet" href="./CSS/style11111v2.css">
     <link href="./CSS/style.scss" rel="stylesheet/scss" type="text/css">
     <link rel="stylesheet" href="./CSS/app.css">
     <link rel="stylesheet" href="./Calendar/app.css">
@@ -56,8 +56,34 @@
             <li>
                 <a href="#CONTACT" class="textkainit">CONTACT</a>
             </li>
-            <li>
-                <a href="<?php echo $linksref;?>" class="textkainit">BOOK NOW</a>
+            <li class=" dropdown">
+                <a href="<?php echo $linksref;?>" class="textkainit">ACCOUNT</a>
+
+                <ul class="dropdown-menu">
+                <?php  
+                    if($usertoken != null){
+                ?>
+
+                    <li><a href="./InsideMain.php">Account Settings</a></li>
+                    <?php
+                        if($_SESSION["ACCESS"] != "CLIENT"){
+                    ?>
+                        <li><a href="../Admins/Mainpage.php">Admin</a></li>
+                    <?php
+                        }
+                    ?>
+                    <li><a href="./bookinginformations.php">Booking Information</a></li>
+                    <li><a href="./logOut.php">Logout</a></li>
+
+                <?php  
+                    }else{
+                ?>
+                    <li><a href="./login.php">Login</a></li>
+                    <li><a href="./Registration.php">Register now</a></li>
+                <?php  
+                    }
+                ?>
+                </ul>
             </li>
         </ul>
 
@@ -85,107 +111,112 @@
 ?>
     </nav>
 
+    <form action="" id="BOOKINGSSS">
+        <section class="HOMEWHOLE" id="HOME">
 
-    <section class="HOMEWHOLE" id="HOME">
 
-
-        <div class="MiddlePART">
-            <p class="textkainit">WELCOME TO</p>
-            <h1>
-                <div class="H1p1">
-                    EliJosh Resort 
-                </div>
-                <div class="H1p2"> &
-
-                </div>
-                <div class="H1p3">
-                    Event Place
-                </div>
-            </h1>
-            <p>Where Every Moment Becomes a Memory</p>
-        </div>
-        <div class="MiddleLOW">
-            <div class="formDTL notincluded ">
-                <div class="LABELTARGET">
-                    CHECK-IN             
-                </div>
-                 <label for="Checkin">
-                    <div class="Databelow" id="CHECKINDATEA">
-                        <div class="Number">
-                            -
-                        </div>
-                        <div class="smallernumber">
-                            / - 
-
-                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-352a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/></svg>
-                        </div>   
-
-                     </div>
-                 </label>
-                <input type="date" name="Checkin" id="Checkin"  style="display: none;">
-            </div>
-            <div class="formDTL">
-                <div class="LABELTARGET">
-                    CHECK-OUT               
-                 </div>
-                <label for="Checkout">
-                    <div class="Databelow" id="CHECKOUTDATEA">
-                        <div class="Number">
-                            -
-                        </div>
-                        <div class="smallernumber">
-                            / <span>-</span>  
-
-                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-352a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/></svg>
-                        </div>   
-                        
-                     </div>
-                 </label>
-             
-                <input type="date" name="Checkout" id="Checkout" style="display: none;">
-            </div>
-            <div class="formDTL">
-                <label for=""></label>
-                <button onclick="booking('<?php echo $linksref;?>')">CHECK AVAILABILITY</button>
-            </div>
-        </div>
-
-        <div class="bgimages">
-            <img src="./Images/c7.jpg" alt="">
-        </div>
-       
-        <div class="magiccalendar">
-            <div class="calendar">
-                <div class="calendar-header">
-                    <span class="month-picker" id="month-picker">February</span>
-                    <div class="year-picker">
-                        <span class="year-change" id="prev-year">
-                            <pre><</pre>
-                        </span>
-                        <span id="year">2021</span>
-                        <span class="year-change" id="next-year">
-                            <pre>></pre>
-                        </span>
+            <div class="MiddlePART">
+                <p class="textkainit">WELCOME TO</p>
+                <h1>
+                    <div class="H1p1">
+                        EliJosh Resort 
                     </div>
-                </div>
-                <div class="calendar-body">
-                    <div class="calendar-week-day">
-                        <div>Sun</div>
-                        <div>Mon</div>
-                        <div>Tue</div>
-                        <div>Wed</div>
-                        <div>Thu</div>
-                        <div>Fri</div>
-                        <div>Sat</div>
+                    <div class="H1p2"> &
+
                     </div>
-                    <div class="calendar-days"></div>
+                    <div class="H1p3">
+                        Event Place
+                    </div>
+                </h1>
+                <p>Where Every Moment Becomes a Memory</p>
+            </div>
+            <div class="MiddleLOW">
+                <div class="formDTL notincluded ">
+                    <div class="LABELTARGET">
+                        CHECK-IN             
+                    </div>
+                    <label for="Checkin">
+                        <div class="Databelow" id="CHECKINDATEA">
+                            <div class="Number">
+                                -
+                            </div>
+                            <div class="smallernumber">
+                                / - 
+
+                                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-352a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/></svg>
+                            </div>   
+
+                        </div>
+                    </label>
+                    <input type="date" name="Checkin" id="Checkin"  style="display: none;">
                 </div>
-                
-                <div class="month-list"></div>
+                <div class="formDTL">
+                    <div class="LABELTARGET">
+                        PACKAGE      
+                    </div>
+                    <label for="">
+                        <select name="" id="packages">
+                            <option value="Package1" selected>Swimming Only</option>
+                            <option value="Package2">Rooms + Swimming</option>
+                            <option value="Package3">Pavilions</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="formDTL">
+                    <div class="LABELTARGET">
+                        TIME RANGE      
+                    </div>
+                    <label>
+                        <select name="" id="tRANGE">
+                            <option value="Day" selected>8:00 - 17: 00</option>
+                            <option value="Night" >19:00 - 7: 00</option>
+                            <option value="22Hrs" >14:00 - 12: 00</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="formDTL">
+                    <button type="submit">BOOK NOW</button>
+                </div>
+            </div>
+
+            <div class="bgimages">
+                <img src="./Images/c7.jpg" alt="">
             </div>
         
-        </div>
-    </section>
+            <div class="magiccalendar">
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <span class="month-picker" id="month-picker">February</span>
+                        <div class="year-picker">
+                            <span class="year-change" id="prev-year">
+                                <pre><</pre>
+                            </span>
+                            <span id="year">2021</span>
+                            <span class="year-change" id="next-year">
+                                <pre>></pre>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="calendar-body">
+                        <div class="calendar-week-day">
+                            <div>Sun</div>
+                            <div>Mon</div>
+                            <div>Tue</div>
+                            <div>Wed</div>
+                            <div>Thu</div>
+                            <div>Fri</div>
+                            <div>Sat</div>
+                        </div>
+                        <div class="calendar-days"></div>
+                    </div>
+                    
+                    <div class="month-list"></div>
+                </div>
+            
+            </div>
+        </section>
+    </form>
+
     <section class="CONTAINERSECTIONS about top" id="ABOUT">
 
         <div class="left">
@@ -444,14 +475,81 @@
 
     
 <script>
-    function booking(link) {
-        let Checkin = document.getElementById('Checkin').value
-        let Checkout = document.getElementById('Checkout').value
-
-
-        location.href = `./${link}?cin=${Checkin}&cout=${Checkout}`;
-        
+    const Onrun =async () =>{
+        let data = sessionStorage.getItem("MissedBooked")
+        if (data !== null){
+            await Swal.fire({
+                title: "Do you want to continue the booking ?",
+                showDenyButton: true,
+                confirmButtonText: "Yes",
+                denyButtonText: `No`
+                }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    sessionStorage.removeItem("MissedBooked");
+                    location.href = `./breakdownv2.php?${data}`
+                }
+            });
+        }
     }
+    Onrun()
+
+
+    const BOOKING = document.getElementById("BOOKINGSSS")
+    BOOKING.addEventListener('submit',async (e)=>{
+        e.preventDefault();
+
+        let Checkin = document.getElementById('Checkin').value
+        let Checkout = document.getElementById('packages').value
+        let tRANGE = document.getElementById('tRANGE').value
+
+        console.log(Checkin.length)
+
+        if(Checkin.length > 0){
+            const options = { timeZone: 'Asia/Tokyo' };
+            const currentDate = new Date().toLocaleString('en-US', options);
+
+            // Assuming Checkin is a string representing a date, replace it with your actual variable
+            const inputDate = new Date(Checkin);
+
+
+
+            let valdata = Math.floor((new Date(currentDate) - inputDate) / (1000 * 60 * 60 * 24))
+            console.log(valdata)
+            // Compare the input date with the current date
+            if (valdata > 0) {
+                let message = valdata === 1 ? 'It was yesterday.' : `The date was ${valdata} days ago.`;
+                await Swal.fire({
+                    text: message,
+                    icon: "error"
+                });
+            }else{
+                
+                let  senddata = await AjaxSendv3(Checkout,"Availability",`&cin=${Checkin}&tday=${tRANGE}`)  
+                if(senddata == "true"){
+                    await Swal.fire({
+                        text: "There's an available slot",
+                        icon: "success"
+                    });
+                    location.href = `./bookingv2.php?cin=${Checkin}&package=${Checkout}&tRANGE=${tRANGE}`;
+                }else{
+                    await Swal.fire({
+                        text: "The date has been fully booked",
+                        icon: "info"
+                    });
+                }
+            }
+            
+        }else{
+            await Swal.fire({
+                text: "Enter Checkin Date First",
+                icon: "error"
+            });
+        }
+
+        //location.href = `./bookingv2.php?cin=${Checkin}&package=${Checkout}&tRANGE=${tRANGE}`;
+    })
+
     const CONTACTFORM = document.getElementById('CONTACTFORM')
 
     CONTACTFORM.addEventListener('submit',async (e)=>{

@@ -24,15 +24,19 @@ switch ($_GET['package']) {
 
 switch ($_GET['tRANGE']) {
   case 'Day':
-    $timevalue = "8:00 - 17: 00";
+    $timevalue = "8:00 - 17:00";
     break;
   case 'Night':
-    $timevalue = "19:00 - 7: 00";
+    $timevalue = "19:00 - 7:00";
     break;
   case '22Hrs':
-    $timevalue = "14:00 - 12: 00";
+    $timevalue = "14:00 - 12:00";
     break;
 }
+$arraynew['checkin'] = $_GET['cin'];
+$arraynew['package'] = $_GET['package'];
+$arraynew["time"] = $timevalue;
+$arraynew["trange"] = $_GET['tRANGE'];
 ?>
 
 <!DOCTYPE html>
@@ -70,19 +74,19 @@ switch ($_GET['tRANGE']) {
 <nav class="Mainnavigation glassylink">
     <ul class="smoothmenu">
             <li class="creator">
-                <a href="#HOME" class="textkainit">HOME</a>
+                <a href="./index2.php#HOME" class="textkainit">HOME</a>
             </li>
             <li>
-                <a href="#ABOUT" class="textkainit">ABOUT</a>
+                <a href="./index2.php#ABOUT" class="textkainit">ABOUT</a>
             </li>
             <li>
-                <a href="#TOUR" class="textkainit">TOUR</a>
+                <a href="./index2.php#TOUR" class="textkainit">TOUR</a>
             </li>
             <li>
-                <a href="#SERVICE" class="textkainit">SERVICES</a>
+                <a href="./index2.php#SERVICE" class="textkainit">SERVICES</a>
             </li>
             <li>
-                <a href="#CONTACT" class="textkainit">CONTACT</a>
+                <a href="./index2.php#CONTACT" class="textkainit">CONTACT</a>
             </li>
             <li class=" dropdown">
                 <a href="<?php echo $linksref;?>" class="textkainit">ACCOUNT</a>
@@ -123,6 +127,8 @@ switch ($_GET['tRANGE']) {
     $sqlcode = "SELECT userID, FirstName, MiddleName,LastName, PhoneNumber, Address, City, Email FROM userscredentials WHERE userID = '$ids';";
     $USERDATA = mysqli_query($conn,$sqlcode);   
     $resultname = mysqli_fetch_assoc($USERDATA);
+
+    $arraynew["USERINFO"] = $resultname;
 
     $dateTime = new DateTime($_GET['cin']);
     // Get the day of the week as a number (1 = Monday, 2 = Tuesday, etc.)
@@ -241,9 +247,9 @@ if(count($eventjson) >  0 ){
     }
 }
 
-$arraynew["COTTAGE"] = $_GET["cotlist"];
-$arraynew["ROOM"] = $_GET["roomlist"];
-$arraynew["EVENT"] = $_GET["eventlist"];
+$arraynew["COTTAGE"] = json_decode( $_GET["cotlist"], true);
+$arraynew["ROOM"] = json_decode( $_GET["cotlroomlistist"], true);
+$arraynew["EVENT"] = json_decode( $_GET["eventlist"], true);
 $arraynew['TOTAL'] = $_GET["tinit"];
 $arraynew['DPAYMENT'] = $_GET["tinit"]*.5;
 $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
@@ -301,16 +307,21 @@ $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
             const exchangeDATA = data ? JSON.parse(data) : await exchange(`USDval${currentDate}`);
             return exchangeDATA.data.PHP
         }
-        var USD_PHP = 100;
-        (async () => {
+        var USD_PHP = 55;
+
+        const testing = async() =>{
             USD_PHP = await dataGathering()
-        })
+        }
+        testing();
+
+
         paypal.Buttons({
 
             createOrder: async function(data, actions){
                 let downpaymenttext = document.getElementById("Dpayment").innerText
                 let downpayment = parseFloat(downpaymenttext.replace(/₱|,/g, ''));
                 result = downpayment / USD_PHP;
+                console.log(USD_PHP)
                 result = Math.round(result * 100) / 100;
 
                 return actions.order.create({
@@ -344,11 +355,8 @@ $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
 
         }).render('#paypal-button-container');
 
-
-
     async function SAVE(ids) {
-        let downpaymenttext = document.getElementById("Dpayment").innerText
-        let downpayment = parseFloat(downpaymenttext.replace(/₱|,/g, ''));
+        let downpayment = `<?php echo $arraynew['DPAYMENT'];?>`;
 
         let sqlcodepayment = `INSERT INTO guestpayments ( ReservationID, PaymentDate, AmountPaid, PaymentMethod, Description) VALUES (':ID:', CURRENT_DATE , '${downpayment}', 'ONLINE','${ids}');`;
         Inputtime(sqlcodepayment,ids)
@@ -357,48 +365,119 @@ $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
 
     async function Inputtime(sqlcodepayment,paymentdescription){
    
-        const savevalues = document.getElementById("savevalues").value;
+        const savevalues = document.getElementById("savevalues").value; `<?php echo $arraynew['DPAYMENT'];?>`
         var jsonObject = JSON.parse(savevalues);
+        console.log(jsonObject)
+
+
 
         let insertguest = `INSERT INTO guests (GuestID, FirstName, MiddleName, LastName, Email, Phone, Address) VALUES 
-        (NULL, '${jsonObject["firstName"]}', '${jsonObject["middleName"]}' , '${jsonObject["lastName"]}', '${jsonObject["email"]}', '${jsonObject["phoneNumber"]}', '${jsonObject["address"]}')`
+        (NULL, '${jsonObject.USERINFO.FirstName}', 
+        '${jsonObject.USERINFO.MiddleName}' , 
+        '${jsonObject.USERINFO.LastName}', 
+        '${jsonObject.USERINFO.Email}', 
+        '${jsonObject.USERINFO.PhoneNumber}', 
+        '${jsonObject.USERINFO.Address}')`
 
-        let selectguest = `SELECT GuestID FROM guests WHERE FirstName = '${jsonObject["firstName"]}' AND LastName = '${jsonObject["lastName"]}' AND Email = '${jsonObject["email"]}' ORDER BY GuestID DESC LIMIT 1;`
+        let selectguest = `SELECT GuestID FROM guests WHERE FirstName = '${jsonObject.USERINFO.FirstName}' AND 
+        LastName = '${jsonObject.USERINFO.LastName}' AND 
+        Email = '${jsonObject.USERINFO.Email}' ORDER BY GuestID DESC LIMIT 1;`
         const dataid =await AjaxSendv3(insertguest,"BREAKDOWNLOGIC",`&Process=UpdateGuest&sqlcode2=${selectguest}`)
+       
 
+        let timeitself = jsonObject.time.split(' - ')[1]
+        const dateObject = new Date(jsonObject.checkin);
 
-        var dateTimeString = jsonObject["Checkin"];
-        var dateOnly = dateTimeString.split('T')[0];
+        // Get the current date components
+        const currentYear = dateObject.getFullYear();
+        const currentMonth = dateObject.getMonth() + 1;
+        const currentDay = dateObject.getDate();
 
-        var datetime2 = jsonObject["Checkout"]; // Parse the string into a Date object
-        // Create a new Date object with the same year, month, and day, but set the time to midnight (00:00:00)
-        var dateOnly2 = datetime2.split('T')[0];
+        // Calculate the next day
+        let nextDay = currentDay + 1;
+        let nextMonth = currentMonth;
+        let nextYear = currentYear;
 
-        let TPrice = document.getElementById("TPrice").innerText.replace(/₱/g, '')
-        TPrice = TPrice.replace(/,/g, '')
-        let Dpayment = document.getElementById("Dpayment").innerText.replace(/₱/g, '')
-        Dpayment = Dpayment.replace(/,/g, '')
-        let roomnumbers = jsonObject["roomnumbers"].replace(/@/g, ',')
+        // Check if the next day exceeds the number of days in the current month
+        if (nextDay > new Date(currentYear, currentMonth, 0).getDate()) {
+            nextDay = 1;
+            nextMonth += 1;
 
-        let insertreservation = `INSERT INTO reservations (ReservationID, GuestID, CheckInDate, CheckOutDate, RoomNumber, CottageTypeID, NumAdults, NumChildren, NumSeniors, NumExcessPax, timapackage, Eventplace, TotalPrice, Downpayment, UserID) 
-        VALUES (NULL, '${dataid}', '${dateOnly}', '${dateOnly2}', '${roomnumbers}', '${jsonObject["Cottage"]}', '${jsonObject["No. of Adult"]}', '${jsonObject["No. of Kid"]}', '${jsonObject["No. of Seniors"]}', '0', '${jsonObject["TND"]}', '${jsonObject["evplace"]}', '${TPrice}', '${Dpayment}','${jsonObject["userID"]}');`
-
-        let selectreservation = `SELECT ReservationID FROM reservations WHERE CheckInDate = '${dateOnly}' AND GuestID = '${dataid}' ORDER BY ReservationID DESC LIMIT 1;`
-
-        const dataid2 =await AjaxSendv3(insertreservation,"BREAKDOWNLOGIC",`&Process=UpdateReservation&sqlcode2=${selectreservation}`)
-
-
-        let roomnumbersarray = jsonObject["roomnumbers"].split("@")
-
-        for (let index = 0; index < roomnumbersarray.length; index++) {
-            let insertrooms = `INSERT INTO roomsreservation (greservationID, Room_num) VALUES ('${dataid2}', '${roomnumbersarray[index]}');`
-            await AjaxSendv3(insertrooms,"BREAKDOWNLOGIC",`&Process=Insertmore`)
+            // Check if the next month exceeds 11 (December)
+            if (nextMonth > 12) {
+                nextMonth = 1;
+                nextYear += 1;
+            }
         }
 
-        let paymentdone = sqlcodepayment.replace(':ID:', `${dataid2}`)
+        // Create a new Date object for the next day
+        const nextDayDateObject = new Date(nextYear, nextMonth - 1, nextDay);
+        console.log(nextDayDateObject);
 
+        let newdata = ''
+        switch (jsonObject.trange) {
+            case 'Day':
+                newdata = `${dateObject.getFullYear()}-${dateObject.getMonth()+1}-${dateObject.getDate()}T${timeitself}`
+                break;
+            case 'Night':
+                newdata = `${nextDayDateObject.getFullYear()}-${nextDayDateObject.getMonth()+1}-${nextDayDateObject.getDate()}T${timeitself}`
+                break;
+            default:
+                newdata = `${nextDayDateObject.getFullYear()}-${nextDayDateObject.getMonth()+1}-${nextDayDateObject.getDate()}T${timeitself}`
+                break;
+        }
+
+
+        let insertreservation = `INSERT INTO reservations (ReservationID, GuestID, CheckInDate, CheckOutDate, NumAdults, NumChildren, NumSeniors, NumExcessPax, timapackage, TotalPrice, Downpayment, UserID) 
+        VALUES (NULL, '${dataid}', 
+        '${jsonObject.checkin}', 
+        '${newdata}', 
+         '${jsonObject["No. of Adult"]}', 
+         '${jsonObject["No. of Kid"]}', 
+         '${jsonObject["No. of Seniors"]}', 
+         '0', 
+         '${jsonObject.trange}', 
+         '${jsonObject.TOTAL}', 
+         '${jsonObject.DPAYMENT}',
+         '${jsonObject.USERINFO.userID}');`
+
+         let selectreservation = `SELECT ReservationID FROM reservations WHERE CheckInDate = '${jsonObject.checkin}' AND GuestID = '${dataid}' ORDER BY ReservationID DESC LIMIT 1;`
+         const dataid2 =await AjaxSendv3(insertreservation,"BREAKDOWNLOGIC",`&Process=UpdateReservation&sqlcode2=${selectreservation}`)
+
+
+        if(jsonObject.COTTAGE !== null){
+            for (const key in jsonObject.COTTAGE) {
+                if (jsonObject.COTTAGE.hasOwnProperty(key)) {
+                    const keyholder = jsonObject.COTTAGE[key];
+                    let insertrooms = `INSERT INTO cottagereservation (reservationID, cottagenum) VALUES ('${dataid2}', '${keyholder.num}');`
+                    await AjaxSendv3(insertrooms,"BREAKDOWNLOGIC",`&Process=Insertmore`)
+                }
+            }
+        }
+        if(jsonObject.ROOM !== null){
+            for (const key in jsonObject.ROOM) {
+                if (jsonObject.ROOM.hasOwnProperty(key)) {
+                    const keyholder = jsonObject.ROOM[key];
+                    let insertrooms = `INSERT INTO roomsreservation (greservationID, Room_num) VALUES ('${dataid2}', '${keyholder.num}');`
+                    await AjaxSendv3(insertrooms,"BREAKDOWNLOGIC",`&Process=Insertmore`)
+                }
+            }
+        }
+        if(jsonObject.EVENT !== null){
+            for (const key in jsonObject.COTTAGE) {
+                if (jsonObject.COTTAGE.hasOwnProperty(key)) {
+                    const keyholder = jsonObject.COTTAGE[key];
+                    let insertrooms = `INSERT INTO eventreservation (reservationID, eventname) VALUES ('${dataid2}', '${keyholder.name}');`
+                    await AjaxSendv3(insertrooms,"BREAKDOWNLOGIC",`&Process=Insertmore`)
+                }
+            }
+        }
+        
+
+        let paymentdone = sqlcodepayment.replace(':ID:', `${dataid2}`)
         await AjaxSendv3(paymentdone,"BREAKDOWNLOGIC",`&Process=Insertmore`)
 
+        
         $.ajax({
             url:`../Admins/Composer/docxphp.php`,
             type:"GET",
@@ -420,10 +499,10 @@ $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
     }
 
     async function sendinggmailnotif (reserveid,paymentdescription,email,ids){
-
+        //https://elijoshresortandeventsplace.com/
         $.ajax({    
             type: "post",
-            url: "https://elijoshresortandeventsplace.com/Send2.php",             
+            url: "../Send2.php",             
             data: "reservationvalue="+ reserveid+"&&pid="+paymentdescription+"&&email="+email+"&&ids="+ids,    
             dataType: 'json',   
             beforeSend:function(){

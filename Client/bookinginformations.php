@@ -1,5 +1,5 @@
 <?php
-    require("../Database.php");
+    require("./Database.php");
     session_start();
     ob_start();
 
@@ -50,40 +50,55 @@
              
 </head>
 <body>
-    <nav class="Mainnavigation glassylink">
-        <ul class="smoothmenu">
+<nav class="Mainnavigation glassylink">
+    <ul class="smoothmenu">
             <li class="creator">
-                <a href="./index.php#HOME" class="textkainit">HOME</a>
+                <a href="./index2.php#HOME" class="textkainit">HOME</a>
             </li>
             <li>
-                <a href="./booking.php#COTTAGES" class="textkainit">COTTAGES</a>
+                <a href="./index2.php#ABOUT" class="textkainit">ABOUT</a>
             </li>
             <li>
-                <a href="./booking.php#ROOMS" class="textkainit">ROOMS</a>
+                <a href="./index2.php#TOUR" class="textkainit">TOUR</a>
             </li>
             <li>
-                <a href="./booking.php#EVENTPLACE" class="textkainit">EVENTPLACE</a>
+                <a href="./index2.php#SERVICE" class="textkainit">SERVICES</a>
             </li>
             <li>
-                <a href="./booking.php#EXPENDITURES" class="textkainit">EXPENDITURES</a>
+                <a href="./index2.php#CONTACT" class="textkainit">CONTACT</a>
             </li>
-        </ul>
-        <div class="USERVALUE USERVALUE2 dropdown">
-            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M399 384.2C376.9 345.8 335.4 320 288 320H224c-47.4 0-88.9 25.8-111 64.2c35.2 39.2 86.2 63.8 143 63.8s107.8-24.7 143-63.8zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm256 16a72 72 0 1 0 0-144 72 72 0 1 0 0 144z"/></svg>
-            <ul class="dropdown-menu">
-                <li><a href="./InsideMain.php">Account Settings</a></li>
-                <?php
-                    if($_SESSION["ACCESS"] != "CLIENT"){
+            <li class=" dropdown">
+                <a href="<?php echo $linksref;?>" class="textkainit">ACCOUNT</a>
+
+                <ul class="dropdown-menu">
+                <?php  
+                    if($usertoken != null){
                 ?>
-                    <li><a href="../Admins/Mainpage.php">Admin</a></li>
-                <?php
+
+                    <li><a href="./InsideMain.php">Account Settings</a></li>
+                    <?php
+                        if($_SESSION["ACCESS"] != "CLIENT"){
+                    ?>
+                        <li><a href="../Admins/Mainpage.php">Admin</a></li>
+                    <?php
+                        }
+                    ?>
+                    <li><a href="./bookinginformations.php">Booking Information</a></li>
+                    <li><a href="./logOut.php">Logout</a></li>
+
+                <?php  
+                    }else{
+                ?>
+                    <li><a href="./login.php">Login</a></li>
+                    <li><a href="./Registration.php">Register now</a></li>
+                <?php  
                     }
                 ?>
-                <li><a href="./bookinginformations.php">Booking Information</a></li>
-                <li><a href="./logOut.php">Logout</a></li>
-            </ul>
-        </div>
-    </nav>
+                </ul>
+            </li>
+        </ul>
+  </nav>
+
 
     <main>
         <section class="mainbody" style="padding: 1em 3em;">

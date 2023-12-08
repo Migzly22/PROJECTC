@@ -69,19 +69,19 @@ switch ($_GET['tRANGE']) {
 <nav class="Mainnavigation glassylink">
     <ul class="smoothmenu">
             <li class="creator">
-                <a href="#HOME" class="textkainit">HOME</a>
+                <a href="./index2.php#HOME" class="textkainit">HOME</a>
             </li>
             <li>
-                <a href="#ABOUT" class="textkainit">ABOUT</a>
+                <a href="./index2.php#ABOUT" class="textkainit">ABOUT</a>
             </li>
             <li>
-                <a href="#TOUR" class="textkainit">TOUR</a>
+                <a href="./index2.php#TOUR" class="textkainit">TOUR</a>
             </li>
             <li>
-                <a href="#SERVICE" class="textkainit">SERVICES</a>
+                <a href="./index2.php#SERVICE" class="textkainit">SERVICES</a>
             </li>
             <li>
-                <a href="#CONTACT" class="textkainit">CONTACT</a>
+                <a href="./index2.php#CONTACT" class="textkainit">CONTACT</a>
             </li>
             <li class=" dropdown">
                 <a href="<?php echo $linksref;?>" class="textkainit">ACCOUNT</a>
@@ -212,8 +212,6 @@ switch ($_GET['tRANGE']) {
         inputElement.value = 0;
         return false
       } 
-
-      
       inputElement.parentNode.children[2].value = `${(inputElement.value*price).toFixed(2)}`
       compute();
       return true
@@ -229,6 +227,8 @@ switch ($_GET['tRANGE']) {
 
       document.getElementById('TOTALINIT').innerText = sum.toFixed(2)
     }
+
+
 
     //Validation
     const inputs = document.querySelectorAll('input');
@@ -248,6 +248,24 @@ switch ($_GET['tRANGE']) {
       } 
 
     });
+
+
+    function compute2(){
+      let sum = 0;
+      inputs.forEach(input => {
+        if(input.type != "hidden"){
+          if(input.id.includes("Kids")){
+            sum += parseFloat(input.value) * parseFloat(kidval)
+          }else if(input.id.includes("Adult")){
+            sum += parseFloat(input.value) * adultval
+          }else{
+            sum += parseFloat(input.value) *(adultval - (adultval*.2))
+          }
+        }
+        
+      });
+      return sum.toFixed(2)
+    }
     const REGFORM = document.getElementById('REGFORM')
     REGFORM.addEventListener('submit', async (e) => {
 
@@ -268,7 +286,7 @@ switch ($_GET['tRANGE']) {
       let TOTALINIT = document.getElementById('TOTALINIT').innerText.replace("Total : ₱ ", "");
       
       
-      location.href = `./<?php echo $_GET["package"];?>.php?cin=<?php echo $_GET["cin"];?>&package=<?php echo $_GET["package"];?>&tRANGE=<?php echo $_GET["tRANGE"];?>&na=${REGFORM.noAdult.value}&nk=${REGFORM.noKids.value}&ns=${REGFORM.noSenior.value}&tinit=${TOTALINIT}`;
+      location.href = `./<?php echo $_GET["package"];?>.php?cin=<?php echo $_GET["cin"];?>&package=<?php echo $_GET["package"];?>&tRANGE=<?php echo $_GET["tRANGE"];?>&na=${REGFORM.noAdult.value}&nk=${REGFORM.noKids.value}&ns=${REGFORM.noSenior.value}&tinit=${compute2()}`;
 
 
     })
