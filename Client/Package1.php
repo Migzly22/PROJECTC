@@ -46,11 +46,9 @@ switch ($_GET['tRANGE']) {
 
 
   <link rel="stylesheet" href="./CSS/Table.css">
-  <link rel="stylesheet" href="./CSS/Admin12.css">
 
-  <link rel="stylesheet" href="./CSS/settings.css">
+  <link rel="stylesheet" href="./CSS/settingsv3v22.css">
 
-  <link rel="stylesheet" href="./CSS/style343v2.css">
 
   <link href="./CSS/style.scss" rel="stylesheet/scss" type="text/css">
 
@@ -71,19 +69,19 @@ switch ($_GET['tRANGE']) {
 <nav class="Mainnavigation glassylink">
     <ul class="smoothmenu">
             <li class="creator">
-                <a href="./index2.php#HOME" class="textkainit">HOME</a>
+                <a href="./index.php#HOME" class="textkainit">HOME</a>
             </li>
             <li>
-                <a href="./index2.php#ABOUT" class="textkainit">ABOUT</a>
+                <a href="./index.php#ABOUT" class="textkainit">ABOUT</a>
             </li>
             <li>
-                <a href="./index2.php#TOUR" class="textkainit">TOUR</a>
+                <a href="./index.php#TOUR" class="textkainit">TOUR</a>
             </li>
             <li>
-                <a href="./index2.php#SERVICE" class="textkainit">SERVICES</a>
+                <a href="./index.php#SERVICE" class="textkainit">SERVICES</a>
             </li>
             <li>
-                <a href="./index2.php#CONTACT" class="textkainit">CONTACT</a>
+                <a href="./index.php#CONTACT" class="textkainit">CONTACT</a>
             </li>
             <li class=" dropdown">
                 <a href="<?php echo $linksref;?>" class="textkainit">ACCOUNT</a>
@@ -151,28 +149,45 @@ switch ($_GET['tRANGE']) {
         <header>
           <h1 class="text-center">Booking Information</h1>
         </header>
-        <table style="padding-left: 2em;">
-            <tr>
-              <td><b> Checkin Date</b> </td>
-              <td><b>:</b></td>
-              <td><?php echo $_GET["cin"]; ?></td>
-            </tr>
-            <tr>
-              <td><b>Time Range</b></td>
-              <td><b>:</b></td>
-              <td><?php echo $timevalue; ?></td>
-            </tr>
-            <tr>
-              <td><b>Packages</b></td>
-              <td><b>:</b></td>
-              <td><?php echo $pacvalue; ?></td>
-            </tr>
-            <tr>
-              <td><b>No. of Paxs</b></td>
-              <td><b>:</b></td>
-              <td><?php echo $guesttotalnumber; ?></td>
-            </tr>
-        </table>
+        <p>Checkin Date</p>
+        <div class="textshowinputs">
+          <b>
+            <?php echo $_GET['cin']; ?>
+          </b>
+   
+        </div>
+        <p>Time Range</p>
+        <div class="textshowinputs">
+          <b>
+            
+            <?php echo $timevalue; ?>
+          </b>
+        </div>
+        <p>Packages</p>
+        <div class="textshowinputs">
+          <b>
+            <?php echo $pacvalue; ?>
+          </b>
+    
+        </div>
+        <p>No. of Paxs</p>
+        <div class="textshowinputs">
+          <b>
+            <?php echo $guesttotalnumber; ?>
+          </b>
+    
+        </div>
+        <h1>Total</h1>
+        <div class="textshowinputs">
+          <h1>
+            <b>
+              ₱ <span id="TOTALINIT"><?php echo $_GET['tinit'];?>
+            </b>
+          </h1>
+          
+    
+        </div>
+  
       </div>
       <form action="" class="form" method="post" id="REGFORM">
         <header style="display: flex;flex-wrap:wrap;justify-content:space-between;align-items:center;">
@@ -219,8 +234,8 @@ switch ($_GET['tRANGE']) {
                                                   </div>
                                               </div>
                                           </div>
-                                          <div class='specialinputcontainer' style='display: flex;justify-content: center;'>
-                                            <button type='button' onclick='activateClick(`".$result["cottagename"]."`)'>Add Me</button>
+                                          <div class='spawnerbtn' style='display: flex;justify-content: center;padding:0.5em 1em;'>
+                                            <button type='button' class='ADDMEBTN' onclick='activateClick(this,`".$result["cottagename"]."`)'>Add To List</button>
                                           </div>
                                       </div>";
 
@@ -230,11 +245,8 @@ switch ($_GET['tRANGE']) {
 
                             ?>
                 </div>
-        <div class="box3">
-          <h1>Total : ₱ <span id="TOTALINIT"><?php echo $_GET['tinit'];?></span></h1>
-        </div>
 
-        <div class="specials123" style="display: flex;justify-content: center;">
+                <div class="specials123" style="display: flex;justify-content: center;margin-top:1.5em;">
           <button type="submit" >Continue</button>
         </div>
 
@@ -242,8 +254,18 @@ switch ($_GET['tRANGE']) {
     </section>
   </main>
   <script>
-        function activateClick(checkboxId) {
+        function activateClick(e, checkboxId) {
             // Find the checkbox element by its ID
+
+            if (e.classList[0] === 'ADDMEBTN'){
+                e.classList.remove('ADDMEBTN')
+                e.classList.add('REMOVEMEBTN')
+                e.innerText = "Remove to List"
+            }else{
+                e.classList.add('ADDMEBTN')
+                e.classList.remove('REMOVEMEBTN')
+                e.innerText = "Add to List"
+            }
             var checkbox234 = document.getElementById(checkboxId);
             checkbox234.click()
         }
@@ -330,7 +352,7 @@ switch ($_GET['tRANGE']) {
           }
 
 
-          location.href = `${reflink}?cin=<?php echo $_GET["cin"];?>&package=<?php echo $_GET["package"];?>&tRANGE=<?php echo $_GET["tRANGE"];?>&na=<?php echo $_GET["na"];?>&nk=<?php echo $_GET["nk"];?>&ns=<?php echo $_GET["ns"];?>&tinit=${TOTALINIT}&cotlist=${stringedJSON}`;
+          location.href = `${reflink}?cin=<?php echo $_GET["cin"];?>&ETIME=<?php echo $_GET["ETIME"];?>&package=<?php echo $_GET["package"];?>&tRANGE=<?php echo $_GET["tRANGE"];?>&na=<?php echo $_GET["na"];?>&nk=<?php echo $_GET["nk"];?>&ns=<?php echo $_GET["ns"];?>&tinit=${TOTALINIT}&cotlist=${stringedJSON}`;
 
 
         })

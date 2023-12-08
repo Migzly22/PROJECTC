@@ -74,19 +74,19 @@ $arraynew["trange"] = $_GET['tRANGE'];
 <nav class="Mainnavigation glassylink">
     <ul class="smoothmenu">
             <li class="creator">
-                <a href="./index2.php#HOME" class="textkainit">HOME</a>
+                <a href="./index.php#HOME" class="textkainit">HOME</a>
             </li>
             <li>
-                <a href="./index2.php#ABOUT" class="textkainit">ABOUT</a>
+                <a href="./index.php#ABOUT" class="textkainit">ABOUT</a>
             </li>
             <li>
-                <a href="./index2.php#TOUR" class="textkainit">TOUR</a>
+                <a href="./index.php#TOUR" class="textkainit">TOUR</a>
             </li>
             <li>
-                <a href="./index2.php#SERVICE" class="textkainit">SERVICES</a>
+                <a href="./index.php#SERVICE" class="textkainit">SERVICES</a>
             </li>
             <li>
-                <a href="./index2.php#CONTACT" class="textkainit">CONTACT</a>
+                <a href="./index.php#CONTACT" class="textkainit">CONTACT</a>
             </li>
             <li class=" dropdown">
                 <a href="<?php echo $linksref;?>" class="textkainit">ACCOUNT</a>
@@ -158,9 +158,6 @@ $arraynew["trange"] = $_GET['tRANGE'];
         <section class="mainbody" style="padding: 1em 3em;">
 
             <div class="mainbodycontainer">
-                <div class="classHeader">
-                    <h1>Payments</h1>
-                </div>
                 <div class="stafflistbox">
                     <div class="box">
                         <div class="box2">
@@ -252,6 +249,12 @@ $arraynew["ROOM"] = json_decode( $_GET["cotlroomlistist"], true);
 $arraynew["EVENT"] = json_decode( $_GET["eventlist"], true);
 $arraynew['TOTAL'] = $_GET["tinit"];
 $arraynew['DPAYMENT'] = $_GET["tinit"]*.5;
+
+
+$arraynew['ETIME'] = $_GET["ETIME"];
+$arraynew['ADULTPAY'] = $entrance[0];
+$arraynew['KIDPAY'] = $entrance[1];
+$arraynew['SENIORPAY'] = $entrance[0]-(($entrance[0]*.2));
 $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
 
 
@@ -479,10 +482,10 @@ $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
 
         
         $.ajax({
-            url:`../Admins/Composer/docxphp.php`,
+            url:`../Admins/Composer/paypal.php`,
             type:"GET",
             beforeSend:function(){
-                location.href = "../Admins/Composer/docxphp.php";
+                location.href = "../Admins/Composer/paypal.php";
             },
             error: function(e) 
             {
@@ -502,7 +505,7 @@ $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
         //https://elijoshresortandeventsplace.com/
         $.ajax({    
             type: "post",
-            url: "../Send2.php",             
+            url: "https://elijoshresortandeventsplace.com/Send2.php",             
             data: "reservationvalue="+ reserveid+"&&pid="+paymentdescription+"&&email="+email+"&&ids="+ids,    
             dataType: 'json',   
             beforeSend:function(){

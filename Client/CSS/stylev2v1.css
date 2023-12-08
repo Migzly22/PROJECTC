@@ -38,7 +38,6 @@ body::-webkit-scrollbar{
     padding: 0;
     margin: 0;
     width: 200px;
-    border-radius: 20px;
     overflow: hidden;
 }
 
@@ -196,10 +195,24 @@ ul li:hover:not(.HOMETITLELI) a{
 .MiddleLOW .formDTL{
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: space-between;
     padding: 0 1em;
     color: #ffffff8f;
 }
+.formDTL  select{
+    background: transparent;
+    padding: .5em;
+    border: 0;
+    border-bottom: 2px solid #ffffff8f;
+    color: #fff;
+}
+.formDTL  select option{
+    background: #C1B086;
+    color: #fff;
+}
+
+
 .MiddleLOW .formDTL:not(.notincluded){
     border-left: 1px solid #fff;
 }

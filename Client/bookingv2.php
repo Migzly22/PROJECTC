@@ -46,9 +46,7 @@ switch ($_GET['tRANGE']) {
 
 
   <link rel="stylesheet" href="./CSS/Table.css">
-  <link rel="stylesheet" href="./CSS/Admin12.css">
-
-  <link rel="stylesheet" href="./CSS/settings.css">
+  <link rel="stylesheet" href="./CSS/settingsv2v2.css">
 
   <link href="./CSS/style.scss" rel="stylesheet/scss" type="text/css">
 
@@ -69,19 +67,19 @@ switch ($_GET['tRANGE']) {
 <nav class="Mainnavigation glassylink">
     <ul class="smoothmenu">
             <li class="creator">
-                <a href="./index2.php#HOME" class="textkainit">HOME</a>
+                <a href="./index.php#HOME" class="textkainit">HOME</a>
             </li>
             <li>
-                <a href="./index2.php#ABOUT" class="textkainit">ABOUT</a>
+                <a href="./index.php#ABOUT" class="textkainit">ABOUT</a>
             </li>
             <li>
-                <a href="./index2.php#TOUR" class="textkainit">TOUR</a>
+                <a href="./index.php#TOUR" class="textkainit">TOUR</a>
             </li>
             <li>
-                <a href="./index2.php#SERVICE" class="textkainit">SERVICES</a>
+                <a href="./index.php#SERVICE" class="textkainit">SERVICES</a>
             </li>
             <li>
-                <a href="./index2.php#CONTACT" class="textkainit">CONTACT</a>
+                <a href="./index.php#CONTACT" class="textkainit">CONTACT</a>
             </li>
             <li class=" dropdown">
                 <a href="<?php echo $linksref;?>" class="textkainit">ACCOUNT</a>
@@ -148,54 +146,70 @@ switch ($_GET['tRANGE']) {
         <header>
           <h1 class="text-center">Booking Information</h1>
         </header>
-        <table style="padding-left: 2em;">
-            <tr>
-              <td><b> Checkin Date</b> </td>
-              <td><b>:</b></td>
-              <td><?php echo $_GET["cin"]; ?></td>
-            </tr>
-            <tr>
-              <td><b>Time Range</b></td>
-              <td><b>:</b></td>
-              <td><?php echo $timevalue; ?></td>
-            </tr>
-            <tr>
-              <td><b>Packages</b></td>
-              <td><b>:</b></td>
-              <td><?php echo $pacvalue; ?></td>
-            </tr>
-        </table>
+        <p>Checkin Date</p>
+        <div class="textshowinputs">
+          <b>
+            <?php echo $_GET['cin']; ?>
+          </b>
+   
+        </div>
+        <p>Time Range</p>
+        <div class="textshowinputs">
+          <b>
+            
+            <?php echo $timevalue; ?>
+          </b>
+        </div>
+        <p>Packages</p>
+        <div class="textshowinputs">
+          <b>
+            <?php echo $pacvalue; ?>
+          </b>
+    
+        </div>
       </div>
-      <form action="" class="form" method="post" id="REGFORM">
-        <header>
-          <h1 class="text-center">Number of Heads</h1>
-        </header>
-        <div class="levels-3">
-          <div class="form-group">
-            <input type="number" id="noAdult" required value="1"> 
-            <label for="noAdult">No. of Adult<span style="color: red;">*</span></label>
-            <input type="hidden" name="" value="<?php echo $entrance[0];?>">
+      <div class="box2">
+        <form action="" class="form " method="post" id="REGFORM">
+          <header>
+            <h1 class="text-center">Guest Booking Details</h1>
+          </header>
+          <div class="levels">
+            <div class="form-group">
+              <input type="time" id="timeSSS" required value="12:00" style="text-align: center;"> 
+              <label for="timeSSS">Arrival Time<span style="color: red;">*</span></label>
+            </div>
           </div>
-          <div class="form-group">
-            <input type="number" id="noKids" required value="0"> 
-            <label for="noKids">No. of Kids<span style="color: red;">*</span></label>
-            <input type="hidden" name="" value="0">
+          <div class="levels-3">
+            <div class="form-group">
+              <input type="number" id="noAdult" required value="1" style="text-align: center;">   
+              <label for="noAdult">No. of Adult<span style="color: red;">*</span></label>
+              <input type="hidden" name="" value="<?php echo $entrance[0];?>">
+              <p>₱ 200.00</p>
+            </div>
+            <div class="form-group">
+              <input type="number" id="noKids" required value="0" style="text-align: center;"> 
+              <label for="noKids">No. of Kids<span style="color: red;">*</span></label>
+              <input type="hidden" name="" value="0">
+              <p>₱ 0.00</p>
+            </div>
+            <div class="form-group"> 
+              <input type="number" id="noSenior" required value="0" style="text-align: center;"> 
+              <label for="noSenior">No. of Senior<span style="color: red;">*</span></label>
+              <input type="hidden" name="" value="0">
+              <p>₱ 0.00</p>
+            </div>
           </div>
-          <div class="form-group">
-            <input type="number" id="noSenior" required value="0"> 
-            <label for="noSenior">No. of Senior<span style="color: red;">*</span></label>
-            <input type="hidden" name="" value="0">
+          <div class="box3">
+            <h1>Total : ₱ <span id="TOTALINIT"><?php echo $entrance[0];?></span></h1>
           </div>
-        </div>
-        <div class="box3">
-          <h1>Total : ₱ <span id="TOTALINIT"><?php echo $entrance[0];?></span></h1>
-        </div>
-
-        <div class="specials123" style="display: flex;justify-content: center;">
-          <button type="submit" name="SignupBtn" id="">Continue</button>
-        </div>
-
-      </form>
+  
+          <div class="specials123" style="display: flex;justify-content: center;">
+            <button type="submit" name="SignupBtn" id="">Continue</button>
+          </div>
+  
+        </form>
+      </div>
+   
     </section>
   </main>
 
@@ -204,8 +218,6 @@ switch ($_GET['tRANGE']) {
     let adultval = parseFloat(<?php echo $entrance[0];?>)
     let kidval = parseFloat(<?php  echo $entrance[1];?>)
 
-    console.log(adultval, kidval)
-
     function validateNumberInput(inputElement, price) {
       const inputValue = inputElement.value;
       if (inputValue < 0) {
@@ -213,6 +225,8 @@ switch ($_GET['tRANGE']) {
         return false
       } 
       inputElement.parentNode.children[2].value = `${(inputElement.value*price).toFixed(2)}`
+      inputElement.parentNode.children[3].innerText =  `₱ ${(inputElement.value*price).toFixed(2)}`
+
       compute();
       return true
     }
@@ -258,12 +272,13 @@ switch ($_GET['tRANGE']) {
             sum += parseFloat(input.value) * parseFloat(kidval)
           }else if(input.id.includes("Adult")){
             sum += parseFloat(input.value) * adultval
-          }else{
+          }else if(input.id.includes("Senior")){
             sum += parseFloat(input.value) *(adultval - (adultval*.2))
           }
         }
         
       });
+      console.log(sum)
       return sum.toFixed(2)
     }
     const REGFORM = document.getElementById('REGFORM')
@@ -284,9 +299,9 @@ switch ($_GET['tRANGE']) {
         
       //location.href = `./${REGFORM.noSenior.value}.php?cin=${Checkin}&package=${REGFORM.noSenior.value}`;
       let TOTALINIT = document.getElementById('TOTALINIT').innerText.replace("Total : ₱ ", "");
+      let timeSSS = document.getElementById('timeSSS').value
       
-      
-      location.href = `./<?php echo $_GET["package"];?>.php?cin=<?php echo $_GET["cin"];?>&package=<?php echo $_GET["package"];?>&tRANGE=<?php echo $_GET["tRANGE"];?>&na=${REGFORM.noAdult.value}&nk=${REGFORM.noKids.value}&ns=${REGFORM.noSenior.value}&tinit=${compute2()}`;
+      location.href = `./<?php echo $_GET["package"];?>.php?cin=<?php echo $_GET["cin"];?>&ETIME=${timeSSS}&adultval=${adultval}&kidval=${kidval}&package=<?php echo $_GET["package"];?>&tRANGE=<?php echo $_GET["tRANGE"];?>&na=${REGFORM.noAdult.value}&nk=${REGFORM.noKids.value}&ns=${REGFORM.noSenior.value}&tinit=${compute2()}`;
 
 
     })
