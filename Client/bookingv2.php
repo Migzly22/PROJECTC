@@ -200,7 +200,14 @@ switch ($_GET['tRANGE']) {
             </div>
           </div>
           <div class="box3">
-            <h1>Total : ₱ <span id="TOTALINIT"><?php echo $entrance[0];?></span></h1>
+            <h1>Total : ₱ <span id="TOTALINIT"><?php echo ($_GET['package'] == "Package2") ? "0.00" : $entrance[0];?></span></h1>
+            <?php 
+              if ($_GET['package'] == "Package2"){
+            ?>
+              <small>This Package has no entrance / pool charges.</small>
+            <?php
+              }
+            ?>
           </div>
   
           <div class="specials123" style="display: flex;justify-content: center;">
@@ -233,6 +240,8 @@ switch ($_GET['tRANGE']) {
 
     function compute(){
       let sum = 0;
+
+
       inputs.forEach(input => {
         if (input.type === "hidden") {
           sum += parseFloat(input.value)
@@ -263,9 +272,17 @@ switch ($_GET['tRANGE']) {
 
     });
 
+    let packsss = `<?php echo $_GET['package'];?>`;
+
 
     function compute2(){
       let sum = 0;
+      
+      if(packsss == "Package2"){
+        return '0.00'
+      }
+
+
       inputs.forEach(input => {
         if(input.type != "hidden"){
           if(input.id.includes("Kids")){

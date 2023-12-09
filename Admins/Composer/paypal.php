@@ -41,10 +41,16 @@ if(isset($arraynew['EVENT'])){
     }
 }
 
+if($arraynew["package"] == "Package2"){
+    $TPA = "0.00";
+    $TPK = "0.00";
+    $TPS = "0.00";
+}else{
+    $TPA = $arraynew["No. of Adult"]*$arraynew["ADULTPAY"];
+    $TPK = $arraynew["No. of Kid"]*$arraynew["KIDPAY"];
+    $TPS = $arraynew["No. of Seniors"]*$arraynew["SENIORPAY"];
+}
 
-$TPA = $arraynew["No. of Adult"]*$arraynew["ADULTPAY"];
-$TPK = $arraynew["No. of Kid"]*$arraynew["KIDPAY"];
-$TPS = $arraynew["No. of Seniors"]*$arraynew["SENIORPAY"];
 
 
 if (file_exists($templateFile)) {

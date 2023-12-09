@@ -25,24 +25,32 @@ switch ($sqlcode) {
         }
         break;
     case 'Package2':
-        $sqlcode3 = "SELECT b.* ,c.* ,a.* FROM cottage b LEFT JOIN cottagereservation c ON b.Cottagenum = c.cottagenum LEFT JOIN reservations a ON c.reservationID = a.ReservationID AND a.CheckInDate = '2023-12-06' AND a.timapackage = 'Day' WHERE c.cr_id IS NULL;";
+        $sqlcode3 = "SELECT a.*, f.*, CONCAT(a.RoomType, '-', a.RoomNum) AS roomname, g.TOTAL FROM 
+        (SELECT b.RoomID, b.RoomNum , c.* FROM rooms b LEFT JOIN roomtypes c ON b.RoomType = c.RoomType) a
+        LEFT JOIN (SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate FROM roomsreservation d LEFT JOIN reservations e ON d.greservationID = e.ReservationID WHERE e.CheckInDate = '".$_POST['cin']."' AND (e.timapackage = '".$_POST['tday']."' OR e.timapackage = '22Hrs')) f ON a.RoomNum = f.Room_num WHERE f.RR_ID IS NULL;";
         $query = mysqli_query($conn,$sqlcode3);
         if(mysqli_num_rows($query) > 0){
             echo "true";
         }else{
             echo "false";
         }
-        # code...
         break;
     case 'Package3':
-        $sqlcode3 = "SELECT b.* ,c.* ,a.* FROM cottage b LEFT JOIN cottagereservation c ON b.Cottagenum = c.cottagenum LEFT JOIN reservations a ON c.reservationID = a.ReservationID AND a.CheckInDate = '2023-12-06' AND a.timapackage = 'Day' WHERE c.cr_id IS NULL;";
+        $sqlcode3 = "SELECT a.*,f.*
+        FROM eventpav a 
+        LEFT JOIN (
+            SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate 
+            FROM eventreservation d 
+            LEFT JOIN reservations e ON d.reservationID = e.ReservationID 
+            WHERE e.CheckInDate = '".$_POST['cin']."' AND (e.timapackage = '".$_POST['tday']."' OR e.timapackage = '22Hrs')
+        ) f ON a.Pavtype = f.eventname 
+        WHERE f.e_ID IS NULL;";
         $query = mysqli_query($conn,$sqlcode3);
         if(mysqli_num_rows($query) > 0){
             echo "true";
         }else{
             echo "false";
         }
-        # code...
         break;
 
 }

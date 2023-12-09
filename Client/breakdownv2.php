@@ -185,17 +185,17 @@ $arraynew["trange"] = $_GET['tRANGE'];
                                 <tr>
                                     <th style='text-align:start;'>No. of Adults</th>
                                     <td style='text-align:center;'><?php echo $_GET['na'];?></td>
-                                    <td style='text-align:end;'>₱ <?php echo number_format($arraynew["No. of Adult"] *$entrance[0], 2);?></td>
+                                    <td style='text-align:end;'>₱ <?php echo ($_GET['package'] == 'Package2') ? "0.00" : number_format($arraynew["No. of Adult"] *$entrance[0], 2);?></td>
                                 </tr>
                                 <tr>
                                     <th style='text-align:start;'>No. of Kids</th>
                                     <td style='text-align:center;'><?php echo $_GET['nk'];?></td>
-                                    <td style='text-align:end;'>₱ <?php echo number_format($arraynew["No. of Kid"] * $entrance[1], 2);?></td>
+                                    <td style='text-align:end;'>₱ <?php echo ($_GET['package'] == 'Package2') ? "0.00" :number_format($arraynew["No. of Kid"] * $entrance[1], 2);?></td>
                                 </tr>
                                 <tr>
                                     <th style='text-align:start;'>No. of Senior</th>
                                     <td style='text-align:center;'><?php echo $_GET['ns'];?></td>
-                                    <td style='text-align:end;'>₱ <?php echo number_format($arraynew["No. of Seniors"] * ($entrance[0]-(($entrance[0]*.2))), 2);?></td>
+                                    <td style='text-align:end;'>₱ <?php echo ($_GET['package'] == 'Package2') ? "0.00" : number_format($arraynew["No. of Seniors"] * ($entrance[0]-(($entrance[0]*.2))), 2);?></td>
                                 </tr>
 
 
@@ -245,7 +245,7 @@ if(count($eventjson) >  0 ){
 }
 
 $arraynew["COTTAGE"] = json_decode( $_GET["cotlist"], true);
-$arraynew["ROOM"] = json_decode( $_GET["cotlroomlistist"], true);
+$arraynew["ROOM"] = json_decode( $_GET["roomlist"], true);
 $arraynew["EVENT"] = json_decode( $_GET["eventlist"], true);
 $arraynew['TOTAL'] = $_GET["tinit"];
 $arraynew['DPAYMENT'] = $_GET["tinit"]*.5;
@@ -256,6 +256,7 @@ $arraynew['ADULTPAY'] = $entrance[0];
 $arraynew['KIDPAY'] = $entrance[1];
 $arraynew['SENIORPAY'] = $entrance[0]-(($entrance[0]*.2));
 $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
+
 
 
 ?>
