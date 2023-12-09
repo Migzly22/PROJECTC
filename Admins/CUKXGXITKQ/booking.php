@@ -229,6 +229,59 @@
     }
 
     async function ADDSTAFF(){
-        location.href = `./Mainpage.php?nzlz=reservationform&plk=2`;
+        let design = `
+        <div class='sweetDIVBOX'>
+            <div class='SWEETFORMS'>
+                <label for='swal-input1'>Check-in</label>
+                <input type ="datetime-local" id="swal-input1" class="SWALinput" required value="">
+            </div>
+            <div class='SWEETFORMS'>
+                <label for='swal-input2'>Package</label>
+                <select class='SWALinput swalselect' id='swal-input2' aria-label='Floating label select example'>
+                    <option value="Package1">Swimming Only</option>
+                    <option value='Package2'>Room + Swimming</option>
+                    <option value='Package3'>Pavilions</option>
+                </select>
+            </div>
+            <div class='SWEETFORMS'>
+                <label for='swal-input3'>Time Range</label>
+                <select class='SWALinput swalselect' id='swal-input3' aria-label='Floating label select example'>
+                    <option value="Day">08:00 AM - 05:00 PM</option>
+                    <option value='Night'>07:00 PM - 07:00 AM<</option>
+                    <option value='22Hrs'>02:00 PM - 12:00 PM<</option>
+                </select>
+            </div>
+        </div>`
+
+        let formValues =await POPUPCREATE("Walk-in Registration",design,3)
+        if (formValues) {
+            if(!formValues[0]){
+                await Swal.fire({
+                    text: "Please enter check-in time",
+                    icon: "info"
+                });
+                return 
+            }
+            let values1 = formValues[0].split("T")
+
+
+            let  senddata = await AjaxSendv3(formValues[1],"Availability",`&cin=${values1[0]}&tday=${formValues[2]}`)  
+                if(senddata == "true"){
+                    await Swal.fire({
+                        text: "There's an available slot",
+                        icon: "success"
+                    });
+                    location.href = `./Mainpage.php?nzlz=bookingv2&plk=2&cin=${values1[0]}&package=${formValues[1]}&tRANGE=${formValues[2]}&ETIME=${values1[1]}`;
+                }else{
+                    await Swal.fire({
+                        text: "The date has been fully booked",
+                        icon: "info"
+                    });
+                }
+
+        }
+
+
+        //location.href = `./Mainpage.php?nzlz=reservationform&plk=2&cin=2023-12-10&ETIME=12:00&adultval=200&kidval=150&package=Package1&tRANGE=Day&na=4&nk=3&ns=3&tinit=1730.00`;
     }
 </script>

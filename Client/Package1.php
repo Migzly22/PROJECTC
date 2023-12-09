@@ -84,7 +84,7 @@ switch ($_GET['tRANGE']) {
                 <a href="./index.php#CONTACT" class="textkainit">CONTACT</a>
             </li>
             <li class=" dropdown">
-                <a href="<?php echo $linksref;?>" class="textkainit">ACCOUNT</a>
+                <a href="#" class="textkainit">ACCOUNT</a>
 
                 <ul class="dropdown-menu">
                 <?php  

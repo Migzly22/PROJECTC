@@ -1,11 +1,4 @@
 <?php
-require("./Database.php");
-session_start();
-ob_start();
-
-$usertoken = !isset($_SESSION["USERID"]) ?  null : $_SESSION["USERID"];
-$linksref = !isset($_SESSION["USERID"]) ?  "./Registration.php" : "./breakdownv2.php";
-
 //error_reporting(E_ERROR | E_PARSE);
 $pacvalue = "";
 $timevalue = "";
@@ -89,7 +82,7 @@ $arraynew["trange"] = $_GET['tRANGE'];
                 <a href="./index.php#CONTACT" class="textkainit">CONTACT</a>
             </li>
             <li class=" dropdown">
-                <a href="<?php echo $linksref;?>" class="textkainit">ACCOUNT</a>
+                <a href="#" class="textkainit">ACCOUNT</a>
 
                 <ul class="dropdown-menu">
                 <?php  

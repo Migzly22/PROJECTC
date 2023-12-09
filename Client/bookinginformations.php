@@ -6,7 +6,7 @@
     error_reporting(E_ERROR | E_PARSE);
 
     $usertoken = !isset($_SESSION["USERID"]) ?  null : $_SESSION["USERID"];
-    $linksref = !isset($_SESSION["USERID"]) ?  "./login.php" : "./booking.php";
+    $linksref = !isset($_SESSION["USERID"]) ?  "./Registration.php" : "./index.php";
 
 
     if (!isset($_SESSION["USERID"]) || !isset($_SESSION["ACCESS"])){
@@ -53,22 +53,22 @@
 <nav class="Mainnavigation glassylink">
     <ul class="smoothmenu">
             <li class="creator">
-                <a href="./index2.php#HOME" class="textkainit">HOME</a>
+                <a href="./index.php#HOME" class="textkainit">HOME</a>
             </li>
             <li>
-                <a href="./index2.php#ABOUT" class="textkainit">ABOUT</a>
+                <a href="./index.php#ABOUT" class="textkainit">ABOUT</a>
             </li>
             <li>
-                <a href="./index2.php#TOUR" class="textkainit">TOUR</a>
+                <a href="./index.php#TOUR" class="textkainit">TOUR</a>
             </li>
             <li>
-                <a href="./index2.php#SERVICE" class="textkainit">SERVICES</a>
+                <a href="./index.php#SERVICE" class="textkainit">SERVICES</a>
             </li>
             <li>
-                <a href="./index2.php#CONTACT" class="textkainit">CONTACT</a>
+                <a href="./index.php#CONTACT" class="textkainit">CONTACT</a>
             </li>
             <li class=" dropdown">
-                <a href="<?php echo $linksref;?>" class="textkainit">ACCOUNT</a>
+                <a href="#" class="textkainit">ACCOUNT</a>
 
                 <ul class="dropdown-menu">
                 <?php  

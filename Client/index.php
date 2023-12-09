@@ -4,7 +4,7 @@
     ob_start();
 
     $usertoken = !isset($_SESSION["USERID"]) ?  null : $_SESSION["USERID"];
-    $linksref = !isset($_SESSION["USERID"]) ?  "./login.php" : "./booking.php";
+    $linksref = !isset($_SESSION["USERID"]) ?  "./Registration.php" : "#";
 
     error_reporting(E_ERROR | E_PARSE);
 ?>
@@ -29,7 +29,7 @@
     <script src="../Jquery/node_modules/jquery/dist/jquery.js"></script>
     <script src="../Jquery/node_modules/jquery/dist/jquery.min.js"></script>
 
-    <script src="./JS/design.js" defer ></script>
+    <script src="./JS/designv2.js" defer ></script>
     <script src="./JS/script1.js" defer></script>
     <script src="./Calendar/app2.js" defer></script>
 

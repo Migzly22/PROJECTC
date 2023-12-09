@@ -1,11 +1,4 @@
 <?php
-require("./Database.php");
-session_start();
-ob_start();
-
-$usertoken = !isset($_SESSION["USERID"]) ?  null : $_SESSION["USERID"];
-$linksref = !isset($_SESSION["USERID"]) ?  "./Registration.php" : "./index.php";
-
 //error_reporting(E_ERROR | E_PARSE);
 $pacvalue = "";
 $timevalue = "";
@@ -36,83 +29,8 @@ switch ($_GET['tRANGE']) {
 ?>
 
 
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EliJosh Resort & Event</title>
-
-
-  <link rel="stylesheet" href="./CSS/Table.css">
   <link rel="stylesheet" href="./CSS/settingsv2v2.css">
-
-  <link href="./CSS/style.scss" rel="stylesheet/scss" type="text/css">
-
-  <script src="./JS/script1.js" defer></script>
-  <script src="./Calendar/app.js" defer></script>
-
-  <!--SweetAlert-->
-  <script src="../SweetAlert/node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
-  <link rel="stylesheet" href="../SweetAlert/node_modules/sweetalert2/dist/sweetalert2.min.css">
-  <!--Jquery-->
-  <script src="../Jquery/node_modules/jquery/dist/jquery.js"></script>
-  <script src="../Jquery/node_modules/jquery/dist/jquery.min.js"></script>
-
-
-</head>
-
-<body>
-<nav class="Mainnavigation glassylink">
-    <ul class="smoothmenu">
-            <li class="creator">
-                <a href="./index.php#HOME" class="textkainit">HOME</a>
-            </li>
-            <li>
-                <a href="./index.php#ABOUT" class="textkainit">ABOUT</a>
-            </li>
-            <li>
-                <a href="./index.php#TOUR" class="textkainit">TOUR</a>
-            </li>
-            <li>
-                <a href="./index.php#SERVICE" class="textkainit">SERVICES</a>
-            </li>
-            <li>
-                <a href="./index.php#CONTACT" class="textkainit">CONTACT</a>
-            </li>
-            <li class=" dropdown">
-                <a href="#" class="textkainit">ACCOUNT</a>
-
-                <ul class="dropdown-menu">
-                <?php  
-                    if($usertoken != null){
-                ?>
-
-                    <li><a href="./InsideMain.php">Account Settings</a></li>
-                    <?php
-                        if($_SESSION["ACCESS"] != "CLIENT"){
-                    ?>
-                        <li><a href="../Admins/Mainpage.php">Admin</a></li>
-                    <?php
-                        }
-                    ?>
-                    <li><a href="./bookinginformations.php">Booking Information</a></li>
-                    <li><a href="./logOut.php">Logout</a></li>
-
-                <?php  
-                    }else{
-                ?>
-                    <li><a href="./login.php">Login</a></li>
-                    <li><a href="./Registration.php">Register now</a></li>
-                <?php  
-                    }
-                ?>
-                </ul>
-            </li>
-        </ul>
-  </nav>
-
 
 <?php
     $dateTime = new DateTime($_GET['cin']);
@@ -140,8 +58,7 @@ switch ($_GET['tRANGE']) {
     }
 
 ?>
-  <main>
-    <section class="mainbody" style="padding: 1em 3em;">
+
       <div class="box">
         <header>
           <h1 class="text-center">Booking Information</h1>
@@ -149,7 +66,7 @@ switch ($_GET['tRANGE']) {
         <p>Checkin Date</p>
         <div class="textshowinputs">
           <b>
-            <?php echo $_GET['cin']; ?>
+            <?php echo $_GET['cin']." ".$_GET['ETIME']; ?>
           </b>
    
         </div>
@@ -173,12 +90,6 @@ switch ($_GET['tRANGE']) {
           <header>
             <h1 class="text-center">Guest Booking Details</h1>
           </header>
-          <div class="levels">
-            <div class="form-group">
-              <input type="time" id="timeSSS" required value="12:00" style="text-align: center;"> 
-              <label for="timeSSS">Arrival Time<span style="color: red;">*</span></label>
-            </div>
-          </div>
           <div class="levels-3">
             <div class="form-group">
               <input type="number" id="noAdult" required value="1" style="text-align: center;">   
@@ -217,10 +128,6 @@ switch ($_GET['tRANGE']) {
         </form>
       </div>
    
-    </section>
-  </main>
-
-
   <script>
     let adultval = parseFloat(<?php echo $entrance[0];?>)
     let kidval = parseFloat(<?php  echo $entrance[1];?>)
@@ -316,13 +223,9 @@ switch ($_GET['tRANGE']) {
         
       //location.href = `./${REGFORM.noSenior.value}.php?cin=${Checkin}&package=${REGFORM.noSenior.value}`;
       let TOTALINIT = document.getElementById('TOTALINIT').innerText.replace("Total : ₱ ", "");
-      let timeSSS = document.getElementById('timeSSS').value
-      
-      location.href = `./<?php echo $_GET["package"];?>.php?cin=<?php echo $_GET["cin"];?>&ETIME=${timeSSS}&adultval=${adultval}&kidval=${kidval}&package=<?php echo $_GET["package"];?>&tRANGE=<?php echo $_GET["tRANGE"];?>&na=${REGFORM.noAdult.value}&nk=${REGFORM.noKids.value}&ns=${REGFORM.noSenior.value}&tinit=${compute2()}`;
+
+      location.href = `./Mainpage.php?nzlz=<?php echo $_GET["package"];?>&plk=2&cin=<?php echo $_GET["cin"];?>&ETIME=<?php echo $_GET["ETIME"];?>&adultval=${adultval}&kidval=${kidval}&package=<?php echo $_GET["package"];?>&tRANGE=<?php echo $_GET["tRANGE"];?>&na=${REGFORM.noAdult.value}&nk=${REGFORM.noKids.value}&ns=${REGFORM.noSenior.value}&tinit=${compute2()}`;
 
 
     })
   </script>
-</body>
-
-</html>
