@@ -92,6 +92,44 @@ switch ($_GET['tRANGE']) {
           </header>
           <div class="levels-3">
             <div class="form-group">
+              <input type="text" id="FirstName" required value="" style="text-align: center;">   
+              <label for="FirstName">First Name<span style="color: red;">*</span></label>
+              <small style="color: #D2042D;text-align:center;"></small>
+            </div>
+            <div class="form-group">
+              <input type="text" id="MiddleName" required value="" style="text-align: center;">   
+              <label for="MiddleName">Middle Name<span style="color: red;">*</span></label>
+              <small style="color: #D2042D;text-align:center;"></small>
+            </div>
+            <div class="form-group">
+              <input type="text" id="LastName" required value="" style="text-align: center;">   
+              <label for="LastName">Last Name<span style="color: red;">*</span></label>
+              <small style="color: #D2042D;text-align:center;"></small>
+            </div>
+
+          </div>
+          <div class="levels-2">
+            <div class="form-group">
+              <input type="email" id="Email" required value="" style="text-align: center;">   
+              <label for="Email">Email<span style="color: red;">*</span></label>
+              <small style="color: #D2042D;text-align:center;"></small>
+            </div>
+            <div class="form-group">
+              <input type="text" id="PhoneNumber" required value="" style="text-align: center;">   
+              <label for="PhoneNumber">Phone no.<span style="color: red;">*</span></label>
+              <small style="color: #D2042D;text-align:center;"></small>
+            </div>
+          </div>
+          <div class="levels">
+            <div class="form-group">
+              <input type="text" id="Address" required value="" style="text-align: center;">   
+              <label for="Address">Address<span style="color: red;">*</span></label>
+              <small style="color: #D2042D;text-align:center;"></small>
+            </div>
+
+          </div>
+          <div class="levels-3">
+            <div class="form-group">
               <input type="number" id="noAdult" required value="1" style="text-align: center;">   
               <label for="noAdult">No. of Adult<span style="color: red;">*</span></label>
               <input type="hidden" name="" value="<?php echo $entrance[0];?>">
@@ -145,6 +183,27 @@ switch ($_GET['tRANGE']) {
       return true
     }
 
+    function validateNumberInput2(inputElement) {
+          const inputValue = inputElement.value;
+          if (/^(?:\+\d{12}|\d{11})$/.test(inputValue)) {
+            inputElement.parentNode.children[2].innerText = '';
+            return true
+          } else {
+            inputElement.parentNode.children[2].innerText = 'Philippine contact number only.';
+            return false
+          }
+        }
+    function validateInput(inputElement) {
+          const inputValue = inputElement.value;
+          if (/[\d]/.test(inputValue)) {
+            inputElement.parentNode.children[2].innerText = 'Inputs should not contain numbers.';
+            return false
+          } else {
+            inputElement.parentNode.children[2].innerText = '';
+            return true
+          }
+        }
+
     function compute(){
       let sum = 0;
 
@@ -175,8 +234,17 @@ switch ($_GET['tRANGE']) {
           }
           validateNumberInput(this,numnew)
         });
-      } 
+      }else  if(input.id === "PhoneNumber"){
+        input.addEventListener('input', function() {
+          validateNumberInput2(this)
+        });
 
+      }else if (input.id !== "Address" && input.id !== "Email"){
+        input.addEventListener('input', function() {
+          validateInput(this)
+        });
+
+      }
     });
 
     let packsss = `<?php echo $_GET['package'];?>`;
@@ -220,12 +288,49 @@ switch ($_GET['tRANGE']) {
         });
         return;
       }
+
+
+
+      
+      let errcount = 0;
+
+      inputs.forEach(input => {
+        if (input.type === "number") {
+          
+        }else  if(input.type !== "hidden"){
+          if(input.id === "PhoneNumber"){
+            console.log(input.id, validateInput(input))
+            !(validateNumberInput2(input)) ? errcount++ : ""
+          }else if (input.id !== "Address" && input.id !== "Email"){
+              console.log(input.id, validateInput(input))
+              !(validateInput(input))? errcount++ : ""
+          }
+        }
+      })
+      console.log(errcount)
+      console.log(REGFORM.PhoneNumber.value)
+        if(errcount == 0){
+              //location.href = `./${REGFORM.noSenior.value}.php?cin=${Checkin}&package=${REGFORM.noSenior.value}`;
+          let TOTALINIT = document.getElementById('TOTALINIT').innerText.replace("Total : ₱ ", "");
+
+          let jsondata = {
+            userID : null,
+            FirstName : REGFORM.FirstName.value,
+            MiddleName : REGFORM.MiddleName.value,
+            LastName : REGFORM.LastName.value,
+            PhoneNumber : REGFORM.PhoneNumber.value,
+            Address : REGFORM.Address.value,
+            City : null,
+            Email : REGFORM.Email.value,
+
+          }
+          let insertguest =JSON.stringify(jsondata); 
+          await AjaxSendv3(insertguest,"JSONTOARRAY")
+
+
+          location.href = `./Mainpage.php?nzlz=<?php echo $_GET["package"];?>&plk=2&cin=<?php echo $_GET["cin"];?>&ETIME=<?php echo $_GET["ETIME"];?>&adultval=${adultval}&kidval=${kidval}&package=<?php echo $_GET["package"];?>&tRANGE=<?php echo $_GET["tRANGE"];?>&na=${REGFORM.noAdult.value}&nk=${REGFORM.noKids.value}&ns=${REGFORM.noSenior.value}&tinit=${compute2()}`;
+        }
         
-      //location.href = `./${REGFORM.noSenior.value}.php?cin=${Checkin}&package=${REGFORM.noSenior.value}`;
-      let TOTALINIT = document.getElementById('TOTALINIT').innerText.replace("Total : ₱ ", "");
-
-      location.href = `./Mainpage.php?nzlz=<?php echo $_GET["package"];?>&plk=2&cin=<?php echo $_GET["cin"];?>&ETIME=<?php echo $_GET["ETIME"];?>&adultval=${adultval}&kidval=${kidval}&package=<?php echo $_GET["package"];?>&tRANGE=<?php echo $_GET["tRANGE"];?>&na=${REGFORM.noAdult.value}&nk=${REGFORM.noKids.value}&ns=${REGFORM.noSenior.value}&tinit=${compute2()}`;
-
-
+ 
     })
   </script>

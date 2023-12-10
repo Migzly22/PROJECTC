@@ -1,9 +1,4 @@
 <?php
-require("./Database.php");
-session_start();
-ob_start();
-
-$usertoken = !isset($_SESSION["USERID"]) ?  null : $_SESSION["USERID"];
 $linksref = !isset($_SESSION["USERID"]) ?  "./Registration.php" : "./breakdownv2.php";
 
 //error_reporting(E_ERROR | E_PARSE);
@@ -35,85 +30,7 @@ switch ($_GET['tRANGE']) {
 }
 ?>
 
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EliJosh Resort & Event</title>
-
-
-  <link rel="stylesheet" href="./CSS/Table.css">
-
   <link rel="stylesheet" href="./CSS/settingsv3v22.css">
-
-
-  <link href="./CSS/style.scss" rel="stylesheet/scss" type="text/css">
-
-  <script src="./JS/script1.js" defer></script>
-  <script src="./Calendar/app.js" defer></script>
-
-  <!--SweetAlert-->
-  <script src="../SweetAlert/node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
-  <link rel="stylesheet" href="../SweetAlert/node_modules/sweetalert2/dist/sweetalert2.min.css">
-  <!--Jquery-->
-  <script src="../Jquery/node_modules/jquery/dist/jquery.js"></script>
-  <script src="../Jquery/node_modules/jquery/dist/jquery.min.js"></script>
-
-
-</head>
-
-<body>
-<nav class="Mainnavigation glassylink">
-    <ul class="smoothmenu">
-            <li class="creator">
-                <a href="./index.php#HOME" class="textkainit">HOME</a>
-            </li>
-            <li>
-                <a href="./index.php#ABOUT" class="textkainit">ABOUT</a>
-            </li>
-            <li>
-                <a href="./index.php#TOUR" class="textkainit">TOUR</a>
-            </li>
-            <li>
-                <a href="./index.php#SERVICE" class="textkainit">SERVICES</a>
-            </li>
-            <li>
-                <a href="./index.php#CONTACT" class="textkainit">CONTACT</a>
-            </li>
-            <li class=" dropdown">
-                <a href="#" class="textkainit">ACCOUNT</a>
-
-                <ul class="dropdown-menu">
-                <?php  
-                    if($usertoken != null){
-                ?>
-
-                    <li><a href="./InsideMain.php">Account Settings</a></li>
-                    <?php
-                        if($_SESSION["ACCESS"] != "CLIENT"){
-                    ?>
-                        <li><a href="../Admins/Mainpage.php">Admin</a></li>
-                    <?php
-                        }
-                    ?>
-                    <li><a href="./bookinginformations.php">Booking Information</a></li>
-                    <li><a href="./logOut.php">Logout</a></li>
-
-                <?php  
-                    }else{
-                ?>
-                    <li><a href="./login.php">Login</a></li>
-                    <li><a href="./Registration.php">Register now</a></li>
-                <?php  
-                    }
-                ?>
-                </ul>
-            </li>
-        </ul>
-  </nav>
 
 
 <?php
@@ -143,8 +60,6 @@ switch ($_GET['tRANGE']) {
 
     $guesttotalnumber = $_GET['na']+$_GET['nk']+$_GET['ns']
 ?>
-  <main>
-    <section class="mainbody" style="padding: 1em 3em;">
       <div class="box">
         <header>
           <h1 class="text-center">Booking Information</h1>
@@ -225,7 +140,7 @@ switch ($_GET['tRANGE']) {
                                       <div class='SO-item'>
                                           <input type='checkbox' id='".$result["cottagename"]."' value='".$result["cottagename"]."-".$result[$pricename]."-".$result['MaxPersons']."' name='SOItemSelect'>
                                           <div class='addtocart2' onclick='activateClick(`".$result["ServiceTypeName"]."`)'>
-                                              <img src='./RoomsEtcImg/Cottages/".$result['ServiceTypeName'].".jpg' alt=''>
+                                              <img src='../Client/RoomsEtcImg/Cottages/".$result['ServiceTypeName'].".jpg' alt=''>
                                               <div class='textareapart'>
                                                   <h2>".$result["cottagename"]."</h2>
                                                   <div class='smallinfos'>
@@ -251,8 +166,6 @@ switch ($_GET['tRANGE']) {
         </div>
 
       </form>
-    </section>
-  </main>
   <script>
         function activateClick(e, checkboxId) {
             // Find the checkbox element by its ID
@@ -344,12 +257,8 @@ switch ($_GET['tRANGE']) {
           }
 
 
-          location.href = `${reflink}?cin=<?php echo $_GET["cin"];?>&ETIME=<?php echo $_GET["ETIME"];?>&package=<?php echo $_GET["package"];?>&tRANGE=<?php echo $_GET["tRANGE"];?>&na=<?php echo $_GET["na"];?>&nk=<?php echo $_GET["nk"];?>&ns=<?php echo $_GET["ns"];?>&tinit=${TOTALINIT}&roomlist=<?php echo $_GET["roomlist"];?>&cotlist=${stringedJSON}`;
+          location.href = `./Mainpage.php?nzlz=breakdownv2&plk=2&cin=<?php echo $_GET["cin"];?>&ETIME=<?php echo $_GET["ETIME"];?>&package=<?php echo $_GET["package"];?>&tRANGE=<?php echo $_GET["tRANGE"];?>&na=<?php echo $_GET["na"];?>&nk=<?php echo $_GET["nk"];?>&ns=<?php echo $_GET["ns"];?>&tinit=${TOTALINIT}&roomlist=<?php echo $_GET["roomlist"];?>&cotlist=${stringedJSON}`;
 
 
         })
     </script>
-
-</body>
-
-</html>

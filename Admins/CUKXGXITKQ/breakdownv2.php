@@ -32,96 +32,18 @@ $arraynew["time"] = $timevalue;
 $arraynew["trange"] = $_GET['tRANGE'];
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EliJosh Resort & Event</title>
-
-
-    <link rel="stylesheet" href="./CSS/Table.css">
-    <link rel="stylesheet" href="./CSS/Admin12.css">
-    
     <link rel="stylesheet" href="./CSS/styleformsettingclient.css">
 
-    <link href="./CSS/style.scss" rel="stylesheet/scss" type="text/css">
-
-    <script src="./JS/script1.js" defer></script>
-    <script src="./Calendar/app.js" defer></script>
-
-        <!--SweetAlert-->
-        <script src="../SweetAlert/node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
-        <link rel="stylesheet" href="../SweetAlert/node_modules/sweetalert2/dist/sweetalert2.min.css">
-        <!--Jquery-->
-        <script src="../Jquery/node_modules/jquery/dist/jquery.js"></script>
-        <script src="../Jquery/node_modules/jquery/dist/jquery.min.js"></script>
 
 
 
-
-        <script src="https://www.paypal.com/sdk/js?client-id=ASOqstSFrYa4HOtKpsdNhQV8_RvIiHFc0447LO_Vm-QMLhHObWY8dclfI84oymETpgdVBgWo4zgdLc3V"></script>
-        <link rel="stylesheet" href="./CSS/BREAKDOWN.CSS">
-</head>
-<body>
-<nav class="Mainnavigation glassylink">
-    <ul class="smoothmenu">
-            <li class="creator">
-                <a href="./index.php#HOME" class="textkainit">HOME</a>
-            </li>
-            <li>
-                <a href="./index.php#ABOUT" class="textkainit">ABOUT</a>
-            </li>
-            <li>
-                <a href="./index.php#TOUR" class="textkainit">TOUR</a>
-            </li>
-            <li>
-                <a href="./index.php#SERVICE" class="textkainit">SERVICES</a>
-            </li>
-            <li>
-                <a href="./index.php#CONTACT" class="textkainit">CONTACT</a>
-            </li>
-            <li class=" dropdown">
-                <a href="#" class="textkainit">ACCOUNT</a>
-
-                <ul class="dropdown-menu">
-                <?php  
-                    if($usertoken != null){
-                ?>
-
-                    <li><a href="./InsideMain.php">Account Settings</a></li>
-                    <?php
-                        if($_SESSION["ACCESS"] != "CLIENT"){
-                    ?>
-                        <li><a href="../Admins/Mainpage.php">Admin</a></li>
-                    <?php
-                        }
-                    ?>
-                    <li><a href="./bookinginformations.php">Booking Information</a></li>
-                    <li><a href="./logOut.php">Logout</a></li>
-
-                <?php  
-                    }else{
-                ?>
-                    <li><a href="./login.php">Login</a></li>
-                    <li><a href="./Registration.php">Register now</a></li>
-                <?php  
-                    }
-                ?>
-                </ul>
-            </li>
-        </ul>
-  </nav>
-
-
-    <main>
 <?php
     $ids = $_SESSION["USERID"];
     $sqlcode = "SELECT userID, FirstName, MiddleName,LastName, PhoneNumber, Address, City, Email FROM userscredentials WHERE userID = '$ids';";
     $USERDATA = mysqli_query($conn,$sqlcode);   
     $resultname = mysqli_fetch_assoc($USERDATA);
 
-    $arraynew["USERINFO"] = $resultname;
+    $arraynew["USERINFO"] = $_SESSION["Walkinuser"];
 
     $dateTime = new DateTime($_GET['cin']);
     // Get the day of the week as a number (1 = Monday, 2 = Tuesday, etc.)
@@ -148,7 +70,6 @@ $arraynew["trange"] = $_GET['tRANGE'];
     }
 
 ?>
-        <section class="mainbody" style="padding: 1em 3em;">
 
             <div class="mainbodycontainer">
                 <div class="stafflistbox">
@@ -250,6 +171,7 @@ $arraynew['KIDPAY'] = $entrance[1];
 $arraynew['SENIORPAY'] = $entrance[0]-(($entrance[0]*.2));
 $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
 
+//print_r($_SESSION["Newcustomerappointment"]);
 
 
 ?>
@@ -266,97 +188,66 @@ $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
                         </table>
                         </div>
                     </div>
-                    <div style="text-align: center;" class="hehezzz">
-                        <div id="paypal-button-container" ></div>
-                    </div>
+                    <div style="text-align: center; margin-top:2em; ">
+                        <textarea name="" id="savevalues" cols="30" rows="10" style="display:none;"><?php echo $_SESSION["Newcustomerappointment"];?></textarea>
+                        <input type="button" value="Save and Submit" class="submitbtn addbtn" onclick="SAVE()">
+                </div>
+       
                 </div>
      
             </div>
        
 
-        </section>
-
-    </main>
 
     
 
     <script>
-        const exchange = async (varname)=>{
-            // get the most recent exchange rates via the "live" endpoint:
-            return new Promise((resolve, reject) => {
-                $.ajax({
-                    url: 'https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_maAhMIbabbYJwSwLgRyKK0Z6H6FcGHDMSsHKyoEB',   
-                    success: function(json) {
-                        localStorage.setItem(varname, JSON.stringify(json));
-                        return json
-                    },
-                    error: function (error) {
-                        reject(error);
-                    }
-                });
-            });
-        }
-        const dataGathering = async () =>{
-            const timeZone = 'Asia/Tokyo';
-            // Get the current date and time in the specified time zone
-            const currentDate = new Date().toLocaleDateString('en-US', { timeZone });
-            const data = localStorage.getItem(`USDval${currentDate}`);
-            const exchangeDATA = data ? JSON.parse(data) : await exchange(`USDval${currentDate}`);
-            return exchangeDATA.data.PHP
-        }
-        var USD_PHP = 55;
 
-        const testing = async() =>{
-            USD_PHP = await dataGathering()
-        }
-        testing();
-
-
-        paypal.Buttons({
-
-            createOrder: async function(data, actions){
-                let downpaymenttext = document.getElementById("Dpayment").innerText
-                let downpayment = parseFloat(downpaymenttext.replace(/₱|,/g, ''));
-                result = downpayment / USD_PHP;
-                console.log(USD_PHP)
-                result = Math.round(result * 100) / 100;
-
-                return actions.order.create({
-                    purchase_units: [{
-                        description : "EliJosh Resort Reservation Downpayment",
-                        amount: {
-                            value: result
-                        }
-                    }]
-                })
-
-            },
-            onApprove: function(data, actions){
-                return actions.order.capture().then(function(details){
-                    console.log(details.id)
-                    
-                    if(details.status === "COMPLETED"){
-                        SAVE(details.id);
-                    }
-                    
-                })
-            },
-            onError: async function (err) {
-                // For example, redirect to a specific error page
-                await Swal.fire({
-                    title: "Failed!",
-                    text: "Payment Transaction Failed!",
-                    icon: "failed"
-                });
-            }
-
-        }).render('#paypal-button-container');
 
     async function SAVE(ids) {
         let downpayment = `<?php echo $arraynew['DPAYMENT'];?>`;
 
-        let sqlcodepayment = `INSERT INTO guestpayments ( ReservationID, PaymentDate, AmountPaid, PaymentMethod, Description) VALUES (':ID:', CURRENT_DATE , '${downpayment}', 'ONLINE','${ids}');`;
-        Inputtime(sqlcodepayment,ids)
+        let design = `
+        <div class='sweetDIVBOX'>
+            <div class='SWEETFORMS'>
+                <label for='swal-input3'>Total</label>
+                <input type ="text" id="swal-input3" class="SWALinput" readonly value='${downpayment}'>
+            </div>
+            <div class='SWEETFORMS'>
+                <label for='swal-input1'>Payment</label>
+                <input type ="text" id="swal-input1" class="SWALinput" required>
+            </div>
+            <div class='SWEETFORMS'>
+                <label for='swal-input2'>Type of Payment</label>
+                <select class='SWALinput swalselect' id='swal-input2' aria-label='Floating label select example'>
+                    <option value='CASH'>Cash</option>
+                    <option value='ONLINE'>Online Payment</option>
+                </select>
+            </div>
+        </div>`
+
+        let formValues =await POPUPCREATE("Downpayment",design,3)
+
+        if (formValues) {
+            let conditions = [];
+
+            conditions.push(`${formValues[1]}`);
+
+            if(formValues[0] !== "" && parseFloat(formValues[0]) >= parseFloat(downpayment)){
+                let sqlcodepayment = `INSERT INTO guestpayments ( ReservationID, PaymentDate, AmountPaid, PaymentMethod, Description) VALUES (':ID:', CURRENT_DATE , '${downpayment}', 'ONLINE','${ids}');`;
+                Inputtime(sqlcodepayment,ids)
+            }else{
+                await Swal.fire({
+                    title: "",
+                    text: "Wrong Payment Value",
+                    icon: "warning"
+                });
+                SAVE();
+            }
+    
+            
+        }
+
 
     }
 
@@ -425,7 +316,7 @@ $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
         }
 
         let timeitself2 = `<?php echo $_GET['ETIME'];?>`;
-        let insertreservation = `INSERT INTO reservations (ReservationID, GuestID, CheckInDate,eCheckin, CheckOutDate, NumAdults, NumChildren, NumSeniors, NumExcessPax, timapackage, TotalPrice, Downpayment, UserID) 
+        let insertreservation = `INSERT INTO reservations (ReservationID, GuestID, CheckInDate,eCheckin, CheckOutDate, NumAdults, NumChildren, NumSeniors, NumExcessPax, timapackage, TotalPrice, Downpayment) 
         VALUES (NULL, '${dataid}', 
         '${jsonObject.checkin}', 
         '${jsonObject.checkin} ${timeitself2}',
@@ -436,10 +327,11 @@ $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
          '0', 
          '${jsonObject.trange}', 
          '${jsonObject.TOTAL}', 
-         '${jsonObject.DPAYMENT}',
-         '${jsonObject.USERINFO.userID}');`
+         '${jsonObject.DPAYMENT}');`
 
          let selectreservation = `SELECT ReservationID FROM reservations WHERE CheckInDate = '${jsonObject.checkin}' AND GuestID = '${dataid}' ORDER BY ReservationID DESC LIMIT 1;`
+        console.log(selectreservation)
+        console.log(insertreservation)
          const dataid2 =await AjaxSendv3(insertreservation,"BREAKDOWNLOGIC",`&Process=UpdateReservation&sqlcode2=${selectreservation}`)
 
 
@@ -487,42 +379,12 @@ $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
                 console.log("errro")
             },
             success:async function(){
-                await sendinggmailnotif(dataid2, paymentdescription,jsonObject["email"],jsonObject["userID"])
+                //await sendinggmailnotif(dataid2, paymentdescription,jsonObject["email"],jsonObject["userID"])
                 //location.href = "../Admins/Composer/docxphp.php";dataid2, paymentdescription
-                
+                location.href = `./Mainpage.php?nzlz=booking&plk=2`;
                 //location.href = "./bookinginformations.php";
             }
         }); 
 
     }
-
-    async function sendinggmailnotif (reserveid,paymentdescription,email,ids){
-        //https://elijoshresortandeventsplace.com/
-        $.ajax({    
-            type: "post",
-            url: "https://elijoshresortandeventsplace.com/Send2.php",             
-            data: "reservationvalue="+ reserveid+"&&pid="+paymentdescription+"&&email="+email+"&&ids="+ids,    
-            dataType: 'json',   
-            beforeSend:function(){
-                // Set the content of the loading container
-            },  
-            error:function(response){
-                // Remove the loading screen
-                console.log(response)
-                
-            },
-            success: async function(response) {
-
-                await Swal.fire({
-                    text: "Transaction successful! Thank you for your reservation.",
-                    icon: "success"
-                });
-                location.href = "./bookinginformations.php";
-            }
-
-
-        });
-    }
     </script>
-</body>
-</html>

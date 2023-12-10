@@ -145,7 +145,7 @@ switch ($_GET['tRANGE']) {
                                       <div class='SO-item'>
                                           <input type='checkbox' id='".$result["roomname"]."' value='".$result["roomname"]."-".$result[$pricename]."-".$result['MaxPeople']."' name='SOItemSelect'>
                                           <div class='addtocart2' onclick='activateClick(`".$result["RoomType"]."`)'>
-                                              <img src='./RoomsEtcImg/Rooms/".$result['RoomType'].".jpeg' alt=''>
+                                              <img src='../Client/RoomsEtcImg/Rooms/".$result['RoomType'].".jpeg' alt=''>
                                               <div class='textareapart'>
                                                   <h2>".$result["roomname"]."</h2>
                                                   <div class='smallinfos'>
@@ -255,7 +255,7 @@ switch ($_GET['tRANGE']) {
           let TOTALINIT = document.getElementById('TOTALINIT').innerText.replace("Total : ₱ ", "");
           let stringedJSON = JSON.stringify(datacontainer);
 
-          location.href = `./addonCottage.php?cin=<?php echo $_GET["cin"];?>&ETIME=<?php echo $_GET["ETIME"];?>&package=<?php echo $_GET["package"];?>&tRANGE=<?php echo $_GET["tRANGE"];?>&na=<?php echo $_GET["na"];?>&nk=<?php echo $_GET["nk"];?>&ns=<?php echo $_GET["ns"];?>&tinit=${TOTALINIT}&roomlist=${stringedJSON}`;
+          location.href = `./Mainpage.php?nzlz=addonCottage&plk=2&cin=<?php echo $_GET["cin"];?>&ETIME=<?php echo $_GET["ETIME"];?>&package=<?php echo $_GET["package"];?>&tRANGE=<?php echo $_GET["tRANGE"];?>&na=<?php echo $_GET["na"];?>&nk=<?php echo $_GET["nk"];?>&ns=<?php echo $_GET["ns"];?>&tinit=${TOTALINIT}&roomlist=${stringedJSON}`;
 
 
         })
