@@ -125,22 +125,26 @@ function choosingtargetdate() {
 
     let targetiddate = document.getElementById(calledfunc)
 
-  
 
     let paretnTIDD = targetiddate.parentNode.getAttribute("for")
     
     let targetinput = document.getElementById(paretnTIDD)
-
-
+  
     const yearval = document.getElementById("year").innerText
     const monthpickerval = document.getElementById("month-picker").innerText
 
     //transform the string to DATE
-    const STRINGDATE = `${monthpickerval} ${parseInt(this.innerText) + 1} ${yearval}`
+    const STRINGDATE = `${monthpickerval} ${parseInt(this.innerText) } ${yearval}`
     const dateObject = new Date(STRINGDATE);
-    const formattedDate = dateObject.toISOString().slice(0, 10); // Format the date as "YYYY-MM-DD"
+    const options = { timeZone: 'Asia/Taipei', year: 'numeric', month: '2-digit', day: '2-digit' };
+    const formattedDate = dateObject.toLocaleDateString('en-US', options);
+
+    const [month, day, year] = formattedDate.split('/');
+    const yyyy_mm_dd = `${year}-${month}-${day}`;
     
-    targetinput.value = formattedDate;
+   // const formattedDate = dateObject.toISOString().slice(0, 10); // Format the date as "YYYY-MM-DD"
+
+    targetinput.value = yyyy_mm_dd;
 
 
     //take first letters of word

@@ -191,50 +191,65 @@ switch ($_GET['tRANGE']) {
       </div>
       <form action="" class="form" method="post" id="REGFORM">
         <header style="display: flex;flex-wrap:wrap;justify-content:space-between;align-items:center;">
-          <h1 class="text-center">Cottages </h1> 
+          <h1 class="text-center">Rooms </h1> 
 
         </header>
 
         <div class="SOitemlist" id="SOITEMList">
                 <?php
-                                $sqlcottage = "SELECT a.*,f.*
-                                FROM eventpav a 
-                                LEFT JOIN (
-                                    SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate 
-                                    FROM eventreservation d 
-                                    LEFT JOIN reservations e ON d.reservationID = e.ReservationID 
-                                    WHERE e.CheckInDate = '".$_GET['cin']."' AND (e.timapackage = '".$_GET['tRANGE']."' OR e.timapackage = '22Hrs')
-                                ) f ON a.Pavtype = f.eventname 
-                                WHERE f.e_ID IS NULL AND a.MaxPax >= '50';";
+                                $sqlcottage = "SELECT a.*, f.*, CONCAT(a.RoomType, '-', a.RoomNum) AS roomname, g.TOTAL FROM 
+                                (SELECT b.RoomID, b.RoomNum , c.* FROM rooms b LEFT JOIN roomtypes c ON b.RoomType = c.RoomType) a
+                                LEFT JOIN
+                                (SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate FROM roomsreservation d LEFT JOIN reservations e ON d.greservationID = e.ReservationID 
+                                WHERE e.CheckInDate = '".$_GET['cin']."' AND (e.timapackage = '".$_GET['tRANGE']."' OR e.timapackage = '22Hrs')) f ON a.RoomNum = f.Room_num 
+                                LEFT JOIN 
+                                (SELECT  a.RoomType, SUM(a.MaxPeople) AS TOTAL FROM (SELECT b.RoomID, b.RoomNum , c.* FROM rooms b LEFT JOIN roomtypes c ON b.RoomType = c.RoomType) a
+                                LEFT JOIN
+                                (SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate FROM roomsreservation d LEFT JOIN reservations e ON d.greservationID = e.ReservationID 
+                                WHERE e.CheckInDate = '".$_GET['cin']."' AND (e.timapackage = '".$_GET['tRANGE']."' OR e.timapackage = '22Hrs')) f ON a.RoomNum = f.Room_num WHERE f.RR_ID IS NULL  GROUP BY a.MaxPeople) g ON a.RoomType = g.RoomType
+                                WHERE f.RR_ID IS NULL AND g.TOTAL >= '$guesttotalnumber';";
+
                                 $query1 = mysqli_query($conn, $sqlcottage);
                                 $datainsertedCottages = "";
 
+                                $recommend = " <div class='Recommentd'>
+                                <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 512 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2H464c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48H294.5c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3V320 272 247.1c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192H96c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V224c0-17.7 14.3-32 32-32z'/></svg>
+                            </div>";
+
+
                                 $recochoice = 0;
                                 while ($result = mysqli_fetch_assoc($query1)) {
-                                  $sqlqueryforprices = mysqli_query($conn, "SELECT `".$result["Pavtype"]."` FROM eventplace WHERE PAX >= '$guesttotalnumber' ORDER BY PAX ASC LIMIT 1;");
-                                  $pavprice = mysqli_fetch_assoc($sqlqueryforprices);
+
+                                    if($_GET['tRANGE'] == "22Hrs"){
+                                      $pricename = "Hours22";
+                                    }else{
+                                      $pricename = $_GET['tRANGE']."TimePrice";
+                                    }
+                                    
                                     $datainsertedCottages .= "
                                       <div class='SO-item'>
-                                          <input type='checkbox' id='".$result["Pavtype"]."' value='".$result["Pavtype"]."-1-".$pavprice[$result["Pavtype"]]."-".$result['MaxPax']."' name='SOItemSelect'>
-                                          <div class='addtocart2' onclick='activateClick(`".$result["Pavtype"]."`)'>
-                                              <img src='./RoomsEtcImg/Pavilion/".$result['Pavtype'].".jpg' alt=''>
+                                          <input type='checkbox' id='".$result["roomname"]."' value='".$result["roomname"]."-".$result[$pricename]."-".$result['MaxPeople']."' name='SOItemSelect'>
+                                          <div class='addtocart2' onclick='activateClick(`".$result["RoomType"]."`)'>
+                                              <img src='./RoomsEtcImg/Rooms/".$result['RoomType'].".jpeg' alt=''>
                                               <div class='textareapart'>
-                                                  <h2>".$result["Pavtype"]."</h2>
+                                                  <h2>".$result["roomname"]."</h2>
                                                   <div class='smallinfos'>
-                                                      <small>Good for ".$result["MinPax"]." - ".$result["MaxPax"]." people</small>
-                                                      <small>Price ".$pavprice[$result["Pavtype"]]."</small>
+                                                      <small>Good for ".$result["MinPeople"]." - ".$result["MaxPeople"]." people</small>
+                                                      <small>Price ".$result[$pricename]."</small>
                                                   </div>
                                               </div>
                                           </div>
                                           <div class='spawnerbtn' style='display: flex;justify-content: center;padding:0.5em 1em;'>
-                                            <button type='button' class='ADDMEBTN' onclick='activateClick(this,`".$result["Pavtype"]."`)'>Add To List</button>
+                                            <button type='button' class='ADDMEBTN' onclick='activateClick(this,`".$result["roomname"]."`)'>Add To List</button>
                                           </div>
                                       </div>";
+
+                                    
                                 }
                                 echo $datainsertedCottages;
                                 if(mysqli_num_rows($query1) <= 0){
                                   echo "<div style='width: 300px;background:#C1B086;padding:1em;border-radius:10px;text-align:center;color:#fff;'>
-                                    NO AVAILABLE PAVILION
+                                    NO AVAILABLE ROOM
                                   </div>";
                               }
                             ?>
@@ -308,13 +323,6 @@ switch ($_GET['tRANGE']) {
           console.log(123)
           e.preventDefault();
 
-          if(Object.keys(datacontainer).length <= 0){
-            await Swal.fire({
-              text: "Pick a Pavilion First",
-              icon: "info"
-            });
-            return;
-          }
 
           let totalnumperson = 0;
           for (let key in datacontainer) {
@@ -324,29 +332,12 @@ switch ($_GET['tRANGE']) {
             }
           }
           let clientstotalnumber = parseInt(`<?php echo $guesttotalnumber; ?>`)
-          console.log(totalnumperson)
-          if(totalnumperson < clientstotalnumber){
-            await Swal.fire({
-              text: "The max people in the Pavilion is less than the guest numbers",
-              icon: "info"
-            });
-            return;
-          }
 
           //location.href = `./${REGFORM.noSenior.value}.php?cin=${Checkin}&package=${REGFORM.noSenior.value}`;
           let TOTALINIT = document.getElementById('TOTALINIT').innerText.replace("Total : ₱ ", "");
           let stringedJSON = JSON.stringify(datacontainer);
 
-          let reflink = `<?php echo $linksref;?>`;
-          if(reflink.includes("Registration")){
-            await Swal.fire({
-              text: "You dont have an account. Please Create one",
-              icon: "info"
-            });
-          }
-
-
-          location.href = `./addonrooms.php?cin=<?php echo $_GET["cin"];?>&ETIME=<?php echo $_GET["ETIME"];?>&package=<?php echo $_GET["package"];?>&tRANGE=<?php echo $_GET["tRANGE"];?>&na=<?php echo $_GET["na"];?>&nk=<?php echo $_GET["nk"];?>&ns=<?php echo $_GET["ns"];?>&tinit=${TOTALINIT}&eventlist=${stringedJSON}`;
+          location.href = `./addonCottagev2forevent.php?cin=<?php echo $_GET["cin"];?>&ETIME=<?php echo $_GET["ETIME"];?>&package=<?php echo $_GET["package"];?>&tRANGE=<?php echo $_GET["tRANGE"];?>&na=<?php echo $_GET["na"];?>&nk=<?php echo $_GET["nk"];?>&ns=<?php echo $_GET["ns"];?>&tinit=${TOTALINIT}&eventlist=<?php echo $_GET["eventlist"];?>&roomlist=${stringedJSON}`;
 
 
         })

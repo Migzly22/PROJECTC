@@ -246,7 +246,11 @@ switch ($_GET['tRANGE']) {
                                     
                                 }
                                 echo $datainsertedCottages;
-
+                                if(mysqli_num_rows($query1) <= 0){
+                                  echo "<div style='width: 300px;background:#C1B086;padding:1em;border-radius:10px;text-align:center;color:#fff;'>
+                                    NO AVAILABLE ROOM
+                                  </div>";
+                              }
                             ?>
                 </div>
 
