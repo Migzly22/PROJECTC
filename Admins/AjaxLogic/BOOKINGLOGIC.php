@@ -24,7 +24,7 @@ function PRINTING($conn, $sqlcode3){
                 <option value='CANCELLED'>Cancelled</option>
             </select>
         </td>";
-        $select1 = "";$select2 = "";$select2 = "";
+        $select1 = "";$select2 = "";$select3 = "";
         switch ($result['ReservationStatus']) {
             case 'BOOKED':
                 $select1 = "selected";
@@ -79,6 +79,11 @@ function PRINTING($conn, $sqlcode3){
     echo $table5;
 }
 
+
+function SPECIALPARTS($conn, $sqlcode3){
+
+}
+
 switch ($_POST["Process"]) {
     case 'Search':
         PRINTING($conn, $sqlcode);
@@ -94,6 +99,10 @@ switch ($_POST["Process"]) {
         mysqli_query($conn,$sqlcode);
         PRINTING($conn, $sqlcode3);
         break;             
+    case 'CheckingOUT':
+        mysqli_query($conn,$sqlcode);
+        PRINTING($conn, $sqlcode3);
+        break; 
     default:
         # code...
         break;

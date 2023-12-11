@@ -58,9 +58,7 @@
 
                             <tbody id="TBODYELEMENT">
 <?php
-    $sqlcode3 = "SELECT a.*, d.*, if(d.Status1 IS NULL, 'Available', d.Status1) AS Status FROM rooms a 
-    LEFT JOIN (SELECT  b.*, IF(c.ReservationStatus IS NULL, 'Available', c.ReservationStatus) AS Status1, CONCAT(c.CheckInDate, ' to ', c.CheckOutDate) AS DT FROM roomsreservation b LEFT JOIN reservations c ON b.greservationID = c.ReservationID  WHERE CURDATE() BETWEEN c.CheckInDate AND c.CheckOutDate) d ON a.RoomNum = d.Room_num
-    ORDER BY a.RoomID;";
+    $sqlcode3 = "SELECT c.*, CONCAT(TIME(d.eCheckin), ' to ', TIME(d.CheckOutDate)) AS DT, IF(d.ReservationStatus IS NULL, 'Available', IF(d.ReservationStatus = 'CANCELLED', 'Available', d.ReservationStatus)) AS Status FROM rooms c LEFT JOIN (SELECT a.*, b.* FROM roomsreservation a LEFT JOIN (SELECT * FROM reservations WHERE CheckInDate = CURRENT_DATE() AND ReservationStatus != 'CHECKOUT') b ON a.greservationID = b.ReservationID WHERE b.ReservationID IS NOT NULL) d ON c.RoomNum = d.Room_num GROUP BY c.RoomID ORDER BY c.RoomNum ;";
     $querynum3 = mysqli_query($conn,$sqlcode3);
     $table5 = "";
 
@@ -101,11 +99,8 @@
 
 <script>
     const SEARCHITEMINPUT = document.getElementById("SEARCHITEMINPUT");
-    const mainquery = `SELECT a.*, d.*, if(d.Status1 IS NULL, 'Available', d.Status1) AS Status FROM rooms a 
-    LEFT JOIN (SELECT  b.*, IF(c.ReservationStatus IS NULL, 'Available', c.ReservationStatus) AS Status1, CONCAT(c.CheckInDate, ' to ', c.CheckOutDate) AS DT FROM roomsreservation b LEFT JOIN reservations c ON b.greservationID = c.ReservationID  WHERE CURDATE() BETWEEN c.CheckInDate AND c.CheckOutDate) d ON a.RoomNum = d.Room_num
-    WHERE [CONDITION]
-    ORDER BY a.RoomID;;
-        ;
+    const mainquery = `SELECT c.*, CONCAT(TIME(d.eCheckin), ' to ', TIME(d.CheckOutDate)) AS DT, IF(d.ReservationStatus IS NULL, 'Available', IF(d.ReservationStatus = 'CANCELLED', 'Available', d.ReservationStatus)) AS Status FROM rooms c LEFT JOIN (SELECT a.*, b.* FROM roomsreservation a LEFT JOIN (SELECT * FROM reservations WHERE CheckInDate = CURRENT_DATE() AND ReservationStatus != 'CHECKOUT') b ON a.greservationID = b.ReservationID WHERE b.ReservationID IS NOT NULL) d ON c.RoomNum = d.Room_num  WHERE [CONDITION] GROUP BY c.RoomID ORDER BY c.RoomNum ;
+        
     `
     const TBODYELEMENT = document.getElementById('TBODYELEMENT')
 
@@ -154,13 +149,14 @@
             let conditions = [];
 
             if(formValues[0] !== "-"){
-                conditions.push(`if(d.Status1 IS NULL, 'Available', d.Status1) =  '${formValues[0]}'`);
+                conditions.push(`IF(
+                    d.ReservationStatus IS NULL, 'Available', IF(
+                        d.ReservationStatus = 'CANCELLED', 'Available', d.ReservationStatus)
+                        )=  '${formValues[0]}'`);
             }
             if(formValues[1] !== "-"){
-                conditions.push(`a.RoomType = '${formValues[1]}'`);
+                conditions.push(`c.RoomType = '${formValues[1]}'`);
             }
-
-
             const joinedString = conditions.join(' AND ');
             const formattedText = mainquery.replace(/\[CONDITION\]/, joinedString);
 

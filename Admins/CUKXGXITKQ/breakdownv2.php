@@ -166,6 +166,7 @@ $arraynew['DPAYMENT'] = $_GET["tinit"]*.5;
 
 
 $arraynew['ETIME'] = $_GET["ETIME"];
+$arraynew['packagenum'] = $_GET["package"];
 $arraynew['ADULTPAY'] = $entrance[0];
 $arraynew['KIDPAY'] = $entrance[1];
 $arraynew['SENIORPAY'] = $entrance[0]-(($entrance[0]*.2));
@@ -316,7 +317,7 @@ $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
         }
 
         let timeitself2 = `<?php echo $_GET['ETIME'];?>`;
-        let insertreservation = `INSERT INTO reservations (ReservationID, GuestID, CheckInDate,eCheckin, CheckOutDate, NumAdults, NumChildren, NumSeniors, NumExcessPax, timapackage, TotalPrice, Downpayment) 
+        let insertreservation = `INSERT INTO reservations (ReservationID, GuestID, CheckInDate,eCheckin, CheckOutDate, NumAdults, NumChildren, NumSeniors, NumExcessPax, timapackage,package, TotalPrice, Downpayment) 
         VALUES (NULL, '${dataid}', 
         '${jsonObject.checkin}', 
         '${jsonObject.checkin} ${timeitself2}',
@@ -326,6 +327,7 @@ $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
          '${jsonObject["No. of Seniors"]}', 
          '0', 
          '${jsonObject.trange}', 
+         '${jsonObject.packagenum}', 
          '${jsonObject.TOTAL}', 
          '${jsonObject.DPAYMENT}');`
 
@@ -354,15 +356,15 @@ $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
             }
         }
         if(jsonObject.EVENT !== null){
-            for (const key in jsonObject.COTTAGE) {
-                if (jsonObject.COTTAGE.hasOwnProperty(key)) {
-                    const keyholder = jsonObject.COTTAGE[key];
+            
+            for (const key in jsonObject.EVENT) {
+                if (jsonObject.EVENT.hasOwnProperty(key)) {
+                    const keyholder = jsonObject.EVENT[key];
                     let insertrooms = `INSERT INTO eventreservation (reservationID, eventname) VALUES ('${dataid2}', '${keyholder.name}');`
                     await AjaxSendv3(insertrooms,"BREAKDOWNLOGIC",`&Process=Insertmore`)
                 }
             }
         }
-        
 
         let paymentdone = sqlcodepayment.replace(':ID:', `${dataid2}`)
         await AjaxSendv3(paymentdone,"BREAKDOWNLOGIC",`&Process=Insertmore`)

@@ -59,7 +59,7 @@
                 <option value='CANCELLED'>Cancelled</option>
             </select>
         </td>";
-        $select1 = "";$select2 = "";$select2 = "";
+        $select1 = "";$select2 = "";$select3 = "";
         switch ($result['ReservationStatus']) {
             case 'BOOKED':
                 $select1 = "selected";
@@ -81,9 +81,12 @@
                 </select>                   
             </div>
         </td>";
-
+        $PAYMENTBUTTON = "<button class='addbtn' onclick='PAYMENT(`".$result['ReservationID']."`)'>
+                <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 512 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M64 0C46.3 0 32 14.3 32 32V96c0 17.7 14.3 32 32 32h80v32H87c-31.6 0-58.5 23.1-63.3 54.4L1.1 364.1C.4 368.8 0 373.6 0 378.4V448c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V378.4c0-4.8-.4-9.6-1.1-14.4L488.2 214.4C483.5 183.1 456.6 160 425 160H208V128h80c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H64zM96 48H256c8.8 0 16 7.2 16 16s-7.2 16-16 16H96c-8.8 0-16-7.2-16-16s7.2-16 16-16zM64 432c0-8.8 7.2-16 16-16H432c8.8 0 16 7.2 16 16s-7.2 16-16 16H80c-8.8 0-16-7.2-16-16zm48-168a24 24 0 1 1 0-48 24 24 0 1 1 0 48zm120-24a24 24 0 1 1 -48 0 24 24 0 1 1 48 0zM160 344a24 24 0 1 1 0-48 24 24 0 1 1 0 48zM328 240a24 24 0 1 1 -48 0 24 24 0 1 1 48 0zM256 344a24 24 0 1 1 0-48 24 24 0 1 1 0 48zM424 240a24 24 0 1 1 -48 0 24 24 0 1 1 48 0zM352 344a24 24 0 1 1 0-48 24 24 0 1 1 0 48z'/></svg>
+            </button>";
         if($result['ReservationStatus'] == "CHECKOUT"){
             $RESERVATIONDETAILS = "<td scope='col' >Check out</td>";
+            $PAYMENTBUTTON = "";
         }
 
         $tbodydata .= "
@@ -97,9 +100,7 @@
                     <button class='addbtn' onclick='VIEW(`".$result['ReservationStatus']."`,`".$result['GuestID']."`)'>
                         <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 576 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z'/></svg>
                     </button>
-                    <button class='addbtn' onclick='PAYMENT(`".$result['ReservationID']."`)'>
-                        <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 512 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M64 0C46.3 0 32 14.3 32 32V96c0 17.7 14.3 32 32 32h80v32H87c-31.6 0-58.5 23.1-63.3 54.4L1.1 364.1C.4 368.8 0 373.6 0 378.4V448c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V378.4c0-4.8-.4-9.6-1.1-14.4L488.2 214.4C483.5 183.1 456.6 160 425 160H208V128h80c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H64zM96 48H256c8.8 0 16 7.2 16 16s-7.2 16-16 16H96c-8.8 0-16-7.2-16-16s7.2-16 16-16zM64 432c0-8.8 7.2-16 16-16H432c8.8 0 16 7.2 16 16s-7.2 16-16 16H80c-8.8 0-16-7.2-16-16zm48-168a24 24 0 1 1 0-48 24 24 0 1 1 0 48zm120-24a24 24 0 1 1 -48 0 24 24 0 1 1 48 0zM160 344a24 24 0 1 1 0-48 24 24 0 1 1 0 48zM328 240a24 24 0 1 1 -48 0 24 24 0 1 1 48 0zM256 344a24 24 0 1 1 0-48 24 24 0 1 1 0 48zM424 240a24 24 0 1 1 -48 0 24 24 0 1 1 48 0zM352 344a24 24 0 1 1 0-48 24 24 0 1 1 0 48z'/></svg>
-                    </button>
+                    $PAYMENTBUTTON
                 </td>
         </tr>
         ";
@@ -243,8 +244,8 @@
                 <label for='swal-input3'>Time Range</label>
                 <select class='SWALinput swalselect' id='swal-input3' aria-label='Floating label select example'>
                     <option value="Day">08:00 AM - 05:00 PM</option>
-                    <option value='Night'>07:00 PM - 07:00 AM<</option>
-                    <option value='22Hrs'>02:00 PM - 12:00 PM<</option>
+                    <option value='Night'>07:00 PM - 07:00 AM</option>
+                    <option value='22Hrs'>02:00 PM - 12:00 PM</option>
                 </select>
             </div>
         </div>`
@@ -281,6 +282,26 @@
         //location.href = `./Mainpage.php?nzlz=reservationform&plk=2&cin=2023-12-10&ETIME=12:00&adultval=200&kidval=150&package=Package1&tRANGE=Day&na=4&nk=3&ns=3&tinit=1730.00`;
     }
 
+    function DATEDATATODAY() {
+        var today = new Date();
+
+        var year = today.getFullYear();
+        var month = today.getMonth() + 1; // Month is zero-based, so add 1
+        var day = today.getDate();
+        var hours = today.getHours();
+        var minutes = today.getMinutes();
+        var seconds = today.getSeconds();
+
+        // Add leading zero if needed
+        month = month < 10 ? '0' + month : month;
+        day = day < 10 ? '0' + day : day;
+        hours = hours < 10 ? '0' + hours : hours;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+
+        var formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        return formattedDate;
+    }
     async function PAYMENT(e){
 
         let balance = await AjaxSendv3(e,"GUESTLOGIC","&Process=Specialmention")
@@ -312,13 +333,14 @@
             let conditions = [];
 
             conditions.push(`${formValues[1]}`);
+            console.log(DATEDATATODAY())
 
             if(formValues[0] !== "" && parseFloat(formValues[0]) >= parseFloat(balance)){
                 conditions.push(`${balance}`);
                 let sqlcodepayment = `INSERT INTO guestpayments ( ReservationID, PaymentDate, AmountPaid, PaymentMethod, Description) VALUES ('${e}', CURRENT_DATE , '${conditions[1]}', '${conditions[0]}', 'CHECKOUT');`;
                 await AjaxSendv3(sqlcodepayment,"GUESTLOGIC",`&Process=Insertmore`)
                 
-                let update12 =`UPDATE reservations SET ReservationStatus = 'CHECKOUT' WHERE ReservationID = '${e}';`
+                let update12 =`UPDATE reservations SET ReservationStatus = 'CHECKOUT', finalCheckout = '${DATEDATATODAY()}' WHERE ReservationID = '${e}';`
                 await AjaxSendv3(update12,"GUESTLOGIC","&Process=Insertmore")
 
 
@@ -336,7 +358,16 @@
                 });
             }
 
+
             
         }
+    }
+
+
+    async function CheckoutChecking(){
+        let datetoday = DATEDATATODAY();
+
+        let sqlcodepayment = `INSERT INTO guestpayments ( ReservationID, PaymentDate, AmountPaid, PaymentMethod, Description) VALUES ('${e}', CURRENT_DATE , '${conditions[1]}', '${conditions[0]}', 'CHECKOUT');`;
+        await AjaxSendv3(sqlcodepayment,"GUESTLOGIC",`&Process=CheckingOUT`)
     }
 </script>

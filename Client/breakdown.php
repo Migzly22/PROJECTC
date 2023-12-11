@@ -303,6 +303,7 @@
 
     $arraynew['TOTAL'] = $sum;
     $arraynew['DPAYMENT'] = $sum*.5;
+    $arraynew['PACKAGENUM'] = $sum*.5;
     $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
 ?>
     <textarea name="" id="savevalues" cols="30" rows="10" style="display:none;"><?php echo $_SESSION["Newcustomerappointment"];?></textarea>
@@ -434,8 +435,8 @@
         Dpayment = Dpayment.replace(/,/g, '')
         let roomnumbers = jsonObject["roomnumbers"].replace(/@/g, ',')
 
-        let insertreservation = `INSERT INTO reservations (ReservationID, GuestID, CheckInDate, CheckOutDate, RoomNumber, CottageTypeID, NumAdults, NumChildren, NumSeniors, NumExcessPax, timapackage, Eventplace, TotalPrice, Downpayment, UserID) 
-        VALUES (NULL, '${dataid}', '${dateOnly}', '${dateOnly2}', '${roomnumbers}', '${jsonObject["Cottage"]}', '${jsonObject["No. of Adult"]}', '${jsonObject["No. of Kid"]}', '${jsonObject["No. of Seniors"]}', '0', '${jsonObject["TND"]}', '${jsonObject["evplace"]}', '${TPrice}', '${Dpayment}','${jsonObject["userID"]}');`
+        let insertreservation = `INSERT INTO reservations (ReservationID, GuestID, CheckInDate, CheckOutDate, RoomNumber, CottageTypeID, NumAdults, NumChildren, NumSeniors, NumExcessPax, timapackage,package, Eventplace, TotalPrice, Downpayment, UserID) 
+        VALUES (NULL, '${dataid}', '${dateOnly}', '${dateOnly2}', '${roomnumbers}', '${jsonObject["Cottage"]}', '${jsonObject["No. of Adult"]}', '${jsonObject["No. of Kid"]}', '${jsonObject["No. of Seniors"]}', '0', '${jsonObject["TND"]}', '${jsonObject["TND"]}', '${jsonObject["evplace"]}', '${TPrice}', '${Dpayment}','${jsonObject["userID"]}');`
 
         let selectreservation = `SELECT ReservationID FROM reservations WHERE CheckInDate = '${dateOnly}' AND GuestID = '${dataid}' ORDER BY ReservationID DESC LIMIT 1;`
 

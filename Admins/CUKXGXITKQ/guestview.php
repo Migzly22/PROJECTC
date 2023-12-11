@@ -2,7 +2,6 @@
     $readonly = (isset($_GET["qwe"])) ? "readonly":"";
     $userid = (isset($_GET["ISU"])) ? $_GET["ISU"]: $_SESSION["USERID"];
 
-
     $sqlcodeGuestinfo = "SELECT a.* FROM guests a WHERE a.GuestID = '$userid';";
     $GuestQuesry = mysqli_query($conn,$sqlcodeGuestinfo);
     $GuestInfo = mysqli_fetch_assoc($GuestQuesry);
@@ -17,9 +16,10 @@
 
 <div class="mainbodycontainer">
                 <div class="classHeader">
-                    <h1>Guest Information</h1>
-                   
+                    <h1>Reservation</h1>
                 </div>
+
+                
                 <form action="" method="post" class="ViewAccount" id="FCONTAIN">
                     <div class="box">
                         <div class="credentialinfo">
@@ -48,17 +48,7 @@
                                 <input type="tel" name="phoneNumber" id="phoneNumber" readonly value="<?php echo $GuestInfo["Phone"]?>">
                             </div>
                         </div>
-                    </div>
-                </form>
-            </div>
-
-            <div class="mainbodycontainer">
-                <div class="classHeader">
-                    <h1>Expenditures</h1>
-                </div>
-                <div class="stafflistbox">
-                    <div class="box">
-                    <div>
+                        <div>
                             <h3>-Summary-</h3>
                         </div>
                         <div class="box2">
@@ -73,118 +63,145 @@
                             </thead>
 
                             <tbody id="TBODYELEMENT">
-<?php
+<?php    
 
-    $dateTime = new DateTime($ReservationData["CheckInDate"]);
-    // Get the day of the week as a number (1 = Monday, 2 = Tuesday, etc.)
-    $dayOfWeekNumber = $dateTime->format('N');
+$dateTime = new DateTime($ReservationData['CheckInDate']);
+// Get the day of the week as a number (1 = Monday, 2 = Tuesday, etc.)
+$dayOfWeekNumber = $dateTime->format('N');
 
-    // Convert the number to the day name
-    $dayOfWeekName = date('l', strtotime($ReservationData["CheckInDate"]));
-
-    if($dayOfWeekName >= 4){
-        $columnstring = "Weekdays".$ReservationData["timapackage"];
-    }else{
-        $columnstring = "WeekendsHolidays".$ReservationData["timapackage"];
-    }
+// Convert the number to the day name
+$dayOfWeekName = date('l', strtotime($ReservationData['CheckInDate']));
 
 
-    $sql2 = "SELECT Type, $columnstring FROM poolrate WHERE Type = 'Adult';";
-    $sql2query = mysqli_query($conn,$sql2);
-    $adultresult = mysqli_fetch_assoc($sql2query);
+
+if($dayOfWeekNumber <= 4){
+    $columnstring = "Weekdays".$ReservationData['timapackage']."Price";
+}else{
+    $columnstring = "WeekendsHolidays".$ReservationData['timapackage']."Price";
+}
 
 
-    $sql22 = "SELECT Type, $columnstring FROM poolrate WHERE Type = 'Kids';";
-    $sql22query = mysqli_query($conn,$sql22);
-    $kidsresult = mysqli_fetch_assoc($sql22query);
+$sql1 = "SELECT * FROM poolrate ORDER BY RateID ASC;";
+$sql1query = mysqli_query($conn, $sql1);
+$entrance = array();
 
-    echo "<input type='hidden' id='valueid1' value='".$adultresult[$columnstring]."'>";
-    echo "<input type='hidden' id='valueid2' value='".$kidsresult[$columnstring]."'>";
+while ($result = mysqli_fetch_assoc($sql1query)) {
+  $entrance[] = $result[$columnstring];
+}
+
+
 
     $sum = 0;
-    $sum += $ReservationData["NumAdults"] * $adultresult[$columnstring];
-    $sum += $ReservationData["NumChildren"] * $kidsresult[$columnstring];
-    $sum += $ReservationData["NumSeniors"] * ($adultresult[$columnstring]-(($adultresult[$columnstring]*.2)));
+    $sum += $ReservationData["NumAdults"] * $entrance[0];
+    $sum += $ReservationData["NumChildren"] * $entrance[1];
+    $sum += $ReservationData["NumSeniors"] * ($entrance[0]-(($entrance[0]*.2)));
+
+
+    $pricepool = array();
+    $pricepool[] = $ReservationData["NumAdults"] * $entrance[0];
+    $pricepool[] = $ReservationData["NumChildren"] * $entrance[1];
+    $pricepool[] = $ReservationData["NumSeniors"] * ($entrance[0]-(($entrance[0]*.2)));
+
+    if($ReservationData["package"] == "Package2"){
+        $pricepool[0] = 0.00;
+        $pricepool[1] = 0.00;
+        $pricepool[2] = 0.00;
+    }
+
+    $sum += $pricepool[0];
+    $sum += $pricepool[1];
+    $sum += $pricepool[2] ;
 ?>
 
 
                                 <tr>
                                     <th style='text-align:start;'>No. of Adults</th>
                                     <td style='text-align:center;'><?php echo $ReservationData["NumAdults"];?></td>
-                                    <td style='text-align:end;'>₱ <?php echo  $ReservationData["NumAdults"] * $adultresult[$columnstring];?></td>
+                                    <td style='text-align:end;'>₱ <?php echo  $pricepool[0];?></td>
                                 </tr>
                                 <tr>
                                     <th style='text-align:start;'>No. of Kids</th>
                                     <td style='text-align:center;'><?php echo $ReservationData["NumChildren"];?></td>
-                                    <td style='text-align:end;'>₱ <?php echo $ReservationData["NumChildren"] * $kidsresult[$columnstring];?></td>
+                                    <td style='text-align:end;'>₱ <?php echo $pricepool[1];?></td>
                                 </tr>
                                 <tr>
                                     <th style='text-align:start;'>No. of Senior</th>
                                     <td style='text-align:center;'><?php echo $ReservationData["NumSeniors"];?></td>
-                                    <td style='text-align:end;'>₱ <?php echo $ReservationData["NumSeniors"] * ($adultresult[$columnstring]-(($adultresult[$columnstring]*.2)));?></td>
+                                    <td style='text-align:end;'>₱ <?php echo $pricepool[2];?></td>
                                 </tr>
 
 
 <?php
-    $sql1 = "SELECT * FROM cottagetypes WHERE ServiceTypeName = '".$ReservationData["CottageTypeID"]."';";
-    $sqlquery1 = mysqli_query($conn,$sql1);
-    while($result = mysqli_fetch_assoc($sqlquery1)){
-        if($ReservationData["timapackage"] == "DayPrice"){
-            $number = $result["DayPrice"];
+$COTTAGELIST = "SELECT a.*, b.*, c.* FROM cottagereservation a LEFT JOIN cottage b ON a.cottagenum = b.Cottagenum LEFT JOIN cottagetypes c ON b.CottageType = c.ServiceTypeName  WHERE a.reservationID = '".$ReservationData["ReservationID"]."';";
+
+$COTTAGELISTQuery =  mysqli_query($conn, $COTTAGELIST);
+$data1 = "";
+if(mysqli_num_rows($COTTAGELISTQuery) > 0){
+    while($CottageResult = mysqli_fetch_assoc($COTTAGELISTQuery)){
+        if($ReservationData["timapackage"] == "22Hrs"){
+            $datatype = "NightPrice";
         }else{
-            $number = $result["NightPrice"];
+            $datatype = $ReservationData["timapackage"]."Price";
         }
-        $sum += $number;
-        echo "<tr>
-            <th style='text-align:start;'>".$ReservationData["CottageTypeID"]."</th>
-            <td style='text-align:center;'>1</td>
-            <td style='text-align:end;'>₱ $number</td>
+
+        $data1 .= "<tr>
+        <th style='text-align:start;'>".$CottageResult["ServiceTypeName"]."-".$CottageResult["cottagenum"]."</th>
+        <td style='text-align:center;'>1</td>
+        <td style='text-align:end;'>₱ ".number_format($CottageResult[$datatype], 2)."</td>
         </tr>";
+
+        $sum += intval($CottageResult[$datatype]);
     }
+    echo $data1;
+}
 
+$ROOMLIST = "SELECT a.*, b.*, c.* FROM roomsreservation a LEFT JOIN rooms b ON a.Room_num = b.RoomNum LEFT JOIN roomtypes c ON b.RoomType = c.RoomType  WHERE a.greservationID = '".$ReservationData["ReservationID"]."';";
+$ROOMLISTQuery =  mysqli_query($conn, $ROOMLIST);
+$data2 = "";
 
-    # code...
-    $sqlloop = "SELECT a.*,b.*, c.* FROM roomsreservation a LEFT JOIN rooms b ON a.Room_num = b.RoomNum LEFT JOIN roomtypes c ON b.RoomType = c.RoomType WHERE a.greservationID = '".$ReservationData["ReservationID"]."';";
-    $sqlqueryloop = mysqli_query($conn,$sqlloop);
+if(mysqli_num_rows($ROOMLISTQuery) > 0){
+    while($CottageResult = mysqli_fetch_assoc($ROOMLISTQuery)){
+        if($ReservationData["timapackage"] == "22Hrs"){
+            $datatype = "Hours22";
+        }else{
+            $datatype = $ReservationData["timapackage"]."TimePrice";
+        }
+
+        $data2 .= "<tr>
+        <th style='text-align:start;'>".$CottageResult["RoomType"]."-".$CottageResult["RoomNum"]."</th>
+        <td style='text-align:center;'>1</td>
+        <td style='text-align:end;'>₱ ".number_format($CottageResult[$datatype], 2)."</td>
+        </tr>";
+        $sum += intval($CottageResult[$datatype]);
+    }
+    echo $data2;
     
+}
 
-    while ($resultloop = mysqli_fetch_assoc($sqlqueryloop)) {
-        if($ReservationData["timapackage"]  == "DayPrice"){
-            $number = $resultloop["DayTimePrice"];
-        }else if ($ReservationData["timapackage"]  == "NightPrice"){
-            $number = $resultloop["NightTimePrice"];
-        }else{
-            $number = $resultloop["Hours22"];
-        }
 
-        $sum += $number;
-        echo "<tr>
-            <th style='text-align:start;'>ROOM-".$resultloop["RoomNum"]." ".$resultloop["RoomType"]."</th>
-            <td style='text-align:center;'>1</td>
-            <td style='text-align:end;'>₱ $number</td>
+$EVENTLIST = "SELECT a.*, b.* FROM eventreservation a LEFT JOIN eventpav b ON a.eventname = b.Pavtype WHERE a.reservationID = '".$ReservationData["ReservationID"]."';";
+$EVENTLISTQuery =  mysqli_query($conn, $EVENTLIST);
+$data2 = "";
+
+if(mysqli_num_rows($EVENTLISTQuery) > 0){
+    while($CottageResult = mysqli_fetch_assoc($EVENTLISTQuery)){
+        
+        $guesttotalnumber = $ReservationData["NumAdults"] + $ReservationData["NumChildren"] + $ReservationData["NumSeniors"] ;
+        $newsql22 = "SELECT `".$CottageResult["Pavtype"]."` FROM eventplace WHERE PAX >= '$guesttotalnumber' ORDER BY PAX ASC LIMIT 1;";
+        $EVENTLISTQuery1 =  mysqli_query($conn, $newsql22);
+        $EVENTresult = mysqli_fetch_assoc($EVENTLISTQuery1);
+
+        $data2 .= "<tr>
+        <th style='text-align:start;'>".$CottageResult["eventname"]."</th>
+        <td style='text-align:center;'>1</td>
+        <td style='text-align:end;'>₱ ".number_format($EVENTresult[$CottageResult["Pavtype"]], 2)."</td>
         </tr>";
+        $sum += intval($EVENTresult[$CottageResult["Pavtype"]]);
     }
+    echo $data2;
+    
+}
 
-
-
-
-    if($ReservationData["Eventplace"] != "None" ){
-            $pax = $ReservationData["NumAdults"] + $ReservationData["NumChildren"] + $ReservationData["NumSeniors"];
-            # code...
-            $sqlloop2 = "SELECT ".$ReservationData["Eventplace"]." FROM eventplace WHERE PAX >= $pax ORDER BY PAX ASC LIMIT 1";
-
-            $sqlqueryloop = mysqli_query($conn,$sqlloop2);
-            $resultloop2 = mysqli_fetch_assoc($sqlqueryloop);
-
-            $number = $resultloop2[$ReservationData["Eventplace"]];
-            $sum += $number;
-            echo "<tr>
-                <th style='text-align:start;'>".$ReservationData["Eventplace"]."</th>
-                <td style='text-align:center;'>1</td>
-                <td style='text-align:end;'>₱ $number</td>
-            </tr>";
-
-    }
 ?>
 
                                 <tr>
@@ -276,152 +293,63 @@ WHERE a.ReservationID = '".$ReservationData['ReservationID']."';";
 
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
+
 
 <script>
 
-    const RoomNUMBERMULTI = document.getElementById('RoomNUMBERMULTI')
-
-    var duplicatedinnerhtml = `<div class="form-column">
-                                    <label for="">Room Number:</label>
-                                    <select name="RNUM" id="">
-                                        <option value="None">-</option>
-                                    </select>
-                                </div>`
-    
-    //RoomNUMBERMULTI.innerHTML
-
-
-    const FCONTAIN = document.getElementById("FCONTAIN")
-
-    var sqlc = `SELECT a.*,d.*, b.*, c.* FROM rooms a LEFT JOIN roomsreservation b ON a.RoomNum = b.Room_num LEFT JOIN greservations c ON b.greservationID = c.ReservationID LEFT JOIN roomtypes d ON a.RoomType = d.RoomType
-    WHERE c.CheckInDate > '[chosen_checkout_datetime]'
-    OR c.CheckOutDate < '[chosen_checkin_datetime]'
-    OR c.CheckInDate IS NULL
-    OR c.CheckOutDate IS NULL
-    ORDER BY a.RoomID`
-
-
-    var dataholder = ""
-
-    function handleInputChange1(event) {
-      const inputElement = event.target;
-      let value = parseFloat(inputElement.value);
-
-      if(value >= 0){
-        RoomNUMBERMULTI.innerHTML = "" //reset the innerhtml
-        for (let i = 0; i < value; i++) {
-            RoomNUMBERMULTI.innerHTML += `<div class="form-column">
-                                    <label for="">Room Number:</label>
-                                    <select name="RNUM" id="">
-                                        ${dataholder}
-                                    </select>
-                                </div>`
-        }
-      }
-    }
-
-
-    async function datachange() {
-        const FCONTAIN2 = document.getElementById("FCONTAIN")
-        if(FCONTAIN2.Checkin.value !== "" && FCONTAIN2.Checkout.value !== ""){
-             sqlc = `SELECT a.*,d.*, b.*, c.* FROM rooms a LEFT JOIN roomsreservation b ON a.RoomNum = b.Room_num LEFT JOIN greservations c ON b.greservationID = c.ReservationID LEFT JOIN roomtypes d ON a.RoomType = d.RoomType
-                WHERE c.CheckInDate > '${FCONTAIN2.Checkout.value}'
-                OR c.CheckOutDate < '${FCONTAIN2.Checkin.value}'
-                OR c.CheckInDate IS NULL
-                OR c.CheckOutDate IS NULL
-                ORDER BY a.RoomID`
-            const Tabledata =await AjaxSendv3(sqlc,"RESERVATIONLOGIC","&Process=Search")
-            let changeable = document.querySelector("select[name='RNUM']")
-            //changeable.innerHTML = Tabledata
-
-            dataholder = Tabledata;
-            if(changeable){
-                changeable.innerHTML += Tabledata
-            }
+    function changebacktozero(id){
+        var element = document.getElementById(id);
+        if(element.value < 0 ){
+            element.value = 0;
         }
     }
+    async function ADDPERSON(id){
+        let design = `
+        <div class='sweetDIVBOX'>
+            <div class='SWEETFORMS'>
+                <label for='swal-input1'>No. of Adult</label>
+                <input type ="number" id="swal-input1" class="SWALinput" required value="0" onchange="changebacktozero(this.id)">
+            </div>
+            <div class='SWEETFORMS'>
+                <label for='swal-input2'>No. of Kids</label>
+                <input type ="number" id="swal-input2" class="SWALinput" required value="0" onchange="changebacktozero(this.id)">
+            </div>
+            <div class='SWEETFORMS'>
+                <label for='swal-input3'>No. of Senior</label>
+                <input type ="number" id="swal-input3" class="SWALinput" required value="0" onchange="changebacktozero(this.id)">
+            </div>
+        </div>`
 
-    function hasDuplicates(arr) {
-        return new Set(arr).size !== arr.length;
-    }
-    async function EDIT(){
-        const FCONTAIN2 = document.getElementById("FCONTAIN")
-        var mergedHTML = [];
+        let formValues =await POPUPCREATE("Additional Head Count",design,3)
 
+        if (formValues) {
+            let conditions = [];
+            
+            let paymentadult = document.getElementById("valueid1").value
+            let paymentkid = document.getElementById("valueid1").value
 
-        var elements = document.querySelectorAll("select[name='RNUM']");
-
-        if(elements){
-            // Loop through the elements and merge their innerHTML with "*"
-            for (var i = 0; i < elements.length; i++) {
-                mergedHTML.push(elements[i].value);
+            let Tabledata = '';
+            let sqlcode = `INSERT INTO guestextracharges (ReservationID,ChargeDescription, quantity, ChargeAmount, ChargeDate) VALUES ('${id}', :VALUECHANGE:, CURRENT_DATE);`;
+            
+            if(formValues[0] !== "0"){
+                let change = sqlcode.replace(':VALUECHANGE:',`'Additional No. of Adult','${formValues[0]}', '${parseFloat(formValues[0])*parseFloat(paymentadult)}'`)
+                Tabledata = await AjaxSendv3(change,"RESERVATIONLOGIC",`&Process=AdditionalPay&id2=${id}`)
             }
-            if(hasDuplicates(mergedHTML)){
-                Swal.fire(
-                    '',
-                    'Duplicated room number',
-                    'error'
-                    )
-                return 0
+            if(formValues[1] !== "0"){
+                let change = sqlcode.replace(':VALUECHANGE:',`'Additional No. of Kid','${formValues[1]}', '${parseFloat(formValues[1])*parseFloat(paymentkid)}'`)
+                Tabledata = await AjaxSendv3(change,"RESERVATIONLOGIC",`&Process=AdditionalPay&id2=${id}`)
             }
+            if(formValues[2] !== "0"){
+                let change = sqlcode.replace(':VALUECHANGE:',`'Additional No. of Senior','${formValues[2]}', '${parseFloat(formValues[2])* (parseFloat(paymentadult) - (parseFloat(paymentadult)*.2))}'`)
+                Tabledata =await AjaxSendv3(change,"RESERVATIONLOGIC",`&Process=AdditionalPay&id2=${id}`)
+            }
+            const TBODYELEMENT = document.getElementById('TBODYELEMENT2')
+            TBODYELEMENT.innerHTML = Tabledata
         }
-
-
-        
-        let datacontroller = `{
-            "firstName": "${FCONTAIN2.firstName.value}",
-            "middleName": "${FCONTAIN2.middleName.value}",
-            "lastName":"${FCONTAIN2.lastName.value}",
-            "address":"${FCONTAIN2.address.value}",
-            "email":"${FCONTAIN2.email.value}",
-            "phoneNumber":"${FCONTAIN2.phoneNumber.value}",
-            "No. of Adult":"${FCONTAIN2.numadult.value}",
-            "No. of Kid":"${FCONTAIN2.numkid.value}",
-            "No. of Seniors":"${FCONTAIN2.numsenior.value}",
-            "Checkin":"${FCONTAIN2.Checkin.value}",
-            "Checkout":"${FCONTAIN2.Checkout.value}",
-            "timapackage":"${FCONTAIN2.timapackage.value}",
-            "numromocu":"${FCONTAIN2.numromocu.value}",
-            "Cottage":"${FCONTAIN2.Cottage.value}",
-            "evplace":"${FCONTAIN2.evplace.value}",
-            "roomnumbers":"${mergedHTML.join("@")}"
-        }`;
-
-         Swal.fire({
-            title: 'Are you sure you want to add the informations?',
-            showDenyButton: true,
-            showCancelButton: false,
-            confirmButtonText: 'Save',
-            denyButtonText: `Cancel`,
-            }).then(async (result) => { 
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                await AjaxSendv3(datacontroller,"RESERVATIONLOGIC","&Process=PaymentTime")
-                location.href = "../Admins/Mainpage.php?nzlz=breakdown&plk=2";
-            } 
-        })
     }
-
-
-    // Get references to all input elements with the class "input-box"
-    const inputElements = document.querySelectorAll("input[type='number']");
-    
-    // Add event listeners to all selected input elements
-    inputElements.forEach(input => {
-        input.addEventListener("input", function() {
-            // Parse the input value as a number
-            const value = parseFloat(input.value);
-            if( input.id=="numromocu"){
-                input.addEventListener('change', handleInputChange1);
-            }
-            // Check if the value is less than 0
-            if (value < 0) {
-                // Set the value to 0
-                input.value = 0;
-            }
-      
-        });
-    });
+    async function EDITStatus(params,gid) {
+        location.href = `./Mainpage.php?nzlz=addItems&plk=2&ISU=${params}&GID=${gid}`;
+    }
 </script>

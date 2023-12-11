@@ -10,6 +10,7 @@
     $sqlReservation = "SELECT * FROM reservations WHERE GuestID = '$userid';";
     $ReservationQuery = mysqli_query($conn,$sqlReservation);
     $ReservationData = mysqli_fetch_assoc($ReservationQuery);
+
 ?>
 
 
@@ -59,121 +60,145 @@
                             </thead>
 
                             <tbody id="TBODYELEMENT">
-<?php
+<?php    
+
+$dateTime = new DateTime($ReservationData['CheckInDate']);
+// Get the day of the week as a number (1 = Monday, 2 = Tuesday, etc.)
+$dayOfWeekNumber = $dateTime->format('N');
+
+// Convert the number to the day name
+$dayOfWeekName = date('l', strtotime($ReservationData['CheckInDate']));
 
 
 
-    
-    $dateTime = new DateTime($ReservationData["CheckInDate"]);
-    // Get the day of the week as a number (1 = Monday, 2 = Tuesday, etc.)
-    $dayOfWeekNumber = $dateTime->format('N');
-
-    // Convert the number to the day name
-    $dayOfWeekName = date('l', strtotime($ReservationData["CheckInDate"]));
-
-    if($dayOfWeekName >= 4){
-        $columnstring = "Weekdays".$ReservationData["timapackage"];
-    }else{
-        $columnstring = "WeekendsHolidays".$ReservationData["timapackage"];
-    }
+if($dayOfWeekNumber <= 4){
+    $columnstring = "Weekdays".$ReservationData['timapackage']."Price";
+}else{
+    $columnstring = "WeekendsHolidays".$ReservationData['timapackage']."Price";
+}
 
 
-    $sql2 = "SELECT Type, $columnstring FROM poolrate WHERE Type = 'Adult';";
-    $sql2query = mysqli_query($conn,$sql2);
-    $adultresult = mysqli_fetch_assoc($sql2query);
+$sql1 = "SELECT * FROM poolrate ORDER BY RateID ASC;";
+$sql1query = mysqli_query($conn, $sql1);
+$entrance = array();
+
+while ($result = mysqli_fetch_assoc($sql1query)) {
+  $entrance[] = $result[$columnstring];
+}
 
 
-    $sql22 = "SELECT Type, $columnstring FROM poolrate WHERE Type = 'Kids';";
-    $sql22query = mysqli_query($conn,$sql22);
-    $kidsresult = mysqli_fetch_assoc($sql22query);
-
-    echo "<input type='hidden' id='valueid1' value='".$adultresult[$columnstring]."'>";
-    echo "<input type='hidden' id='valueid2' value='".$kidsresult[$columnstring]."'>";
 
     $sum = 0;
-    $sum += $ReservationData["NumAdults"] * $adultresult[$columnstring];
-    $sum += $ReservationData["NumChildren"] * $kidsresult[$columnstring];
-    $sum += $ReservationData["NumSeniors"] * ($adultresult[$columnstring]-(($adultresult[$columnstring]*.2)));
+    $sum += $ReservationData["NumAdults"] * $entrance[0];
+    $sum += $ReservationData["NumChildren"] * $entrance[1];
+    $sum += $ReservationData["NumSeniors"] * ($entrance[0]-(($entrance[0]*.2)));
+
+
+    $pricepool = array();
+    $pricepool[] = $ReservationData["NumAdults"] * $entrance[0];
+    $pricepool[] = $ReservationData["NumChildren"] * $entrance[1];
+    $pricepool[] = $ReservationData["NumSeniors"] * ($entrance[0]-(($entrance[0]*.2)));
+
+    if($ReservationData["package"] == "Package2"){
+        $pricepool[0] = 0.00;
+        $pricepool[1] = 0.00;
+        $pricepool[2] = 0.00;
+    }
+
+    $sum += $pricepool[0];
+    $sum += $pricepool[1];
+    $sum += $pricepool[2] ;
 ?>
 
 
                                 <tr>
                                     <th style='text-align:start;'>No. of Adults</th>
                                     <td style='text-align:center;'><?php echo $ReservationData["NumAdults"];?></td>
-                                    <td style='text-align:end;'>₱ <?php echo  $ReservationData["NumAdults"] * $adultresult[$columnstring];?></td>
+                                    <td style='text-align:end;'>₱ <?php echo  $pricepool[0];?></td>
                                 </tr>
                                 <tr>
                                     <th style='text-align:start;'>No. of Kids</th>
                                     <td style='text-align:center;'><?php echo $ReservationData["NumChildren"];?></td>
-                                    <td style='text-align:end;'>₱ <?php echo $ReservationData["NumChildren"] * $kidsresult[$columnstring];?></td>
+                                    <td style='text-align:end;'>₱ <?php echo $pricepool[1];?></td>
                                 </tr>
                                 <tr>
                                     <th style='text-align:start;'>No. of Senior</th>
                                     <td style='text-align:center;'><?php echo $ReservationData["NumSeniors"];?></td>
-                                    <td style='text-align:end;'>₱ <?php echo $ReservationData["NumSeniors"] * ($adultresult[$columnstring]-(($adultresult[$columnstring]*.2)));?></td>
+                                    <td style='text-align:end;'>₱ <?php echo $pricepool[2];?></td>
                                 </tr>
 
 
 <?php
-    $sql1 = "SELECT * FROM cottagetypes WHERE ServiceTypeName = '".$ReservationData["CottageTypeID"]."';";
-    $sqlquery1 = mysqli_query($conn,$sql1);
-    while($result = mysqli_fetch_assoc($sqlquery1)){
-        if($ReservationData["timapackage"] == "DayPrice"){
-            $number = $result["DayPrice"];
+$COTTAGELIST = "SELECT a.*, b.*, c.* FROM cottagereservation a LEFT JOIN cottage b ON a.cottagenum = b.Cottagenum LEFT JOIN cottagetypes c ON b.CottageType = c.ServiceTypeName  WHERE a.reservationID = '".$ReservationData["ReservationID"]."';";
+
+$COTTAGELISTQuery =  mysqli_query($conn, $COTTAGELIST);
+$data1 = "";
+if(mysqli_num_rows($COTTAGELISTQuery) > 0){
+    while($CottageResult = mysqli_fetch_assoc($COTTAGELISTQuery)){
+        if($ReservationData["timapackage"] == "22Hrs"){
+            $datatype = "NightPrice";
         }else{
-            $number = $result["NightPrice"];
+            $datatype = $ReservationData["timapackage"]."Price";
         }
-        $sum += $number;
-        echo "<tr>
-            <th style='text-align:start;'>".$ReservationData["CottageTypeID"]."</th>
-            <td style='text-align:center;'>1</td>
-            <td style='text-align:end;'>₱ $number</td>
+
+        $data1 .= "<tr>
+        <th style='text-align:start;'>".$CottageResult["ServiceTypeName"]."-".$CottageResult["cottagenum"]."</th>
+        <td style='text-align:center;'>1</td>
+        <td style='text-align:end;'>₱ ".number_format($CottageResult[$datatype], 2)."</td>
         </tr>";
+
+        $sum += intval($CottageResult[$datatype]);
     }
+    echo $data1;
+}
 
+$ROOMLIST = "SELECT a.*, b.*, c.* FROM roomsreservation a LEFT JOIN rooms b ON a.Room_num = b.RoomNum LEFT JOIN roomtypes c ON b.RoomType = c.RoomType  WHERE a.greservationID = '".$ReservationData["ReservationID"]."';";
+$ROOMLISTQuery =  mysqli_query($conn, $ROOMLIST);
+$data2 = "";
 
-    # code...
-    $sqlloop = "SELECT a.*,b.*, c.* FROM roomsreservation a LEFT JOIN rooms b ON a.Room_num = b.RoomNum LEFT JOIN roomtypes c ON b.RoomType = c.RoomType WHERE a.greservationID = '".$ReservationData["ReservationID"]."';";
-    $sqlqueryloop = mysqli_query($conn,$sqlloop);
+if(mysqli_num_rows($ROOMLISTQuery) > 0){
+    while($CottageResult = mysqli_fetch_assoc($ROOMLISTQuery)){
+        if($ReservationData["timapackage"] == "22Hrs"){
+            $datatype = "Hours22";
+        }else{
+            $datatype = $ReservationData["timapackage"]."TimePrice";
+        }
+
+        $data2 .= "<tr>
+        <th style='text-align:start;'>".$CottageResult["RoomType"]."-".$CottageResult["RoomNum"]."</th>
+        <td style='text-align:center;'>1</td>
+        <td style='text-align:end;'>₱ ".number_format($CottageResult[$datatype], 2)."</td>
+        </tr>";
+        $sum += intval($CottageResult[$datatype]);
+    }
+    echo $data2;
     
+}
 
-    while ($resultloop = mysqli_fetch_assoc($sqlqueryloop)) {
-        if($ReservationData["timapackage"]  == "DayPrice"){
-            $number = $resultloop["DayTimePrice"];
-        }else if ($ReservationData["timapackage"]  == "NightPrice"){
-            $number = $resultloop["NightTimePrice"];
-        }else{
-            $number = $resultloop["Hours22"];
-        }
 
-        $sum += $number;
-        echo "<tr>
-            <th style='text-align:start;'>ROOM-".$resultloop["RoomNum"]." ".$resultloop["RoomType"]."</th>
-            <td style='text-align:center;'>1</td>
-            <td style='text-align:end;'>₱ $number</td>
+$EVENTLIST = "SELECT a.*, b.* FROM eventreservation a LEFT JOIN eventpav b ON a.eventname = b.Pavtype WHERE a.reservationID = '".$ReservationData["ReservationID"]."';";
+$EVENTLISTQuery =  mysqli_query($conn, $EVENTLIST);
+$data2 = "";
+
+if(mysqli_num_rows($EVENTLISTQuery) > 0){
+    while($CottageResult = mysqli_fetch_assoc($EVENTLISTQuery)){
+        
+        $guesttotalnumber = $ReservationData["NumAdults"] + $ReservationData["NumChildren"] + $ReservationData["NumSeniors"] ;
+        $newsql22 = "SELECT `".$CottageResult["Pavtype"]."` FROM eventplace WHERE PAX >= '$guesttotalnumber' ORDER BY PAX ASC LIMIT 1;";
+        $EVENTLISTQuery1 =  mysqli_query($conn, $newsql22);
+        $EVENTresult = mysqli_fetch_assoc($EVENTLISTQuery1);
+
+        $data2 .= "<tr>
+        <th style='text-align:start;'>".$CottageResult["eventname"]."</th>
+        <td style='text-align:center;'>1</td>
+        <td style='text-align:end;'>₱ ".number_format($EVENTresult[$CottageResult["Pavtype"]], 2)."</td>
         </tr>";
+        $sum += intval($EVENTresult[$CottageResult["Pavtype"]]);
     }
+    echo $data2;
+    
+}
 
-
-
-
-    if($ReservationData["Eventplace"] != "None" ){
-            $pax = $ReservationData["NumAdults"] + $ReservationData["NumChildren"] + $ReservationData["NumSeniors"];
-            # code...
-            $sqlloop2 = "SELECT ".$ReservationData["Eventplace"]." FROM eventplace WHERE PAX >= $pax ORDER BY PAX ASC LIMIT 1";
-
-            $sqlqueryloop = mysqli_query($conn,$sqlloop2);
-            $resultloop2 = mysqli_fetch_assoc($sqlqueryloop);
-
-            $number = $resultloop2[$ReservationData["Eventplace"]];
-            $sum += $number;
-            echo "<tr>
-                <th style='text-align:start;'>".$ReservationData["Eventplace"]."</th>
-                <td style='text-align:center;'>1</td>
-                <td style='text-align:end;'>₱ $number</td>
-            </tr>";
-
-    }
 ?>
 
                                 <tr>
