@@ -68,7 +68,7 @@
                     <?php
                         if($_SESSION["ACCESS"] != "CLIENT"){
                     ?>
-                        <li><a href="../Admins/Mainpage.php">Admin</a></li>
+                        <li><a href="../EliJosh_Dashboard/index.php">Admin</a></li>
                     <?php
                         }
                     ?>

@@ -79,6 +79,8 @@ require("./Database.php");
 
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 	<script src="./JS/compilation.js" defer></script>
 
 
@@ -133,6 +135,13 @@ require("./Database.php");
 		border-bottom: 1px solid #000;
 		outline: none;
 	}
+	.SWALinput2{
+		min-width: 70px;
+		width: 170px;
+		border: 0;
+		border-bottom: 1px solid #000;
+		outline: none;
+	}
 	.RESERVATIONBTNS{
 		margin-left: auto;
 		flex-wrap: wrap;
@@ -140,7 +149,9 @@ require("./Database.php");
 	.box-add{
 		margin-top: .5em;
 	}
-
+	canva{
+		pointer-events: none;
+	}
 
 
 	
@@ -324,7 +335,7 @@ require("./Database.php");
 					</a>
 					<div class="dropdown-content">
 					  <a href="./index.php?nzlz=settings"><i class='bx bx-cog' ></i> Setting</a>
-					  <a href=""><i class='bx bx-home' ></i>Go Home</a>
+					  <a href="../Client/index.php"><i class='bx bx-home' ></i>Go Home</a>
 					  <a href="#"><i class='bx bx-door-open' ></i>Logout</a>
 					</div>
 				</div>
@@ -335,27 +346,7 @@ require("./Database.php");
 		<?php
             include "./$targetlinks.php";
         ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		
 	</section>
 	<!-- CONTENT -->
 
