@@ -1,0 +1,103 @@
+#sidebar .side-menu li a {
+
+    background: transparent; 
+
+}
+
+#content main .box-add {
+    width: fit-content;
+    margin-left: auto;
+}
+#content main .box-add .bx {
+    width: 35px;
+    height: 35px;
+    padding: 1%;
+    color: var(--dark);
+    border-radius: 10px;
+    font-size: 1.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#content main .box-add :hover{
+    color: #25a18e;
+    background: #9fffcb;
+}
+
+.TableBtns{
+    display: flex;
+    gap: .2em;
+    justify-content: center;
+
+}
+.TableBtns  a{
+    color: var(--dark) !important;
+}
+
+.TableBtns  .EditBTN :hover{
+    color: #0000fe;
+    background: #CFE8FF;
+
+}
+.TableBtns .EditBTN .bx{
+    font-size: 1.5em;
+    border-radius: 5px;
+    padding: .2em;
+}
+
+.TableBtns  .DeleteBTN :hover{
+    color: #FD7238;
+    background: #FFE0D3;
+
+}
+.TableBtns .DeleteBTN .bx{
+    font-size: 1.5em;
+    border-radius: 5px;
+    padding: .2em;
+}
+
+.TableBtns  .OpenBTN :hover{
+    color: #25a18e;
+    background: #9fffcb;
+
+}
+.TableBtns .OpenBTN .bx{
+    font-size: 1.5em;
+    border-radius: 5px;
+    padding: .2em;
+}
+
+
+
+
+#content main .head-title .RESERVATIONBTNS {
+
+
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 10px;
+    font-weight: 500;
+}
+.RESERVATIONBTNS .btn-download2{
+    padding: 0 16px;
+    height: 36px;
+    border-radius: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #9fffcb;
+}
+.RESERVATIONBTNS .btn-download2 a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    color: #25a18e;
+}
+.RESERVATIONBTNS .btn-download2:hover, .RESERVATIONBTNS .btn-download2:hover a{
+    background: #25a18e;
+    color: #9fffcb;
+}

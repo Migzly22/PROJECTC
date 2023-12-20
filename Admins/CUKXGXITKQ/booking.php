@@ -131,7 +131,7 @@
     async function SEARCHING() {
         let item = SEARCHITEMINPUT.value;
         
-        let searchcondition = `(
+         let searchcondition = `(
             a.ReservationID LIKE '%${item}%' OR
             a.GuestID LIKE '%${item}%' OR
             a.ReservationStatus LIKE '%${item}%' OR
