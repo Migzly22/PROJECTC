@@ -79,6 +79,7 @@ require("./Database.php");
 
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+	
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 	<script src="./JS/compilation.js" defer></script>
@@ -149,9 +150,14 @@ require("./Database.php");
 	.box-add{
 		margin-top: .5em;
 	}
-	canva{
-		pointer-events: none;
+
+	#myChart,#myChart2{
+		pointer-events:none;
+		display: block;
+		width: 100% !important;
+		height: 100% !important;
 	}
+
 
 
 	
@@ -254,7 +260,165 @@ require("./Database.php");
 	background: var(--orange);
 }
 
+/**Add item */
+.SOitemlist{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 1em;
+	max-height: 300px;
+	overflow: auto;
+}
+.SOitemlist > .SO-item{
+	padding: .5em;
+	background: #FD7238;
+	border-radius: .5em;
+	min-width: 250px;
+}
+.SO-item > input,.SO-item > label {
+	pointer-events: none;
+}
+
+/** for booking adds*/
+.formcontainers{
+	width: 100%;
+}
+.form-group {
+	width: 100%;
+	position: relative;
+}
+
+.form-control {
+	width: 100%;
+	height: 3em;
+	padding: 8px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background: transparent;
+}
+.f30{
+	width: 30%;
+	min-width: 300px;
+}
+.f45{
+	width: 46%;
+	min-width: 400px;
+}
+.f100{
+	width: 100%;
+}
+.form-label {
+	position: absolute;
+	top: 8px;
+	left: 10px;
+	transition: all 0.2s ease-in-out;
+	pointer-events: none;
+	color: #888;
+}
+
+.form-control:focus + .form-label,
+.form-control:not(:placeholder-shown) + .form-label {
+	top: -12px;
+	left: 5px;
+	font-size: 12px;
+	color: #333;
+	background-color: #F9F9F9;
+	padding: 0 4px;
+}
+.requiredcolor{
+	color: red;
+}
+.layer-3, .layer-2, .layer-1{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1em;
+	padding: .5em;
+	flex-wrap: wrap;
+}
+.BUTTONHANDLER{
+	margin: auto;
+	width: fit-content;
+	margin-top: 1em;
+}
+.ContinueBTN{
+	padding: 1em;
+	letter-spacing: .3ch;
+	border-radius: .5em;
+	border: 0;
+	background: #9fffcb;
+	color: #25a18e;
+}
+.ContinueBTN:hover{
+	color: #fff;
+	background: #25a18e;
+}
+
+.head2{
+	margin-top: 1em;
+	font-size: 24px;
+	font-weight: 600;
+}
+.listcontroller {
+	display: flex;
+	gap: 1em;
+	padding: 1em ;
+	overflow-x: auto; /* Enable horizontal scrolling */
+	white-space: nowrap; /* Prevent wrapping of the items */
+}
+
+.boxcontainers {
+	background: #F9F9F9;
+	border-radius: 10px;
+	width: 30%;
+	min-width: 300px;
+	position: relative;
+	padding: 1em;
+}
+
+.boxcontainers img {
+	width: 100%;
+	height: 200px;
+	margin-top: 0.3em;
+	margin-bottom: 0.5em;
+}
+.textcontainers{
+	display: flex;
+	flex-direction: column;
+}
+.ADDMEBTN {
+	padding: 1em;
+	background-color: #28a745;
+	border-color: #218838;
+	color: #fff;
+}
+.ADDMEBTN{
+	padding: 1em;
+	border-radius: .5em;
+	border: 0;
+	background: #9fffcb;
+	color: #25a18e;
+}
+.ADDMEBTN:hover{
+	color: #fff;
+	background: #25a18e;
+}
+.REMOVEMEBTN{
+	padding: 1em;
+	border-radius: .5em;
+	border: 0;
+	background: #FFE0D3;
+	color: #FD7238;
+}
+.REMOVEMEBTN:hover{
+	color: #FFE0D3;
+	background: #FD7238;
+}
+
 </style>
+
 <body>
 
 
@@ -327,8 +491,6 @@ require("./Database.php");
 		<nav style="display: flex;justify-content: space-between;">
 			<i class='bx bx-menu' ></i>
 			<div style="display: flex;align-items: center;gap: 2em;">
-				<input type="checkbox" id="switch-mode" hidden>
-				<label for="switch-mode" class="switch-mode"></label>
 				<div class="dropdown">
 					<a href="#" class="profile">
 					  <img src="img/people.png" alt="Profile Image">

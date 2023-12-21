@@ -46,8 +46,8 @@
 					<span class="text">Add Person</span>
 				</a>
 			</div>
-			<div class="btn-download2">
-				<a href="#" class="">
+			<div class="btn-download2" onclick="this.querySelector('a').click()">
+				<a href="./index.php?nzlz=booking_additem&ISU=<?php echo $userid;?>" class="">
 					<i class='bx bxs-plus-square' ></i>
 					<span class="text">Add Item</span>
 				</a>

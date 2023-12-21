@@ -78,7 +78,7 @@
 							<tr>
 								<td>".$result["RoomNum"]."</td>
 								<td>".$result["RoomType"]."</td>
-								<td>".$result["Status"]."</td>
+								<td>".$result["DT"]."</td>
 								<td><span class='status $statuscolor'>".$result['Status']."</span></td>
 								$tablebuttnon
 							</tr>

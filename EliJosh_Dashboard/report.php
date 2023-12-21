@@ -20,10 +20,10 @@
 	</div>
 
 	<ul class="box-info">
-		<li style="min-height:200px;">
+		<li style="min-height:200px;height:100%;width:100%;position:relative;">
 			<canvas id="myChart"></canvas>
 		</li>
-		<li>
+		<li style="min-height:200px;height:100%;width:100%;position:relative;">
 			<canvas id="myChart2"></canvas>
 		</li>
 	</ul>
@@ -238,7 +238,7 @@
         const data = {
             labels: labels2,
             datasets: [{
-                label: 'Monthy Report',
+                label: 'Monthy Sales Report',
                 data: arraydata,
                 fill: false,
                 borderColor: 'rgb(14,255,0)',
@@ -274,7 +274,7 @@
         const data2 = {
             labels: labels,
             datasets: [{
-                label: 'Weekly Report',
+                label: 'Weekly Sale Report',
                 data: arraydata,
                 fill: false,
                 borderColor: 'rgb(14,255,0)',
@@ -297,6 +297,9 @@
 
     // Configure the chart
     var options = {
+        legend: {
+            onClick: function (event) { alert(123) }, // Set the onClick callback to null to make legend labels unclickable
+        },
       scales: {
         y: {
             beginAtZero: true,
