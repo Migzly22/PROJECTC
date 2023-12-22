@@ -120,7 +120,7 @@ switch ($_GET['tRANGE']) {
                                     LEFT JOIN reservations e ON d.reservationID = e.ReservationID 
                                     WHERE e.CheckInDate = '".$_GET['cin']."' AND (e.timapackage = '".$_GET['tRANGE']."' OR e.timapackage = '22Hrs')
                                 ) f ON a.Pavtype = f.eventname 
-                                WHERE f.e_ID IS NULL AND a.MaxPax >= '50';";
+                                WHERE f.e_ID IS NULL AND a.MaxPax >= '$guesttotalnumber';";
                                 $query1 = mysqli_query($conn, $sqlcottage);
                                 $datainsertedCottages = "";
 

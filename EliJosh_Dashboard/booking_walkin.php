@@ -31,16 +31,16 @@
         $timevalue = "02:00 PM - 12: 00 PM";
         break;
     }
-
-    $fname = isset($_GET['fname']) ? $_GET['fname'] : "";
-    $mname = isset($_GET['mname']) ? $_GET['mname'] : "";
-    $lname = isset($_GET['lname']) ? $_GET['lname'] : "";
-    $email = isset($_GET['email']) ? $_GET['email'] : "";
-    $phone = isset($_GET['phone']) ? $_GET['phone'] : "";
-    $address = isset($_GET['address']) ? $_GET['address'] : "";
-    $nAdult = isset($_GET['nAdult']) ? $_GET['nAdult'] : "1";
-    $nKid = isset($_GET['nKid']) ? $_GET['nKid'] : "0";
-    $nSenior = isset($_GET['nSenior']) ? $_GET['nSenior'] : "0";
+    
+    $fname = isset($_SESSION["Walkinuser"]) ? $_SESSION["Walkinuser"]["FirstName"] : "";
+    $mname = isset($_SESSION["Walkinuser"]) ? $_SESSION["Walkinuser"]["MiddleName"] : "";
+    $lname = isset($_SESSION["Walkinuser"]) ? $_SESSION["Walkinuser"]["LastName"] : "";
+    $email = isset($_SESSION["Walkinuser"]) ? $_SESSION["Walkinuser"]["Email"] : "";
+    $phone = isset($_SESSION["Walkinuser"]) ? $_SESSION["Walkinuser"]["PhoneNumber"] : "";
+    $address = isset($_SESSION["Walkinuser"]) ?  $_SESSION["Walkinuser"]["Address"] : "";
+    $nAdult = isset($_GET['na']) ? $_GET['na'] : "1";
+    $nKid = isset($_GET['nk']) ? $_GET['nk'] : "0";
+    $nSenior = isset($_GET['ns']) ? $_GET['ns'] : "0";
     
     $dateTime = new DateTime($_GET['cin']);
     // Get the day of the week as a number (1 = Monday, 2 = Tuesday, etc.)

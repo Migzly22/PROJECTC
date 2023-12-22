@@ -157,6 +157,12 @@ require("./Database.php");
 		width: 100% !important;
 		height: 100% !important;
 	}
+	#myChart32{
+		display: block;
+		width: 100% !important;
+		height: 100% !important;
+	}
+
 
 
 

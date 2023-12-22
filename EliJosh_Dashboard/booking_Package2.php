@@ -58,29 +58,33 @@
 
     $guesttotalnumber = $_GET['na']+$_GET['nk']+$_GET['ns'];
 
-    $sqlcodev1 = "SELECT a.*, f.*, CONCAT(a.CottageType, '-', a.Cottagenum) AS cottagename, g.TOTAL
-    FROM (SELECT b.*, c.* FROM cottage b LEFT JOIN cottagetypes c ON b.CottageType = c.ServiceTypeName) a 
-    LEFT JOIN (SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate FROM cottagereservation d LEFT JOIN reservations e ON d.reservationID = e.ReservationID 
-    WHERE e.CheckInDate = '".$_GET['cin']."' AND (e.timapackage = '".$_GET['tRANGE']."' OR e.timapackage = '22Hrs')) f ON a.Cottagenum = f.cottagenum LEFT JOIN
-    (SELECT  a.CottageType, SUM(a.MaxPersons) AS TOTAL
-    FROM (SELECT b.*, c.* FROM cottage b LEFT JOIN cottagetypes c ON b.CottageType = c.ServiceTypeName) a 
-    LEFT JOIN (SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate FROM cottagereservation d LEFT JOIN reservations e ON d.reservationID = e.ReservationID 
-    WHERE e.CheckInDate = '".$_GET['cin']."' AND (e.timapackage = '".$_GET['tRANGE']."' OR e.timapackage = '22Hrs')) f ON a.Cottagenum = f.cottagenum WHERE f.cr_id IS NULL  GROUP BY a.MaxPersons) g ON a.CottageType = g.CottageType WHERE f.cr_id IS NULL AND g.TOTAL >= '$guesttotalnumber';";
+    $sqlcodev1 = "SELECT a.*, f.*, CONCAT(a.RoomType, '-', a.RoomNum) AS roomname, g.TOTAL FROM 
+    (SELECT b.RoomID, b.RoomNum , c.* FROM rooms b LEFT JOIN roomtypes c ON b.RoomType = c.RoomType) a
+    LEFT JOIN
+    (SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate FROM roomsreservation d LEFT JOIN reservations e ON d.greservationID = e.ReservationID 
+    WHERE e.CheckInDate = '".$_GET['cin']."' AND (e.timapackage = '".$_GET['tRANGE']."' OR e.timapackage = '22Hrs')) f ON a.RoomNum = f.Room_num 
+    LEFT JOIN 
+    (SELECT  a.RoomType, SUM(a.MaxPeople) AS TOTAL FROM (SELECT b.RoomID, b.RoomNum , c.* FROM rooms b LEFT JOIN roomtypes c ON b.RoomType = c.RoomType) a
+    LEFT JOIN
+    (SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate FROM roomsreservation d LEFT JOIN reservations e ON d.greservationID = e.ReservationID 
+    WHERE e.CheckInDate = '".$_GET['cin']."' AND (e.timapackage = '".$_GET['tRANGE']."' OR e.timapackage = '22Hrs')) f ON a.RoomNum = f.Room_num WHERE f.RR_ID IS NULL  GROUP BY a.MaxPeople) g ON a.RoomType = g.RoomType
+    WHERE f.RR_ID IS NULL AND g.TOTAL >= '$guesttotalnumber';";;
     $queryrunv1 = mysqli_query($conn, $sqlcodev1);
 
-    
+
+
    // Split the string by comma (",") into an array
-   $array = explode("&", $_SERVER['QUERY_STRING']);
-   // Remove the first element from the array
-   array_shift($array);
-   $newqueryparam = implode("&",$array);
+    $array = explode("&", $_SERVER['QUERY_STRING']);
+    // Remove the first element from the array
+    array_shift($array);
+    $newqueryparam = implode("&",$array);
 ?>
 
 
 <main>
     <div class="head-title">
         <div class="left">
-            <h1>Add Cottage</h1>
+            <h1>Add Room</h1>
             <ul class="breadcrumb">
                 <li>
                     <a href="#">Booking</a>
@@ -95,7 +99,7 @@
                 </li>
                 <li><i class='bx bx-chevron-right' ></i></li>
                 <li>
-                    <a class="active" href="#">Add Cottage</a>
+                    <a class="active" href="#">Add Room</a>
                 </li>
             </ul>
             
@@ -122,7 +126,7 @@
     </div>
     <form id="REGFORM" class="order">
       <div class="head head2" style="display: flex;justify-content:space-between;align-items:center;">
-        <h3>Cottages</h3>
+        <h3>Rooms</h3>
         <div class="textshowinputs">
           <h5>
               Total : ₱ <span id="TOTALINIT"><?php echo $_GET['tinit'];?>
@@ -134,21 +138,22 @@
           $data1 = "";
           while ($result = mysqli_fetch_assoc($queryrunv1)) {
             if($_GET['tRANGE'] == "22Hrs"){
-              $pricename = "NightPrice";
+              $pricename = "Hours22";
             }else{
-              $pricename = $_GET['tRANGE']."Price";
+              $pricename = $_GET['tRANGE']."TimePrice";
             }
+            
 
             $data1 .= "
             <div class='boxcontainers'>
-              <img src='../Client/RoomsEtcImg/Cottages/".$result['ServiceTypeName'].".jpg' alt=''>
+              <img src='../Client/RoomsEtcImg/Rooms/".$result['RoomType'].".jpeg' alt=''>
               <div class='textcontainers'>
-                <h2 style='text-align: center;'>".$result["cottagename"]."</h2>
-                <small>Good for ".$result["MinPersons"]." - ".$result["MaxPersons"]." people</small>
+                <h2 style='text-align: center;'>".$result["roomname"]."</h2>
+                <small>Good for ".$result["MinPeople"]." - ".$result["MaxPeople"]." people</small>
                 <small>Price : ₱ ".number_format($result[$pricename],2) ."</small>
               </div>
               <div class='spawnerbtn' style='display: flex;justify-content: center;padding:0.5em 1em;'>
-                <button type='button' class='ADDMEBTN' id='".$result["cottagename"]."' onclick='activateClick(this,`".$result["cottagename"]."-".$result[$pricename]."-".$result["MaxPersons"]."`)'>Add</button>
+                <button type='button' class='ADDMEBTN' id='".$result["roomname"]."' onclick='activateClick(this,`".$result["roomname"]."-".$result[$pricename]."-".$result["MaxPeople"]."`)'>Add</button>
               </div>
             </div>
             ";
@@ -212,42 +217,38 @@
 
         const REGFORM = document.getElementById('REGFORM')
         REGFORM.addEventListener('submit', async (e) => {
-
           e.preventDefault();
+
           let pakagedetails = `<?php echo $_GET['package']; ?>`
 
-          
+
+         
           let totalnumperson = 0;
           for (let key in datacontainer) {
-              if (datacontainer.hasOwnProperty(key)) {
-                // Convert the price to a number and add it to the total
-                totalnumperson += parseFloat(datacontainer[key].max);
-              }
-            }
-          let clientstotalnumber = parseInt(`<?php echo $guesttotalnumber; ?>`)
-
-
-          if(pakagedetails === "Package1"){
-            if(Object.keys(datacontainer).length <= 0){
-              await Swal.fire({
-                text: "Pick a Cottage First",
-                icon: "info"
-              });
-              return;
-            }
-
-
-    
-            if(totalnumperson < clientstotalnumber){
-              await Swal.fire({
-                text: "The max people in the cottage is less than the guest numbers",
-                icon: "info"
-              });
-              return;
+            if (datacontainer.hasOwnProperty(key)) {
+              // Convert the price to a number and add it to the total
+              totalnumperson += parseFloat(datacontainer[key].max);
             }
           }
-          
+          let clientstotalnumber = parseInt(`<?php echo $guesttotalnumber; ?>`)
 
+          if(pakagedetails === "Package2"){
+            if(Object.keys(datacontainer).length <= 0){
+              await Swal.fire({
+                text: "Pick a Room First",
+                icon: "info"
+              });
+              return;
+            }
+
+            if(totalnumperson < clientstotalnumber){
+              await Swal.fire({
+                text: "The max people in the room is less than the guest numbers",
+                icon: "info"
+              });
+              return;
+          }
+          }
           //location.href = `./${REGFORM.noSenior.value}.php?cin=${Checkin}&package=${REGFORM.noSenior.value}`;
           let TOTALINIT = document.getElementById('TOTALINIT').innerText.replace("Total : ₱ ", "");
           let stringedJSON = JSON.stringify(datacontainer);
@@ -265,7 +266,8 @@
           var modifiedString = theparams.replace('&', '?');
           theparams = (modifiedString.split("?")[1]).split("&tinit")[0]
 
-          location.href = `./index.php?nzlz=booking_breakdown&${theparams}&cotlist=${stringedJSON}&tinit=${TOTALINIT}`
+          location.href = `./index.php?nzlz=booking_Package1&${theparams}&roomlist=${stringedJSON}&tinit=${TOTALINIT}`
+
 
 
         })

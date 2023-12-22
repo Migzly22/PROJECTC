@@ -149,7 +149,7 @@
               </tr>
 							<?php
 
-                $cottagejson = json_decode($_GET["cotlist"], true);
+                $cottagejson = isset($_GET["cotlist"]) ? json_decode($_GET["cotlist"], true) : array();
 
                 if(count($cottagejson) >  0 ){
                     // Iterate over the main array
@@ -221,34 +221,7 @@
         <div class="table-data">
           <div class="order">
             <div class="head">
-              <h3>Event</h3>
-            </div>
-            <table>
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <img src="img/people.png">
-                    <p>John Doe</p>
-                  </td>
-                  <td>01-10-2021</td>
-                  <td>01-10-2021</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-        </div>
-        <div class="table-data">
-          <div class="order">
-            <div class="head">
-              <h3>Rooms</h3>
+              <h3>Pavilion</h3>
             </div>
             <table>
               <thead>
@@ -263,9 +236,9 @@
                   foreach ($eventjson as $key => $nestedArray) {
 
                       echo "<tr>
-                          <th style='text-align:start;'>".$key."</th>
-                          <td style='text-align:center;'>1</td>
-                          <td style='text-align:end;'>₱ ".number_format($nestedArray["price"], 2)."</td>
+                          <th >".$key."</th>
+                          <td >1</td>
+                          <td >₱ ".number_format($nestedArray["price"], 2)."</td>
                           </tr>";
                   }
                 ?>
@@ -278,7 +251,7 @@
           
       }
 
-      $arraynew["COTTAGE"] = json_decode( $_GET["cotlist"], true);
+      $arraynew["COTTAGE"] = isset($_GET["cotlist"]) ? json_decode( $_GET["cotlist"], true) : null;
       $arraynew["ROOM"] = isset($_GET["roomlist"]) ? json_decode( $_GET["roomlist"], true) : null;
       $arraynew["EVENT"] = isset($_GET["eventlist"]) ? json_decode( $_GET["eventlist"], true) : null;
       $arraynew['TOTAL'] = $_GET["tinit"];
@@ -479,6 +452,7 @@
 
         let paymentdone = sqlcodepayment.replace(':ID:', `${dataid2}`)
         await AjaxSendv3(paymentdone,"BREAKDOWNLOGIC",`&Process=Insertmore`)
+        await AjaxSendv3(insertguest,"JSONTOARRAY",`&Process=DELETION`)
 
         
         $.ajax({
