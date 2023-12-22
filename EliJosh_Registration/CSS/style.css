@@ -1,0 +1,243 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins',sans-serif;
+}
+body{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: #eaeaff;
+
+  /*background-image: url();
+  background-repeat: no-repeat;
+  background-size: 70% 110%;
+  background-position: center;*/  
+}
+.container{
+  max-width: 700px;
+  width: 100%;
+  background-color: #ffffff;
+  padding: 25px 30px;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+.title-and-image {
+  display: flex;
+  align-items: center;
+}
+.title {
+  flex: 1;
+}
+
+.title-and-image img {
+  width: 80px; /* Adjust the width as needed */
+  height: auto;
+  margin-left: 10px; /* Adjust the margin as needed */
+  margin-bottom: 0%;
+}
+.container .title{
+  font-size: 25px;
+  font-weight: 500;
+  position: relative;
+}
+.container .title::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 30px;
+  border-radius: 5px;
+  background: #000088; /*000088 or 242e5a*/
+}
+.content form .user-details{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 20px 0 12px 0;
+}
+form .user-details .input-box{
+  margin-bottom: 15px;
+  width: calc(100% / 3 - 20px);
+}
+
+form .input-box span.details{
+  display: block;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+.user-details .input-box input{
+  height: 45px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+.user-details .input-box input:focus,
+.user-details .input-box input:valid{
+  border-color: #0000fe; /*000088 or 242e5a or 0000fe*/
+}
+
+/*ADDRESS*/
+.content form .user-details{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 20px 0 12px 0;
+  }
+  form .user-details .input-box-4{
+    margin-bottom: 15px;
+    width: calc(100% / 1 - 20px);
+  }
+
+.user-details .input-box-4 input{
+    height: 45px;
+    width: 103%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    border: 1px solid #ccc;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+  }
+.user-details .input-box-4 input:focus,
+.user-details .input-box-4 input:valid{
+  border-color: #0000fe; /*000088 or 242e5a or 0000fe*/
+}
+/**/
+
+
+/*CONTACT NUMBERR*/
+.content form .user-details{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 20px 0 12px 0;
+  }
+  form .user-details .input-box-5{
+    margin-bottom: 15px;
+    width: calc(100% / 2 - 10px);
+  }
+
+.user-details .input-box-5 input{
+    height: 45px;
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    border: 1px solid #ccc;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+  }
+.user-details .input-box-5 input:focus,
+.user-details .input-box-5 input:valid{
+  border-color: #0000fe; /*000088 or 242e5a or 0000fe*/
+}
+/*CONTACT NUMBERR*/
+
+/*NOTE
+.user-details .note h6{
+    font-size: 12px;
+    font-weight:500;
+}
+*/
+form .button{
+    height: 45px;
+    margin: 10px 0
+  }
+  form .button input{
+    height: 100%;
+    width: 780%;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #0000fe; /*0000fe or 242e5a*/
+  }
+  form .button input:hover{
+   background: #000088; /*000088 or 031634*/
+   }
+
+  .login{
+    text-align: center;
+    font-size: 15px;
+  }
+  .login label{
+    color: #0000fe; /*3f9cc1 or #fecb34*/
+    cursor: pointer;
+  }
+  .login label:hover{
+    text-decoration: underline;
+  }
+
+
+
+
+@media only screen and (max-width:360px) {
+    .user-details .input-box-4 input{
+        width: 108%;
+    }
+    form .user-details .input-box-5{
+        margin-bottom: 15px;
+        width: calc(100% / 1 - 10px);
+        width: 109%;
+      }
+      form .button input{
+        height: 80%;
+        width: 334%;
+      }
+}
+
+/*@media only screen and (max-width:600px) {
+    .container{
+        margin-top: 15%;
+        margin-right: 14%;
+    }
+    .user-details .input-box-4 input{
+        width: 105%;
+    }
+    form .button input{
+        height: 80%;
+        width: 535%;
+      }
+}*/
+
+ @media(max-width: 584px){
+ .container{
+  max-width: 100%;
+}
+form .user-details .input-box{
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  form .category{
+    width: 100%;
+  }
+  .content form .user-details{
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+  .user-details::-webkit-scrollbar{
+    width: 5px;
+  }
+  }
+  @media(max-width: 459px){
+  .container .content .category{
+    flex-direction: column;
+  }
+}

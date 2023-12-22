@@ -78,8 +78,8 @@
                 <?php  
                     }else{
                 ?>
-                    <li><a href="./login.php">Login</a></li>
-                    <li><a href="./Registration.php">Register now</a></li>
+                    <li><a href="../EliJosh_Login/index.php">Login</a></li>
+                    <li><a href="../EliJosh_Registration/index.php">Register now</a></li>
                 <?php  
                     }
                 ?>
