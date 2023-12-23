@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Registration Form | EliJosh Resort & Events Place</title>
     <link rel="icon" type="image/x-icon" href="/Resort Reservation Design_/image/title_logo.png">
-    <link rel="stylesheet" href="./CSS/style.css">
+    <link rel="stylesheet" href="./CSS/stylev2.css">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
@@ -27,7 +27,7 @@
       <img src="./CSS/image/title_logo.png" alt="Right Image">
     </div>
     <div class="content">
-      <form action="#">
+      <form action="../EliJosh_Login/index.php" id="REGFORM" method="post">
         <div class="user-details">
           <div class="input-box">
             <input type="text" placeholder="First name" id="fname" required>
@@ -46,15 +46,21 @@
             <small style="color:red;text-align:center;"></small>
           </div>
           <div class="input-box">
-            <input type="text" placeholder="Region" required>
+            <select id="region" required onchange="showProvince()">
+              <option value="" selected>--Select Region--</option>
+            </select>
             <small style="color:red;text-align:center;"></small>
           </div>
           <div class="input-box">
-            <input type="text" placeholder="Province" required>
+            <select id="Province" required onchange="showCities()">
+              <option value="" selected>--Select Province--</option>
+            </select>
             <small style="color:red;text-align:center;"></small>
           </div>
           <div class="input-box">
-            <input type="text" placeholder="City" required>
+            <select id="City" required>
+              <option value="" selected>--Select City--</option>
+            </select>
             <small style="color:red;text-align:center;"></small>
           </div>
 
@@ -91,8 +97,8 @@
     <div class="login">
       <span class="login">Already have an account?
         <?php
-          $specialcase = isset(explode('?', $_SERVER['REQUEST_URI'])[1]) ?   explode('?', $_SERVER['REQUEST_URI'])[1] : "";
-          echo "<a class='link' href='../EliJosh_Login/index.php?$specialcase'>Sign in</a>  ";
+          $specialcase = isset(explode('?', $_SERVER['REQUEST_URI'])[1]) ?   "?".explode('?', $_SERVER['REQUEST_URI'])[1] : "";
+          echo "<a class='link' href='../EliJosh_Login/index.php$specialcase'>Sign in</a>  ";
         ?>   
       </span>
     </div>
@@ -130,7 +136,7 @@
     const regionSelect = document.getElementById('region');
     const regions = await fetchRegions();
     // Clear existing options
-    regionSelect.innerHTML = '<option value="" selected></option>';
+    regionSelect.innerHTML = '<option value="" selected>--Select Region--</option>';
 
     // Populate the select with the new options
     regions.data.forEach(region => {
@@ -149,7 +155,7 @@
     const provinces = await fetchProvince(regionSelect)
 
     // Clear existing options
-    ProvinceSelect.innerHTML = '<option value="" selected></option>';
+    ProvinceSelect.innerHTML = '<option value="" selected>--Select Province--</option>';
 
     // Populate the select with the new options
     provinces.forEach(region => {
@@ -166,8 +172,7 @@
     const City = await fetchCities(ProvinceSelect)
 
     // Clear existing options
-    citiesSelect.innerHTML = '<option value="" selected></option>';
-    console.log(City)
+    citiesSelect.innerHTML = '<option value="" selected>--Select City--</option>';
     // Populate the select with the new options
     City.forEach(region => {
       const option = document.createElement('option');
@@ -176,6 +181,10 @@
       citiesSelect.add(option);
     });
   }
+  function convertToUppercase(inputElement) {
+        const inputValue = inputElement.value;
+        inputElement.value = inputValue.toUpperCase();
+    }
 
   // Initialize the region options on page load
   updateRegionOptions();
@@ -185,10 +194,10 @@
   function validateInput(inputElement) {
     const inputValue = inputElement.value;
     if (/[\d]/.test(inputValue)) {
-      inputElement.parentNode.children[1].innerText = 'Should not contain numbers.';
+      inputElement.parentNode.children[1].innerHTML = 'Should not contain numbers.';
       return false
     } else {
-      inputElement.parentNode.children[1].innerText = '';
+      inputElement.parentNode.children[1].innerHTML = '';
       return true
     }
   }
@@ -247,6 +256,11 @@
     }else if(input.id !== "address" && input.id !== "email" ){
       input.addEventListener('change', function () {
         validateInput(this)
+        convertToUppercase(this)
+      });
+    }else if (input.id === "address" ){
+      input.addEventListener('input', function() {
+        convertToUppercase(this)
       });
     }
 
@@ -258,21 +272,25 @@
     let jsondata = {}
 
       inputs.forEach(input => {
-        if(input.id === "password" ){
-          !(passwordValidation(input)) ? errcount++ : ""
-        }else if(input.id === "pnum" ){
-          !(validateNumberInput(input)) ? errcount++ : ""
-        }else if(input.id === "cpassword" ){
-            !(cpasswordValidation(input))? errcount++ : ""
-        }else if(input.id !== "address" && input.id !== "email" ){
-            !(validateInput(input))? errcount++ : ""
+        if(input.type !== "submit"){
+          if(input.id === "password" ){
+            !(passwordValidation(input)) ? errcount++ : ""
+            }else if(input.id === "pnum" ){
+              !(validateNumberInput(input)) ? errcount++ : ""
+            }else if(input.id === "cpassword" ){
+                !(cpasswordValidation(input))? errcount++ : ""
+            }else if(input.id !== "address" && input.id !== "email" ){
+                !(validateInput(input))? errcount++ : ""
+            }
+            jsondata[input.id] = input.value
         }
 
-        jsondata[input.id] = input.value
       });
       const selects = document.querySelectorAll('select');
       jsondata["city"] = selects[2].value+", "+selects[1].value.split("[]")[1]
 
+
+      console.log(1234)
       if(errcount == 0){
         let sqlcode= `INSERT INTO userscredentials (Password, Email, FirstName, LastName, MiddleName, Address, City, Country, PhoneNumber) 
         VALUES ('${jsondata.password}', '${jsondata.email}', '${jsondata.fname}', '${jsondata.lname}', '${jsondata.mname}','${jsondata.address}', '${jsondata.city}', 'PH', '${jsondata.pnum}');`;

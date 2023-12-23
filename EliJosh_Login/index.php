@@ -74,8 +74,8 @@ if(isset($_POST["Loginbtn"])){
       <div class="signup">
         <span class="signup">Don't have an account?
         <?php
-          $specialcase = isset(explode('?', $_SERVER['REQUEST_URI'])[1]) ? explode('?', $_SERVER['REQUEST_URI'])[1] : "";
-          echo "<a class='link' href='../EliJosh_Registration/index.php?$specialcase'>Sign up</a>  ";
+          $specialcase = isset(explode('?', $_SERVER['REQUEST_URI'])[1]) ? "?".explode('?', $_SERVER['REQUEST_URI'])[1] : "";
+          echo "<a class='link' href='../EliJosh_Registration/index.php$specialcase'>Sign up</a>  ";
         ?> 
         </span>
       </div>

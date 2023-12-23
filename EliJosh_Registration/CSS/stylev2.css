@@ -71,7 +71,7 @@ form .input-box span.details{
   font-weight: 500;
   margin-bottom: 5px;
 }
-.user-details .input-box input{
+.user-details .input-box input,.user-details .input-box select{
   height: 45px;
   width: 100%;
   outline: none;
@@ -83,8 +83,14 @@ form .input-box span.details{
   transition: all 0.3s ease;
 }
 .user-details .input-box input:focus,
-.user-details .input-box input:valid{
+.user-details .input-box input:valid,
+.user-details .input-box select:valid{
   border-color: #0000fe; /*000088 or 242e5a or 0000fe*/
+  color: #000;
+}
+.user-details .input-box select {
+  /* Try applying styles directly to the select element */
+  color: #706e6e;
 }
 
 /*ADDRESS*/
@@ -177,11 +183,12 @@ form .button{
     text-align: center;
     font-size: 15px;
   }
-  .login label{
+  .login label, .login a{
     color: #0000fe; /*3f9cc1 or #fecb34*/
     cursor: pointer;
+    text-decoration: none;
   }
-  .login label:hover{
+  .login label:hover, .login a:hover{
     text-decoration: underline;
   }
 

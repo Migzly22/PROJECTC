@@ -480,7 +480,7 @@ require("./Database.php");
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="#" class="logout">
+				<a href="./logOut.php" class="logout">
 					<i class='bx bxs-log-out' ></i>
 					<span class="text">Logout</span>
 				</a>
@@ -504,7 +504,7 @@ require("./Database.php");
 					<div class="dropdown-content">
 					  <a href="./index.php?nzlz=settings"><i class='bx bx-cog' ></i> Setting</a>
 					  <a href="../Client/index.php"><i class='bx bx-home' ></i>Go Home</a>
-					  <a href="#"><i class='bx bx-door-open' ></i>Logout</a>
+					  <a href="./logOut.php"><i class='bx bx-door-open' ></i>Logout</a>
 					</div>
 				</div>
 			</div>
