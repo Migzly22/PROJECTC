@@ -1,6 +1,6 @@
 <?php
 
-require("../Database.php");
+require("../../Database.php");
 session_start();
 ob_start();
 
