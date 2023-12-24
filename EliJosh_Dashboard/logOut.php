@@ -9,7 +9,7 @@ session_unset();
 session_destroy();
 
 // Redirect to a page or perform any other actions as needed
-header("Location: ../Client/index.php");
+header("Location: ../EliJosh_Client/index.php");
 ob_end_flush();
 exit; // Ensure no further code is executed after the header
 ?>

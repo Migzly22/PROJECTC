@@ -1,0 +1,337 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100;0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,100;1,9..40,200;1,9..40,300&family=DM+Serif+Display&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Playfair:ital,opsz,wght@0,5..1200,300;0,5..1200,400;0,5..1200,500;0,5..1200,600;0,5..1200,700;0,5..1200,800;0,5..1200,900;1,5..1200,300;1,5..1200,400;1,5..1200,500;1,5..1200,600;1,5..1200,700;1,5..1200,800;1,5..1200,900&display=swap');
+*{
+    font-family: 'Playfair', serif;
+    padding: 0;
+    margin: 0;
+}
+html,body{
+    scroll-behavior: smooth;
+}
+
+.textkainit{
+    font-family: 'Kanit', sans-serif;
+}
+ul{
+    list-style: none;
+}
+a{
+    color: #fff;
+    text-decoration: none;
+}
+body::-webkit-scrollbar{
+    width: 0px;
+}
+/* Style the dropdown container */
+.dropdown {
+    position: relative;
+}
+
+/* Style the dropdown menu */
+.dropdown .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 200px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Style the dropdown menu items */
+.dropdown-menu li {
+    padding: 10px;
+}
+.dropdown-menu li:hover {
+    background: #C1B086;
+}
+/* Style the dropdown menu links */
+.dropdown-menu a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+}
+
+.Mainnavigation {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 300;
+    background: transparent;
+    position: relative;
+}
+
+nav ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+    padding: .5em   ;
+ 
+}
+.Mainnavigation ul li{
+    padding: .5em;
+    border: 3px solid transparent;
+    transition: all .3s ease-in-out;
+}
+.Mainnavigation  ul li a{
+    font-size: .8em;
+    transition: all .3s ease-in-out;
+}
+.glassylink{
+    /* From https://css.glass */
+    background: rgba(255, 255, 255, 0);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+
+.Mainnavigation ul li:hover:not(.HOMETITLELI){
+    border-bottom: 3px solid #C1B086;
+}
+.USERVALUE{
+    position: absolute;
+    top: 50%;
+    right: 2%;
+    translate: -50% -50%;
+}
+.USERVALUE svg{
+    fill: #fff;
+    font-size: 1.2em;
+}
+.USERVALUE2 svg{
+    fill: #333;
+    font-size: 1.2em;
+}
+.USERVALUE:hover svg{
+    fill: #C1B086;
+    font-size: 1.2em;
+}
+ul li:hover:not(.HOMETITLELI) a{
+    font-size: 1em;
+}
+.Mainnavigation  .HOMETITLE{
+    font-size: 2.3em;
+    transition: all .3s ease-in-out;
+}
+.Mainnavigation  .HOMETITLELI:hover .HOMETITLE{
+    font-size: 2.5em;
+}
+
+.darktype ul li:hover:not(.HOMETITLELI){
+    border-bottom: 1px solid #333;
+}
+.darktype ul li a{
+    color:  #333;
+}
+.glassylink a{
+    color: #333;
+    font: #333 !important;
+}
+.BOOKINGSECTION{
+    width: 100vw;
+    min-height: 300px;
+    padding: 2em 0em;
+
+    display: flex;
+    gap: 1em;
+}
+
+.right{
+    padding: 1em;
+    width: 70%;
+}
+.right h1{
+    font-size: 2em;
+}
+.listofchoices{
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.addtocart{
+    background: blue;
+    width: 350px;
+    height: 250px;
+    position: relative;
+}
+.addtocart img{
+    width: 100%;
+    height: 100%;
+}
+.textareapart{
+    position: absolute;
+    top: 0;
+    right: 0;
+
+
+    height: 100%;
+    background: rgba(0, 0, 0, 0.309);
+    width: 30%;
+    padding: 0 1em;
+
+}
+
+.buttonitself{
+    position: absolute;
+    bottom: 10%;
+    right: 25%;
+}
+.buttonitself button{
+    border: 0;
+    background: #003ee9;
+    color: #fff;
+    padding: .2em;
+    border-radius: 10px;
+}
+
+.buttonitself button:hover{
+    background: #3f9cc1;
+}
+.Recommentd{
+    position: absolute;
+    top: 0;
+    background: #C1B086;
+    padding: .3em;
+    border-radius:5px;
+}
+.Recommentd svg{
+    fill: #fff;
+}
+.curseone{
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .2em;
+}
+.curseone svg{
+    fill: #fff;
+}
+
+
+  
+footer .container{
+    display: grid;
+    grid-template-columns: 23% 23% 23% 23%;
+    padding: 1em;
+}
+
+.CONTAINERSECTIONS223{
+    width: 100vw;
+    height: 100dvh;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    position: relative;
+}
+.CONTAINERSECTIONS223 h2{
+    color: #fff;
+}
+.CONTAINERSECTIONS223 .right{
+    width: 100%;
+    background: #003ee98a;
+    padding: 2em 0 4em 0;
+}
+.facilitiesview{
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+.facilitiesview .box{
+    width: 150px;
+    padding: 1em 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 20%;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.facilitiesview .box svg{
+    width: 2em;
+    height: 2em;
+}
+
+
+
+.boxtags{
+    width: fit-content;
+    min-width: 300px;
+    padding: 1em;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.formboxtags{
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    margin-bottom: 1em;
+    align-items: center;
+    
+}
+
+.formboxtags input{
+    width: 150px;
+    padding: .5em;    
+}
+.formboxtags select{
+
+    width: 169px;
+    padding: 1em;
+
+}
+.buttoncontianer{
+    
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+}
+.buttoncontianer button{
+    padding: .5em;
+    border: 1px solid #003ee9;
+    color: #003ee9;
+    background: transparent;
+    border-radius: 10px;
+}
+.buttoncontianer button:hover{
+    border: 0px;
+    color: #fff;
+    background: #3f9cc1;
+
+}
+
+.containerVBox{
+    padding: 1em;
+    margin: 2em 0;
+
+}
+.containerVBox .virtualtourdiv{
+    min-width: 300px;
+    width: 60vw;
+    min-height: 400px;
+    height: 50dvh;
+    border: 5px solid #333;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+
+

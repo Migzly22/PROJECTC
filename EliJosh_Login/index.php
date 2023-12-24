@@ -13,7 +13,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Login | EliJosh Resort and Events Place</title>
-  <link rel="icon" type="image/x-icon" href="/Resort Reservation Design_/image/title_logo.png">
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
   <!---Custom CSS File--->
   <link rel="stylesheet" href="css/style.css">
@@ -22,6 +21,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 	
+  <link rel="icon" type="image/x-icon" href="../EliJosh_Dashboard/img/title_logo.ico">
 </head>
 <body>
 
@@ -43,7 +43,7 @@ if(isset($_POST["Loginbtn"])){
       $_SESSION["USERID"] = $row["userID"];
       $_SESSION["ACCESS"] = $row["Access"];
 
-      header("Location: ../Client/index.php");
+      header("Location: ../EliJosh_Client/index.php");
       ob_end_flush();
       exit; // Ensure no further code is executed after the header  
 
