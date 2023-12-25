@@ -42,7 +42,9 @@ function sending($to,$html){
   $mail ->AddAddress($to,'');
   $mail ->Body = $html;
   
-  $mail ->send();
+  //$mail ->send();
+  $sent = $mail->send();
+
 
 }
 

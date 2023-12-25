@@ -6,6 +6,15 @@
     ob_start();
 	date_default_timezone_set('Asia/Shanghai');
 
+
+    if (!isset($_SESSION["USERID"]) || !isset($_SESSION["ACCESS"])){
+        header("Location: ../EliJosh_Login/index.php");
+        ob_end_flush();
+        exit;
+    }
+
+
+
 	$usertoken = !isset($_SESSION["USERID"]) ?  null : $_SESSION["USERID"];
 	$targetlinks= isset($_GET["nzlz"]) ? $_GET["nzlz"] :"booking" ;
 ?>
@@ -31,7 +40,7 @@
 	
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-	<script src="./JS/compilation.js" defer></script>
+	<script src="./JS/compilationv2.js" defer></script>
 
 
 
@@ -428,7 +437,7 @@
 						<?php  
 							if($usertoken != null){
 						?>
-							<li><i class='bx bxs-cog' ></i><a href="../EliJosh_Client/settings.php">Account</a></li>
+							<li><i class='bx bxs-cog' ></i><a href="../EliJosh_Special/specialcon.php?nzlz=settings">Account</a></li>
 							<?php
 								if($_SESSION["ACCESS"] != "CLIENT"){
 							?>
@@ -436,7 +445,7 @@
 							<?php
 								}
 							?>
-							<li><i class='bx bxs-bookmark-alt' ></i><a href="../EliJosh_Client/bookinginformations.php">Booking</a></li>
+							<li><i class='bx bxs-bookmark-alt' ></i><a href="../EliJosh_Special/specialcon.php?nzlz=bookingDetails">Booking Details</a></li>
 							<li><i class='bx bxs-door-open' ></i><a href="../EliJosh_Client/logOut.php">Logout</a></li>
 
 						<?php

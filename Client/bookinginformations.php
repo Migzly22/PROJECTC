@@ -140,7 +140,13 @@
                             </thead>
                             <tbody id="TBODYELEMENT">
 <?php
-    $sqlbooking = "SELECT  a.*, b.*, IF(b.Description = 'Pending', 'Pending', 'Done') AS STATUSHEHE FROM reservations a LEFT JOIN guestpayments b ON a.ReservationID = b.ReservationID WHERE a.UserID = '".$_SESSION["USERID"]."' AND b.Description is NOT NULL ORDER BY a.ReservationID DESC;";
+    $sqlbooking = "SELECT  a.* (a.NumAdults + a.NumChildren + a.NumSeniors + a.NumExcessPax) AS noguest,
+    CASE
+      WHEN a.package == 'Package1' THEN 'Swimming'
+      WHEN a.package == 'Package1'THEN 'Rooms + Swimming'
+      ELSE 'Pavilion'
+    END AS packagesname,
+  b.* FROM reservations a LEFT JOIN guestpayments b ON a.ReservationID = b.ReservationID WHERE a.UserID = '27' AND b.Description is NOT NULL ORDER BY a.ReservationID DESC;";
     $querybooking = mysqli_query($conn,$sqlbooking);
     $tbodydata = "";
     while ($result = mysqli_fetch_assoc($querybooking)) {

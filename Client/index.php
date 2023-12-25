@@ -33,6 +33,8 @@
     <script src="./JS/script1.js" defer></script>
     <script src="./Calendar/app23.js" defer></script>
 
+
+    <script src="https://www.paypal.com/sdk/js?client-id=ASOqstSFrYa4HOtKpsdNhQV8_RvIiHFc0447LO_Vm-QMLhHObWY8dclfI84oymETpgdVBgWo4zgdLc3V"></script>
              
 </head>
 <body>

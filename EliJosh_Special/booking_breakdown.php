@@ -282,8 +282,8 @@
 							</tr>
 						</tbody>
 					</table>
-                    <div style="text-align: center;" class="hehezzz">
-                        <div id="paypal-button-container" ></div>
+                    <div style="text-align: center;display:flex;justify-content:center; padding-top:2em;" class="hehezzz">
+                        <div id="paypal-button-container" style="width:30%;min-width:300px;" ></div>
                     </div>
 				</div>
        
@@ -327,7 +327,6 @@
 
             createOrder: async function(data, actions){
                 result = downP / USD_PHP;
-                console.log(USD_PHP)
                 result = Math.round(result * 100) / 100;
 
                 return actions.order.create({
@@ -342,7 +341,6 @@
             },
             onApprove: function(data, actions){
                 return actions.order.capture().then(function(details){
-                    console.log(details.id)
                     
                     if(details.status === "COMPLETED"){
                         SAVE(details.id);
@@ -364,16 +362,16 @@
     async function SAVE(ids) {
         let downpayment = `<?php echo $arraynew['DPAYMENT'];?>`;
 
-        let sqlcodepayment = `INSERT INTO guestpayments ( ReservationID, PaymentDate, AmountPaid, PaymentMethod, Description) VALUES (':ID:', CURRENT_DATE , '${downpayment}', 'ONLINE','${ids}');`;
+        let sqlcodepayment = `INSERT INTO guestpayments ( ReservationID, PaymentDate, AmountPaid, PaymentMethod, Description) VALUES (':ID:', CURRENT_DATE , '${downpayment}', 'PAYPAL','${ids}');`;
         Inputtime(sqlcodepayment,ids)
 
     }
 
     async function Inputtime(sqlcodepayment,paymentdescription){
    
-        const savevalues = document.getElementById("savevalues").value; `<?php echo $arraynew['DPAYMENT'];?>`
+        const savevalues =`<?php echo $_SESSION["Newcustomerappointment"];?>`; 
         var jsonObject = JSON.parse(savevalues);
-        console.log(jsonObject)
+
 
 
 
@@ -418,7 +416,7 @@
 
         // Create a new Date object for the next day
         const nextDayDateObject = new Date(nextYear, nextMonth - 1, nextDay);
-        console.log(nextDayDateObject);
+
 
         let newdata = ''
         switch (jsonObject.trange) {
@@ -444,7 +442,7 @@
          '${jsonObject["No. of Seniors"]}', 
          '0', 
          '${jsonObject.trange}', 
-         '${jsonObject.PACKAGESNUM}', 
+         '${jsonObject.package}', 
          '${jsonObject.TOTAL}', 
          '${jsonObject.DPAYMENT}',
          '${jsonObject.USERINFO.userID}');`
@@ -496,21 +494,17 @@
             {
                 console.log("errro")
             },
-            success:async function(){
-                await sendinggmailnotif(dataid2, paymentdescription,jsonObject["email"],jsonObject["userID"])
-                //location.href = "../Admins/Composer/docxphp.php";dataid2, paymentdescription
-                
-                //location.href = "./bookinginformations.php";
+            success:async function(){const filePath = '../Send2.php';
+                await sendinggmailnotif(dataid2, paymentdescription,jsonObject.USERINFO.Email,jsonObject.USERINFO.userID)
             }
         }); 
 
     }
 
     async function sendinggmailnotif (reserveid,paymentdescription,email,ids){
-        //https://elijoshresortandeventsplace.com/
         $.ajax({    
             type: "post",
-            url: "https://elijoshresortandeventsplace.com/Send2.php",             
+            url: "../Send2.php",             
             data: "reservationvalue="+ reserveid+"&&pid="+paymentdescription+"&&email="+email+"&&ids="+ids,    
             dataType: 'json',   
             beforeSend:function(){
@@ -524,10 +518,10 @@
             success: async function(response) {
 
                 await Swal.fire({
-                    text: "Transaction successful! Thank you for your reservation.",
+                    text: "Transaction is successful! Thank you for your reservation.",
                     icon: "success"
                 });
-                location.href = "./bookinginformations.php";
+                location.href = "./specialcon.php?nzlz=bookingDetails";
             }
 
 

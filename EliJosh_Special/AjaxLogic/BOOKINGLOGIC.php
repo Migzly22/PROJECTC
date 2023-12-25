@@ -6,7 +6,13 @@ ob_start();
 
 $sqlcode = $_POST["sqlcode"];
 
-$default = "SELECT a.*, b.*, CONCAT(b.LastName,', ', b.FirstName) as Name FROM reservations a LEFT JOIN guests b ON a.GuestID = b.GuestID ORDER BY a.CheckInDate DESC;";
+$default = "SELECT  a.*, (a.NumAdults + a.NumChildren + a.NumSeniors + a.NumExcessPax) AS noguest,
+CASE
+  WHEN a.package = 'Package1' THEN 'Swimming'
+  WHEN a.package = 'Package2'THEN 'Rooms + Swimming'
+  ELSE 'Pavilion'
+END AS packagesname,
+b.* FROM reservations a LEFT JOIN guestpayments b ON a.ReservationID = b.ReservationID WHERE a.UserID = '".$_SESSION["USERID"]."' AND b.Description is NOT NULL ORDER BY a.ReservationID DESC;";
 
 
 function PRINTING($conn, $sqlcode3){
@@ -14,23 +20,27 @@ function PRINTING($conn, $sqlcode3){
     $queryrun1 = mysqli_query($conn,$sqlcode3);
     $data1 = "";
     while ($result = mysqli_fetch_assoc($queryrun1)) {
-        $time = $result['eCheckin'];
         $statuscolor = ($result['ReservationStatus'] == "BOOKED" ? "process" : ($result['ReservationStatus'] == "CANCELLED" ? "pending" : "completed"));
         
+        if($result['ReservationStatus'] != "CANCELLED"){
+            $onclicvalue = "showChangeStatus(`".$result['ReservationID']."`,`".$result['ReservationStatus']."`)";
+        }else{
+            $onclicvalue = "";
+        }
+
         $data1 .= "
         <tr>
             <td style='display:flex;flex-direction:column;align-items:start;'>
-                <p>".$result['Name']."</p>
-                <small><i>".$result['Email']."</i></small>
+                <p>".$result['eCheckin']."</p>
             </td>
-            <td>$time</td>
-            <td>".$result['finalCheckout']."</td>
-            <td><a href='#' onclick='showChangeStatus(`".$result['ReservationID']."`,`".$result['ReservationStatus']."`)'><span class='status $statuscolor'>".$result['ReservationStatus']."</span></a></td>
-            <td class='TableBtns'>
-                <a class='EditBTN' href='./index.php?nzlz=booking_info&ISU=".$result['ReservationID']."'  rel='noopener noreferrer'>
-                    <i class='bx bx-edit-alt' ></i>
-                </a>
+            <td>
+            ".$result['timapackage']." ".$result['packagesname']."
             </td>
+            <td>
+                ₱ ".number_format($result['Downpayment'],2)."
+            </td>
+            <td>".$result['Description']."</td>
+            <td><a href='#' onclick='$onclicvalue'><span class='status $statuscolor'>".$result['ReservationStatus']."</span></a></td>
         </tr>";
     }
 
@@ -48,12 +58,11 @@ function PRINTING($conn, $sqlcode3){
 }
 
 
-function SPECIALPARTS($conn, $sqlcode3){
-
-}
 
 switch ($_POST["Process"]) {
     case 'Search':
+        $sqlcode = str_replace("a.UserID = '".$_SESSION["USERID"]."' AND b.Description is NOT NULL", "a.UserID = '".$_SESSION["USERID"]."' AND b.Description is NOT NULL AND $sqlcode", $default);
+
         PRINTING($conn, $sqlcode);
         break;
     case 'Reset':

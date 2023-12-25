@@ -17,7 +17,7 @@
     <title>EliJosh Resort & Event</title>
     <link rel="icon" type="image/x-icon" href="./img/title_logo.ico">
 
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/stylev1.css">
     <link href="./CSS/style.scss" rel="stylesheet/scss" type="text/css">
     <link rel="stylesheet" href="./CSS/app.css">
     <link rel="stylesheet" href="./Calendar/app.css">
@@ -49,7 +49,14 @@
     <script src="./Calendar/app23.js" defer></script>
 
 
-    
+    <style>
+        html, body{
+            overflow: auto;
+        }
+        .CONTAINERSECTIONS{
+
+        }
+    </style>
              
 </head>
 <body>
@@ -86,7 +93,7 @@
                     <?php  
                         if($usertoken != null){
                     ?>
-                          <li><i class='bx bxs-cog' ></i><a href="./InsideMain.php">Account</a></li>
+                          <li><i class='bx bxs-cog' ></i><a href="../EliJosh_Special/specialcon.php?nzlz=settings">Account</a></li>
                           <?php
                             if($_SESSION["ACCESS"] != "CLIENT"){
                           ?>
@@ -94,7 +101,7 @@
                           <?php
                             }
                           ?>
-                          <li><i class='bx bxs-bookmark-alt' ></i><a href="./bookinginformations.php">Booking</a></li>
+                          <li><i class='bx bxs-bookmark-alt' ></i><a href="../EliJosh_Special/specialcon.php?nzlz=bookingDetails">Booking Details</a></li>
                           <li><i class='bx bxs-door-open' ></i><a href="./logOut.php">Logout</a></li>
 
                     <?php
@@ -282,6 +289,7 @@
                         <?php
                             include_once "./virtualmap/index.html";
                         ?>
+                        </div>
                     </div>
                 </div>
                 <div class="rightcontainert2">
