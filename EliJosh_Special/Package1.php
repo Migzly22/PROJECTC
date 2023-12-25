@@ -252,7 +252,7 @@
 	  var modifiedString = theparams.replace('&', '?');
 	  theparams = (modifiedString.split("?")[1]).split("&tinit")[0]
 
-	  location.href = `./index.php?nzlz=booking_breakdown&${theparams}&cotlist=${stringedJSON}&tinit=${TOTALINIT}`
+	  location.href = `./specialcon.php?nzlz=booking_breakdown&${theparams}&cotlist=${stringedJSON}&tinit=${TOTALINIT}`
 
 
 	})

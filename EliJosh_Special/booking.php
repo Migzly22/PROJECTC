@@ -31,13 +31,15 @@
         $timevalue = "02:00 PM - 12: 00 PM";
         break;
     }
-    
+    //print_r($_SESSION["Walkinuser"]);
     $fname = isset($_SESSION["Walkinuser"]) ? $_SESSION["Walkinuser"]["FirstName"] : "";
     $mname = isset($_SESSION["Walkinuser"]) ? $_SESSION["Walkinuser"]["MiddleName"] : "";
     $lname = isset($_SESSION["Walkinuser"]) ? $_SESSION["Walkinuser"]["LastName"] : "";
     $email = isset($_SESSION["Walkinuser"]) ? $_SESSION["Walkinuser"]["Email"] : "";
     $phone = isset($_SESSION["Walkinuser"]) ? $_SESSION["Walkinuser"]["PhoneNumber"] : "";
     $address = isset($_SESSION["Walkinuser"]) ?  $_SESSION["Walkinuser"]["Address"] : "";
+
+
     $nAdult = isset($_GET['na']) ? $_GET['na'] : "1";
     $nKid = isset($_GET['nk']) ? $_GET['nk'] : "0";
     $nSenior = isset($_GET['ns']) ? $_GET['ns'] : "0";
@@ -106,6 +108,14 @@
                 <h3>Guest Number</h3>
             </div>
             <form action="" method="get" class="formcontainers" id="REGFORM">
+                <div class="layer-1">
+                  <div class="form-group f30">
+                    <label for="" > Time of Arrival <span class="requiredcolor">*</span></label>
+                      <input data-role="timepicker" data-seconds="false" type="text" id="timeSSS">
+                      <small style="color: #D2042D;text-align:center;"></small>
+                      <p></p>
+                  </div>
+                </div>
                 <div class="layer-3">
                     <div class="form-group f30">
                         <input type="number" class="form-control" name="" value="<?php echo $nAdult?>" id="nAdult"  required placeholder=" ">
@@ -134,7 +144,6 @@
                 <div class="BUTTONHANDLER">
                     <button type="submit" class="ContinueBTN">Continue</button>
                 </div>
-                
             </form>
         </div>
     </div>
@@ -159,47 +168,6 @@
       return true
     }
 
-    function validateNumberInput2(inputElement) {
-          const inputValue = inputElement.value;
-          if (/^(?:\+\d{12}|\d{11})$/.test(inputValue)) {
-            inputElement.parentNode.children[2].innerText = '';
-            return true
-          } else {
-            inputElement.parentNode.children[2].innerText = 'Philippine contact number only.';
-            return false
-          }
-        }
-    function validateInput(inputElement) {
-          const inputValue = inputElement.value;
-          if (/[\d]/.test(inputValue)) {
-            inputElement.parentNode.children[2].innerText = 'Inputs should not contain numbers.';
-            return false
-          } else {
-            inputElement.parentNode.children[2].innerText = '';
-            return true
-          }
-        }
-
-    function compute(){
-      let sum = 0;
-      if(packsss == "Package2"){
-        document.getElementById('TOTALINIT').innerText = sum.toFixed(2)
-        return
-      }
- 
-      let a = document.getElementById('nAdult').value 
-      let b = document.getElementById('nKid').value 
-      let c = document.getElementById('nSenior').value
-
-      sum = (parseFloat(a)*adultval) + (parseFloat(b)*kidval) + (parseFloat(c)*senior)
-
-      document.getElementById('TOTALINIT').innerText = sum.toFixed(2)
-    }
-
-    function convertToUppercase(inputElement) {
-        const inputValue = inputElement.value;
-        inputElement.value = inputValue.toUpperCase();
-    }
 
     //Validation
     const inputs = document.querySelectorAll('input');
@@ -215,20 +183,6 @@
             numnew = senior
           }
           validateNumberInput(this,numnew)
-        });
-      }else  if(input.id === "phone"){
-        input.addEventListener('input', function() {
-          validateNumberInput2(this)
-        });
-
-      }else if (input.id !== "address" && input.id !== "email"){
-        input.addEventListener('input', function() {
-          validateInput(this)
-          convertToUppercase(this)
-        });
-      }else if (input.id === "address" ){
-        input.addEventListener('input', function() {
-          convertToUppercase(this)
         });
       }
     });
@@ -269,52 +223,43 @@
         return;
       }
 
-
-
-      
-      let errcount = 0;
-
-      inputs.forEach(input => {
-        if (input.type === "number") {
-          
-        }else  if(input.type !== "hidden"){
-          if(input.id === "phone"){
-            console.log(input.id, validateInput(input))
-            !(validateNumberInput2(input)) ? errcount++ : ""
-          }else if (input.id !== "address" && input.id !== "email"){
-              console.log(input.id, validateInput(input))
-              !(validateInput(input))? errcount++ : ""
-          }
-        }
-      })
-
-      console.log(errcount)
+      let errcount = 0
         if(errcount == 0){
               //location.href = `./${REGFORM.noSenior.value}.php?cin=${Checkin}&package=${REGFORM.noSenior.value}`;
           let TOTALINIT = document.getElementById('TOTALINIT').innerText.replace("Total : ₱ ", "");
 
-          let jsondata = {
-            userID : null,
-            FirstName : REGFORM.fname.value,
-            MiddleName : REGFORM.mname.value,
-            LastName : REGFORM.lname.value,
-            PhoneNumber : REGFORM.phone.value,
-            Address : REGFORM.address.value,
-            City : null,
-            Email : REGFORM.email.value,
 
+          let specialTEXTAREA = `<?php
+                    $getUSER = "SELECT * FROM userscredentials WHERE userID = '".$_SESSION["USERID"]."';";
+                    $sqlquery32 = mysqli_query($conn,$getUSER);
+                    $result = mysqli_fetch_assoc($sqlquery32);
+                    echo json_encode($result, JSON_PRETTY_PRINT);?>`
+          let jsondataUSER = JSON.parse(specialTEXTAREA);
+
+
+          console.log(jsondataUSER)
+          let jsondata = {
+            userID : jsondataUSER.userID,
+            FirstName : jsondataUSER.FirstName,
+            MiddleName : jsondataUSER.MiddleName,
+            LastName : jsondataUSER.LastName,
+            PhoneNumber : jsondataUSER.PhoneNumber,
+            Address : jsondataUSER.Address,
+            City : jsondataUSER.City,
+            Email : jsondataUSER.Email
           }
+
+          console.log(jsondata)
+
           let insertguest =JSON.stringify(jsondata); 
           await AjaxSendv3(insertguest,"JSONTOARRAY")
 
 
           let currentURL = location.href;
           let theparams = currentURL.split("?")[1]
-          var modifiedString = theparams.replace('&', '?');
-          theparams = modifiedString.split("?")[1]
-          location.href = `./index.php?nzlz=booking_<?php echo $_GET["package"];?>&${theparams}&na=${REGFORM.nAdult.value}&nk=${REGFORM.nKid.value}&ns=${REGFORM.nSenior.value}&tinit=${compute2()}`
 
-          
+          location.href = `./specialcon.php?nzlz=<?php echo $_GET["package"];?>&${theparams}&ETIME=${REGFORM.timeSSS.value}&na=${REGFORM.nAdult.value}&nk=${REGFORM.nKid.value}&ns=${REGFORM.nSenior.value}&tinit=${compute2()}`
+
         }
         
  

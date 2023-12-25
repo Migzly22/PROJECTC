@@ -254,7 +254,7 @@
 	  var modifiedString = theparams.replace('&', '?');
 	  theparams = (modifiedString.split("?")[1]).split("&tinit")[0]
 
-	  location.href = `./index.php?nzlz=booking_Package1&${theparams}&roomlist=${stringedJSON}&tinit=${TOTALINIT}`
+	  location.href = `./specialcon.php?nzlz=Package1&${theparams}&roomlist=${stringedJSON}&tinit=${TOTALINIT}`
 
 
 

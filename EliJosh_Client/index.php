@@ -15,6 +15,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EliJosh Resort & Event</title>
+    <link rel="icon" type="image/x-icon" href="./img/title_logo.ico">
 
     <link rel="stylesheet" href="./css/style.css">
     <link href="./CSS/style.scss" rel="stylesheet/scss" type="text/css">
@@ -47,6 +48,8 @@
     <script src="./JS/script1.js" defer></script>
     <script src="./Calendar/app23.js" defer></script>
 
+
+    
              
 </head>
 <body>
@@ -304,28 +307,28 @@
     
           <div class="owl-carousel owl-theme">
             <div class="item">
-              <img src="./images/s1.jpg" alt="">
+              <img src="./Images/s1.jpg" alt="">
             </div>
             <div class="item">
-              <img src="./images/s2.jpg" alt="">
+              <img src="./Images/s2.jpg" alt="">
             </div>
             <div class="item">
-              <img src="./images/s3.jpg" alt="">
+              <img src="./Images/s3.jpg" alt="">
             </div>
             <div class="item">
-              <img src="./images/s4.jpg" alt="">
+              <img src="./Images/s4.jpg" alt="">
             </div>
             <div class="item">
-              <img src="./images/s5.jpg" alt="">
+              <img src="./Images/s5.jpg" alt="">
             </div>
             <div class="item">
-              <img src="./images/s6.jpg" alt="">
+              <img src="./Images/s6.jpg" alt="">
             </div>
             <div class="item">
-              <img src="./images/s7.jpg" alt="">
+              <img src="./Images/s7.jpg" alt="">
             </div>
             <div class="item">
-              <img src="./images/s8.jpg" alt="">
+              <img src="./Images/s8.jpg" alt="">
             </div>
           </div>
     

@@ -6,6 +6,7 @@
     ob_start();
 	date_default_timezone_set('Asia/Shanghai');
 
+	$usertoken = !isset($_SESSION["USERID"]) ?  null : $_SESSION["USERID"];
 	$targetlinks= isset($_GET["nzlz"]) ? $_GET["nzlz"] :"booking" ;
 ?>
 <!DOCTYPE html>
@@ -13,7 +14,10 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+	
+	<!--Metro Ui-->
+	<link rel="stylesheet" href="https://cdn.metroui.org.ua/current/metro.css">
+	<script src="https://cdn.metroui.org.ua/current/metro.js"></script>
 	<!-- Boxicons -->
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 	<script src="https://kit.fontawesome.com/7489440202.js" crossorigin="anonymous"></script>
@@ -33,6 +37,8 @@
 
 	<title>Admin | EliJosh Resort & Events Place</title>
 	<link rel="icon" type="image/x-icon" href="./img/title_logo.ico">
+
+	<script src="https://www.paypal.com/sdk/js?client-id=ASOqstSFrYa4HOtKpsdNhQV8_RvIiHFc0447LO_Vm-QMLhHObWY8dclfI84oymETpgdVBgWo4zgdLc3V"></script>
 </head>
 <style>
 	 /* Add your styles here */
@@ -370,6 +376,16 @@
 
 </style>
 
+
+<style>
+	#content main {
+		padding-bottom: 4em;
+
+	}
+	.dropdown{
+		z-index: 300;
+	}
+</style>
 <body>
 
 
@@ -388,38 +404,53 @@
 			</div>
 			<ul class="smoothmenu">
 				<li class="creator">
-					<a href="#HOME" class="textkainit">HOME</a>
+					<a href="../EliJosh_Client/index.php#HOME" class="textkainit">HOME</a>
 				</li>
 				<li>
-					<a href="#ABOUT" class="textkainit">ABOUT</a>
+					<a href="../EliJosh_Client/index.php#ABOUT" class="textkainit">ABOUT</a>
 				</li>
 				<li>
-					<a href="#TOUR" class="textkainit">TOUR</a>
+					<a href="../EliJosh_Client/index.php#TOUR" class="textkainit">TOUR</a>
 				</li>
 				<li class="HOMETITLELI">
-					<a href="#HOME" class="HOMETITLE">EliJosh</a>
+					<a href="../EliJosh_Client/index.php#HOME" class="HOMETITLE">EliJosh</a>
 				</li>
 				<li>
-					<a href="#GALLERY" class="textkainit">GALLERY</a>
+					<a href="../EliJosh_Client/index.php#GALLERY" class="textkainit">GALLERY</a>
 				</li>
 				<li>
-					<a href="#CONTACT" class="textkainit">CONTACT</a>
+					<a href="../EliJosh_Client/index.php#CONTACT" class="textkainit">CONTACT</a>
 				</li>
 				<li class="dropdown">
 					<a href="#" class="textkainit">ACCOUNT</a>
-	
+
 					<ul class="dropdown-menu">
-	
-						<li><i class='bx bxs-cog' ></i><a href="./InsideMain.php">Account</a></li>
-						<li><i class='bx bxs-dashboard' ></i><a href="../EliJosh_Dashboard/index.php">Dashboard</a></li>
-						<li><i class='bx bxs-bookmark-alt' ></i><a href="./bookinginformations.php">Booking</a></li>
-						<li><i class='bx bxs-door-open' ></i><a href="./logOut.php">Logout</a></li>
+						<?php  
+							if($usertoken != null){
+						?>
+							<li><i class='bx bxs-cog' ></i><a href="../EliJosh_Client/settings.php">Account</a></li>
+							<?php
+								if($_SESSION["ACCESS"] != "CLIENT"){
+							?>
+								<li><i class='bx bxs-dashboard' ></i><a href="../EliJosh_Dashboard/index.php">Dashboard</a></li>
+							<?php
+								}
+							?>
+							<li><i class='bx bxs-bookmark-alt' ></i><a href="../EliJosh_Client/bookinginformations.php">Booking</a></li>
+							<li><i class='bx bxs-door-open' ></i><a href="../EliJosh_Client/logOut.php">Logout</a></li>
+
+						<?php
+						}else{
+						?>
 						<li><i class='bx bxs-user-circle' ></i><a href="../EliJosh_Login/index.php">Login</a></li>
 						<li><i class='bx bxs-user-plus' ></i><a href="../EliJosh_Registration/index.php">Register</a></li>
+						<?php
+						}
+						?>
 					</ul>
 				</li>
 			</ul>
-	
+
 		</nav>
 		<?php
             include "./$targetlinks.php";
