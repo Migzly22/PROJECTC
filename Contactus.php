@@ -41,11 +41,10 @@ function sending($to,$html){
   ]
   );
   $mail ->Subject = "Message from $to";
-  $mail ->AddAddress($to,'');
+  $mail ->AddAddress("elijosh111923@gmail.com",'');
   $mail ->Body = $html;
   
-  $mail ->send();
-
+  $mail->send();
 }
 
 //sending($_POST['to'],$_POST['subject'],$_POST['message']);
@@ -56,7 +55,7 @@ $data2 = $_POST['data2'];//message
 $data3 = $_POST['data3'];//name
 $data4 = $_POST['data4'];//email
 
-if($_POST["data3"] === "" && $_POST["data4"] === ""){
+if($_POST["data1"] === "" && $_POST["data2"] === ""){
   $data3 = $_SESSION["BasicContactinfo"]["NAME"];
   $data4 = $_SESSION["BasicContactinfo"]["Email"];
 }
@@ -69,17 +68,16 @@ if($_POST["data3"] === "" && $_POST["data4"] === ""){
       "{{SENDERMSG}}",
   ];
   $valuetochange = [
-      $data3,
       $data1,
-      $data4,
+      $data3,
       $data2,
+      $data4,
   ];
 
 $html = str_replace($needtochange, $valuetochange, $html);
-sending($data4,$html);
+sending($data2,$html);
 
 
-
-echo "good";
+echo json_encode($array1);
 
 ?>

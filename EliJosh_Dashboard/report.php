@@ -17,7 +17,18 @@
 				</li>
 			</ul>
 		</div>
+        <div class="RESERVATIONBTNS">
+			<div class="btn-download2" onclick="ADDPERSON()">
+				<a href="./index.php?nzlz=report_items" class="">
+					<i class='bx bxs-report' ></i>
+					<span class="text">Items Sales</span>
+				</a>
+			</div>
+		</div>
 	</div>
+
+
+	
 
 	<ul class="box-info">
 		<li style="min-height:200px;height:100%;width:100%;position:relative;">

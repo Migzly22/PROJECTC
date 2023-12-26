@@ -149,44 +149,46 @@ $queryrun1 = mysqli_query($conn,$sqlcode1);
 		</div>`
 
         let formValues =await POPUPCREATE("Filters",design,3)
+		if(formValues){
+			if (formValues[0] !== "" || formValues[1] !== "" || formValues[2] !== "-") {
+				let conditions = [];
 
-        if (formValues[0] !== "" || formValues[1] !== "" || formValues[2] !== "-") {
-            let conditions = [];
+				if(formValues[0] !== ""){
+					let item = formValues[0]
+					conditions.push(`(
+						a.ReservationID LIKE '%${item}%' OR
+						a.GuestID LIKE '%${item}%' OR
+						a.ReservationStatus LIKE '%${item}%' OR
+						b.FirstName LIKE '%${item}%' OR
+						b.LastName LIKE '%${item}%' OR
+						b.Email LIKE '%${item}%' OR
+						b.Phone LIKE '%${item}%' OR
+						CONCAT(b.LastName,', ', b.FirstName) LIKE '%${item}%' 
+					)`);
+				}
+				if(formValues[1] !== ""){
+					conditions.push(`
+						a.CheckInDate  = '${formValues[1]}'
+					`);
+				}
+				if(formValues[2] !== "-"){
+					conditions.push(`a.ReservationStatus = '${formValues[2]}'`)
+				}
 
-            if(formValues[0] !== ""){
-				let item = formValues[0]
-                conditions.push(`(
-					a.ReservationID LIKE '%${item}%' OR
-					a.GuestID LIKE '%${item}%' OR
-					a.ReservationStatus LIKE '%${item}%' OR
-					b.FirstName LIKE '%${item}%' OR
-					b.LastName LIKE '%${item}%' OR
-					b.Email LIKE '%${item}%' OR
-					b.Phone LIKE '%${item}%' OR
-					CONCAT(b.LastName,', ', b.FirstName) LIKE '%${item}%' 
-				)`);
-            }
-            if(formValues[1] !== ""){
-                conditions.push(`
-                    a.CheckInDate  = '${formValues[1]}'
-                `);
-            }
-            if(formValues[2] !== "-"){
-                conditions.push(`a.ReservationStatus = '${formValues[2]}'`)
-            }
+				const joinedString = conditions.join(' AND ');
+				const formattedText = mainquery.replace(/\[CONDITION\]/, joinedString);
 
-            const joinedString = conditions.join(' AND ');
-            const formattedText = mainquery.replace(/\[CONDITION\]/, joinedString);
+				console.log(formattedText)
+				const Tabledata =await AjaxSendv3(formattedText,"GUESTLOGIC","&Process=Search")
+				TBODYELEMENT.innerHTML = Tabledata
 
-			console.log(formattedText)
-            const Tabledata =await AjaxSendv3(formattedText,"GUESTLOGIC","&Process=Search")
-            TBODYELEMENT.innerHTML = Tabledata
-
-        }else{
-			await Swal.fire({
-				text: "No Data",
-				icon: "error"
-			});
+			}else{
+				await Swal.fire({
+					text: "No Data",
+					icon: "error"
+				});
+			}
 		}
+
     }
 </script>

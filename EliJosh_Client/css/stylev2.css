@@ -637,23 +637,13 @@ a{
         width: 100%;
     }
     .boxbox23 .rightcontainerbb2 .infos{
-        display: flex;
         justify-content: space-between;
     }
-    .ISCONTAINER{
-        display: flex;
-        gap: 2em;
-        justify-content: space-between;
-    }
-    .ISCONTAINER a{
-        padding-left: 0em;
-    }
+
     .boxbox23 .leftcontainerbb2{
         width: 100%;
     }
 }
-
-
 
 
 
@@ -682,3 +672,11 @@ footer .footerul li{
     align-items: center;
     gap: 1em;
 }   
+
+/*CONTATCTY*/
+@media only screen and (max-width: 800px) {
+    .CONTAINERSECTIONS{
+        padding: 0em;
+    }
+
+}

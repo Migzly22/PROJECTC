@@ -17,7 +17,7 @@
     <title>EliJosh Resort & Event</title>
     <link rel="icon" type="image/x-icon" href="./img/title_logo.ico">
 
-    <link rel="stylesheet" href="./css/stylev1.css">
+    <link rel="stylesheet" href="./css/stylev2.css">
     <link href="./CSS/style.scss" rel="stylesheet/scss" type="text/css">
     <link rel="stylesheet" href="./CSS/app.css">
     <link rel="stylesheet" href="./Calendar/app.css">
@@ -51,10 +51,10 @@
 
     <style>
         html, body{
-            overflow: auto;
+            overflow-x: hidden;
         }
         .CONTAINERSECTIONS{
-
+            padding: 1em;
         }
     </style>
              
@@ -575,55 +575,61 @@
     })
 
     const CONTACTFORM = document.getElementById('CONTACTFORM')
+    const specialmessage = document.getElementById('specialmessage')
+    const specialEmail = document.getElementById('specialEmail')
+    const specialName = document.getElementById('specialName')
+    const specialSubject = document.getElementById('specialSubject')
 
     CONTACTFORM.addEventListener('submit',async (e)=>{
         e.preventDefault()
 
-        const specialmessage = document.getElementById('specialmessage')
-        const specialEmail = document.getElementById('specialEmail')
-        const specialName = document.getElementById('specialName')
-        const specialSubject = document.getElementById('specialSubject')
 
         let data1 = ""
         let data2 = ""
         let data3 = ""
         let data4 = ""
+
         if(specialName && specialEmail){
     
             data1 = specialName.value
             data2 = specialEmail.value
+        }else{
+            data1 = `<?php echo $_SESSION["BasicContactinfo"]["NAME"] ;?>`
+            data2 = `<?php echo $_SESSION["BasicContactinfo"]["Email"] ;?>` 
         }
 
         data3 = specialSubject.value
         data4 = specialmessage.value
 
-        sendinggmailnotif(data3, data4, data1,data2 )
+        sendinggmailnotif(data1,data2, data3, data4 )
+        //location.href = `../Contactus.php?data1=${data1}&data2=${data2}&data3=${data3}&data4=${data4}`
     })
 
     async function sendinggmailnotif (data1, data2, data3 = "", data4=""){
         $.ajax({    
             type: "post",
             url: "../Contactus.php",             
-            data: `data1=${data1}&&data2=${data2}&&data3=${data3}&&data4=${data4}`,    
+            data: `data1=${data1}&data2=${data2}&data3=${data3}&data4=${data4}`,    
+            dataType: 'json', 
             beforeSend: async function(){
+                console.log("Emaikl")
+                CONTACTFORM.reset();
                 await Swal.fire({
-                    text: "Send Successfully",
+                    text: "Sent Successfully",
                     icon: "success"
                 });
-            }, 
+            },
             error:function(response){
                 // Remove the loading screen
                 console.log(response)
             },
             success: async function(response) {
-                console.log(response)
+                console.log(123)
                 await Swal.fire({
                     text: "Send Successfully",
                     icon: "success"
                 });
             }
-
-
         });
     }
 </script>
