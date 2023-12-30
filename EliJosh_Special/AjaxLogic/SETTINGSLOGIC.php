@@ -6,7 +6,9 @@ ob_start();
 
 $sqlcode = $_POST["sqlcode"];
 
-
+function generateMD5($text) {
+    return md5($text);
+}
 
 switch ($_POST["Process"]) {
     case 'check':
@@ -22,5 +24,9 @@ switch ($_POST["Process"]) {
         break;   
     case 'update':
         mysqli_query($conn,$sqlcode);
+        break;
+    case 'ENCRYPTION':
+        $md5Hash = generateMD5($sqlcode);
+        echo $md5Hash;
         break;
 }

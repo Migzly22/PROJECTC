@@ -174,16 +174,15 @@
 					await SweetError("Password Doesnt Match")
 					return true;
 				}
-
-				sqlcode = `UPDATE userscredentials SET Password = '${formValues[0]}' WHERE userID ='${userid}';`
-				
+				let passwordnew = await AjaxSendv3(formValues[0],"SETTINGSLOGIC","&Process=ENCRYPTION");
+	
+				sqlcode = `UPDATE userscredentials SET Password = '${passwordnew}' WHERE userID ='${userid}';`
 				
 				let throwns = await AjaxSendv3(sqlcode,"SETTINGSLOGIC","&Process=update")
 				await Swal.fire({
 					text: "Password has been changed successfully",
 					icon: "success"
 				});
-
 			}else{
 				SweetError();
 			}

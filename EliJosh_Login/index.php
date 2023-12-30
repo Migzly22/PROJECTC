@@ -31,8 +31,9 @@
 if(isset($_POST["Loginbtn"])){
 
   $stmt = $pdo->prepare("SELECT * FROM userscredentials WHERE Email = :email AND Password = :pass");
+  $passwordnew = md5($_POST["password"]);
   $stmt->bindParam(':email', $_POST["email"], PDO::PARAM_STR);
-  $stmt->bindParam(':pass', $_POST["password"], PDO::PARAM_STR);
+  $stmt->bindParam(':pass', $passwordnew, PDO::PARAM_STR);
   $stmt->execute();
 
  // Fetch a single row from the result set

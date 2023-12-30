@@ -17,7 +17,7 @@
     <title>EliJosh Resort & Event</title>
     <link rel="icon" type="image/x-icon" href="./img/title_logo.ico">
 
-    <link rel="stylesheet" href="./css/stylev2.css">
+    <link rel="stylesheet" href="./css/stylev3.css">
     <link href="./CSS/style.scss" rel="stylesheet/scss" type="text/css">
     <link rel="stylesheet" href="./CSS/app.css">
     <link rel="stylesheet" href="./Calendar/app.css">
@@ -233,7 +233,7 @@
         </div>
           <div class="right">
             <div class="heading">
-              <h5>RAISING COMFOMRT TO THE HIGHEST LEVEL</h5>
+              <h5>RAISING COMFORT TO THE HIGHEST LEVEL</h5>
               <h2>Welcome to Elijosh Resort and Events Place</h2>
               <p>Immerse yourself in the lap of luxury with our well-appointed accommodations, designed for comfort and elegance. Whether you're here for a romantic getaway, a family vacation, or a corporate retreat, Elijosh offers a range of rooms and suites to suit every need.</p>
               <p>Elijosh Resort and Events Place isn't just a retreat; it's a destination where memories are made, and experiences are cherished. Come, indulge in the extraordinary, and let us redefine your concept of leisure and luxury.</p>
