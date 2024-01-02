@@ -63,25 +63,25 @@ if (file_exists($templateFile)) {
     $document->setValue('{{NUMCONTENT}}', $arraynew["USERINFO"]["PhoneNumber"]);
     $document->setValue('{{EMAILCONTENT}}',$arraynew["USERINFO"]["Email"]);
     $document->setValue('{{CHECKIN}}', $arraynew["checkin"]." ".$arraynew["ETIME"]);
-    $document->setValue('{{CHECKOUT}}', $checkouttime);
+    $document->setValue('{{CHECKOUT}}', $arraynew["checkout"]);
 
     $document->setValue('{{ROOM}}', $rooms);
     $document->setValue('{{PAVIL}}', $evnt);
     $document->setValue('{{COTTAGE}}', $cottages);
 
-    $document->setValue('{{TPROM}}', $sumOfROOM);
-    $document->setValue('{{TPPAV}}', $sumOfEVENT);
-    $document->setValue('{{TPCOT}}', $sumOfCOTTAGES);
+    $document->setValue('{{TPROM}}', number_format($sumOfROOM, 2, '.', ','));
+    $document->setValue('{{TPPAV}}', number_format($sumOfEVENT, 2, '.', ',') );
+    $document->setValue('{{TPCOT}}', number_format($sumOfCOTTAGES, 2, '.', ',') );
 
-    $document->setValue('{{TPA}}', $TPA);
-    $document->setValue('{{TPK}}', $TPK);
-    $document->setValue('{{TPS}}', $TPS);
+    $document->setValue('{{TPA}}', number_format($TPA, 2, '.', ',') );
+    $document->setValue('{{TPK}}', number_format($TPK, 2, '.', ',') );
+    $document->setValue('{{TPS}}', number_format($TPS, 2, '.', ',') );
 
     $document->setValue('{{ADULT}}', $arraynew["No. of Adult"]);
     $document->setValue('{{KIDS}}', $arraynew["No. of Kid"]);
     $document->setValue('{{SENIOR}}', $arraynew["No. of Seniors"]);
-    $document->setValue('{{TOTAL}}', $arraynew["TOTAL"]);
-    $document->setValue('{{DPAYMENT}}', $arraynew["DPAYMENT"]);
+    $document->setValue('{{TOTAL}}', number_format($arraynew["TOTAL"], 2, '.', ',') );
+    $document->setValue('{{DPAYMENT}}', number_format($arraynew["DPAYMENT"], 2, '.', ','));
     
     // Save the modified document
     $outputFile = 'export.docx';

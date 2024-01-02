@@ -73,6 +73,7 @@ if(mysqli_num_rows($queryrun) == null){
 
   // Set the cookie with the name "OTP", the value of the OTP, and the expiration time
   setcookie('OTP', $otp, $expirationTime);
+  setcookie('EMAIL', $email, $expirationTime);
 
 
   

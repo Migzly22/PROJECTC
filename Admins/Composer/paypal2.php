@@ -42,6 +42,15 @@ if(mysqli_num_rows($sqlquery2)){
     }
 }
 
+$date1 = new DateTime($arraynew["eCheckin"]);
+$date2 = new DateTime($arraynew["CheckOutDate"]);
+
+$interval = $date1->diff($date2);
+
+$total_hours = $interval->h + ($interval->days * 24);
+
+// Round up to the nearest multiple of 24 hours
+$rounded_hours = ceil($total_hours / 24) ;
 
 $SQLCODE3 = "SELECT a.*, CONCAT(b.RoomType, '-', b.RoomNum) as NAME, c.* FROM roomsreservation a LEFT JOIN rooms b ON a.Room_num = b.RoomNum LEFT JOIN roomtypes c ON b.RoomType = c.RoomType WHERE a.greservationID  = '$reserveid';";
 $sqlquery3 = mysqli_query($conn,$SQLCODE3);
@@ -50,12 +59,12 @@ if(mysqli_num_rows($sqlquery3)){
     while ($result = mysqli_fetch_assoc($sqlquery3)) {
         # code...
         $Carrvalues = array();
-        if($arraynew['timapackage'] == "22Hrs"){
+        if($arraynew['timapackage'] == "22Hrs" || $rounded_hours  > 1){
             $pricename = "Hours22";
         }else{
             $pricename = $arraynew['timapackage']."TimePrice";
         }
-        
+
         $Carrvalues[$result["NAME"]] = $result[$pricename];
         $ROOMCON = $Carrvalues;
     }
@@ -95,6 +104,7 @@ $sumOfEVENT = 0;
 $rooms = '';
 $evnt = '';
 
+
 if(isset($arraynew['COTTAGE'])){
     $cottages = implode(', ',array_keys($arraynew['COTTAGE']));
     foreach ($arraynew['COTTAGE'] as $item) {
@@ -104,10 +114,11 @@ if(isset($arraynew['COTTAGE'])){
 
 
 
+
 if(isset($arraynew['ROOM'])){
     $rooms = implode(', ',array_keys($arraynew['ROOM']));
     foreach ($arraynew['ROOM'] as $item) {
-        $sumOfROOM +=intval($item);
+        $sumOfROOM +=intval($item)*intval($rounded_hours);
     }
 }
 
@@ -151,9 +162,9 @@ if($arraynew["package"] == "Package2"){
     $TPK = "0.00";
     $TPS = "0.00";
 }else{
-    $TPA = $arraynew["NumAdults"]*$arraynew["ADULTPAY"];
-    $TPK = $arraynew["NumChildren"]*$arraynew["KIDPAY"];
-    $TPS = $arraynew["NumSeniors"]*$arraynew["SENIORPAY"];
+    $TPA = number_format(($arraynew["NumAdults"]*$arraynew["ADULTPAY"]), 2, '.', ',');
+    $TPK = number_format(($arraynew["NumChildren"]*$arraynew["KIDPAY"]), 2, '.', ',');
+    $TPS = number_format(($arraynew["NumSeniors"]*$arraynew["SENIORPAY"]), 2, '.', ',') ;
 }
 
 
@@ -174,9 +185,9 @@ if (file_exists($templateFile)) {
     $document->setValue('{{PAVIL}}', $evnt);
     $document->setValue('{{COTTAGE}}', $cottages);
 
-    $document->setValue('{{TPROM}}', $sumOfROOM);
-    $document->setValue('{{TPPAV}}', $sumOfEVENT);
-    $document->setValue('{{TPCOT}}', $sumOfCOTTAGES);
+    $document->setValue('{{TPROM}}', number_format($sumOfROOM, 2, '.', ','));
+    $document->setValue('{{TPPAV}}', number_format($sumOfEVENT, 2, '.', ','));
+    $document->setValue('{{TPCOT}}', number_format($sumOfCOTTAGES, 2, '.', ','));
 
     $document->setValue('{{TPA}}', $TPA);
     $document->setValue('{{TPK}}', $TPK);
@@ -185,8 +196,8 @@ if (file_exists($templateFile)) {
     $document->setValue('{{ADULT}}', $arraynew["NumAdults"]);
     $document->setValue('{{KIDS}}', $arraynew["NumChildren"]);
     $document->setValue('{{SENIOR}}', $arraynew["NumSeniors"]);
-    $document->setValue('{{TOTAL}}', $arraynew["TotalPrice"]);
-    $document->setValue('{{DPAYMENT}}', $arraynew["Downpayment"]);
+    $document->setValue('{{TOTAL}}', number_format($arraynew["TotalPrice"], 2, '.', ','));
+    $document->setValue('{{DPAYMENT}}',number_format($arraynew["Downpayment"], 2, '.', ','));
     
     // Save the modified document
     $outputFile = 'export.docx';

@@ -82,7 +82,7 @@
 <main>
     <div class="head-title">
         <div class="left">
-            <h1>Add Room</h1>
+            <h1>Add Pavilion</h1>
             <ul class="breadcrumb">
                 <li>
                     <a href="#">Booking</a>
@@ -97,7 +97,7 @@
                 </li>
                 <li><i class='bx bx-chevron-right' ></i></li>
                 <li>
-                    <a class="active" href="#">Add Room</a>
+                    <a class="active" href="#">Add Pavilion</a>
                 </li>
             </ul>
             
@@ -124,7 +124,7 @@
     </div>
     <form id="REGFORM" class="order">
       <div class="head head2" style="display: flex;justify-content:space-between;align-items:center;">
-        <h3>Rooms</h3>
+        <h3>Pavilion</h3>
         <div class="textshowinputs">
           <h5>
               Total : ₱ <span id="TOTALINIT"><?php echo $_GET['tinit'];?>
@@ -137,7 +137,6 @@
           while ($result = mysqli_fetch_assoc($queryrunv1)) {
             $sqlqueryforprices = mysqli_query($conn, "SELECT `".$result["Pavtype"]."` FROM eventplace WHERE PAX >= '$guesttotalnumber' ORDER BY PAX ASC LIMIT 1;");
             $pavprice = mysqli_fetch_assoc($sqlqueryforprices);
-            
 
             $data1 .= "
             <div class='boxcontainers'>
@@ -173,18 +172,18 @@
             // Find the checkbox element by its ID
             let arrval = data.split("-")
 
-
             if (e.classList[0] === 'ADDMEBTN'){
                 e.classList.remove('ADDMEBTN')
                 e.classList.add('REMOVEMEBTN')
                 e.innerText = "Remove"
 
                 datacontainer[`${arrval[0]}-${arrval[1]}`] = {
-                  price :  arrval[2],
+                  price :  arrval[1],
                   name :  arrval[0],
-                  num :  arrval[1],
-                  max : arrval[3]
+                  num :  arrval[2],
+                  max : arrval[2]
                 }
+
             }else{
                 e.classList.add('ADDMEBTN')
                 e.classList.remove('REMOVEMEBTN')

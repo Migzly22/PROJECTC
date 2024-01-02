@@ -43,6 +43,7 @@
     $nAdult = isset($_GET['na']) ? $_GET['na'] : "1";
     $nKid = isset($_GET['nk']) ? $_GET['nk'] : "0";
     $nSenior = isset($_GET['ns']) ? $_GET['ns'] : "0";
+    $nStay =isset($_GET['nsy']) ? $_GET['nsy'] : "1";
     
     $dateTime = new DateTime($_GET['cin']);
     // Get the day of the week as a number (1 = Monday, 2 = Tuesday, etc.)
@@ -78,9 +79,7 @@
                 <li>
                     <a class="active" href="#">Home</a>
                 </li>
-
             </ul>
-            
         </div>
     </div>
 	<div class="table-data">
@@ -100,7 +99,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 	<div class="table-data">
         <div class="order">
@@ -108,13 +106,28 @@
                 <h3>Guest Number</h3>
             </div>
             <form action="" method="get" class="formcontainers" id="REGFORM">
-                <div class="layer-1">
+                <div class="layer-3">
                   <div class="form-group f30">
                     <label for="" > Time of Arrival <span class="requiredcolor">*</span></label>
                       <input data-role="timepicker" data-seconds="false" type="text" id="timeSSS">
                       <small style="color: #D2042D;text-align:center;"></small>
                       <p></p>
                   </div>
+                  <?php 
+                    if($_GET['package'] != "Package1"){
+                  ?>
+                  <div class="form-group f30">
+                        <input type="number" class="form-control" name="" value="<?php echo $nStay?>" id="nStay"  required placeholder=" ">
+                        <label for=""  class="form-label">Number of Days (Rooms)<span class="requiredcolor">*</span></label>
+                        <small style="color: #D2042D;text-align:center;"></small>
+                        <p></p>
+                    </div>
+                    <div class="form-group f30">
+                     
+                    </div>
+                  <?php 
+                    }
+                  ?>
                 </div>
                 <div class="layer-3">
                     <div class="form-group f30">
@@ -139,7 +152,6 @@
                 <div class="box3">
                   <h3>Total : ₱ <span id="TOTALINIT"><?php echo ($_GET['package'] == "Package2") ? "0.00" : $entrance[0];?></span></h3>
                   <small>This Package has no entrance / pool charges.</small>
-
           </div>
                 <div class="BUTTONHANDLER">
                     <button type="submit" class="ContinueBTN">Continue</button>
@@ -167,24 +179,34 @@
       compute();
       return true
     }
-
+    function validateNumberInput2(inputElement) {
+      const inputValue = inputElement.value;
+      if (inputValue < 1) {
+        inputElement.value = 1;
+      } 
+    }
 
     //Validation
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
-      if (input.type === "number") {
+      if (input.type === "number" ) {
         input.addEventListener('input', function() {
           let numnew = 0;
-          if(input.id.includes("Kid")){
-            numnew = kidval
-          }else if(input.id.includes("Adult")){
-            numnew = adultval
+          if(input.id === "nStay"){
+            validateNumberInput2(this)
           }else{
-            numnew = senior
+            if(input.id.includes("Kid")){
+              numnew = kidval
+            }else if(input.id.includes("Adult")){
+              numnew = adultval
+            }else{
+              numnew = senior
+            }
+            validateNumberInput(this,numnew)
           }
-          validateNumberInput(this,numnew)
+
         });
-      }
+      } 
     });
 
     let packsss = `<?php echo $_GET['package'];?>`;
@@ -257,8 +279,11 @@
 
           let currentURL = location.href;
           let theparams = currentURL.split("?")[1]
-
-          location.href = `./specialcon.php?nzlz=<?php echo $_GET["package"];?>&${theparams}&ETIME=${REGFORM.timeSSS.value}&na=${REGFORM.nAdult.value}&nk=${REGFORM.nKid.value}&ns=${REGFORM.nSenior.value}&tinit=${compute2()}`
+          let nsy = 1;
+          if(REGFORM.nStay){
+            nsy = REGFORM.nStay.value
+          }
+          location.href = `./specialcon.php?nzlz=<?php echo $_GET["package"];?>&${theparams}&ETIME=${REGFORM.timeSSS.value}&na=${REGFORM.nAdult.value}&nk=${REGFORM.nKid.value}&ns=${REGFORM.nSenior.value}&nsy=${nsy}&tinit=${compute2()}`
 
         }
         

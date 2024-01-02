@@ -15,6 +15,16 @@
 	
 	$total = (floatval($data2["EXTRACHARGES"]) + floatval($data["TotalPrice"])) - floatval($data3["PaidAmountTotal"]);
 
+
+	$date1 = new DateTime($data["eCheckin"]);
+	$date2 = new DateTime($data["CheckOutDate"]);
+
+	$interval = $date1->diff($date2);
+
+	$total_hours = $interval->h + ($interval->days * 24);
+
+	// Round up to the nearest multiple of 24 hours
+	$rounded_hours = ceil($total_hours / 24) ;
 ?>
 <!-- GUEST INFO MAIN -->
 <main>
@@ -169,7 +179,7 @@
 
 						if(mysqli_num_rows($ROOMLISTQuery) > 0){
 							while($CottageResult = mysqli_fetch_assoc($ROOMLISTQuery)){
-								if($data["timapackage"] == "22Hrs"){
+								if($data["timapackage"] == "22Hrs" || $rounded_hours > 1){
 									$datatype = "Hours22";
 								}else{
 									$datatype = $data["timapackage"]."TimePrice";
@@ -178,7 +188,7 @@
 								$data2 .= "<tr>
 								<th style='text-align:start;'>".$CottageResult["RoomType"]."-".$CottageResult["RoomNum"]."</th>
 								<td style='text-align:center;'>1</td>
-								<td style='text-align:end;'>₱ ".number_format($CottageResult[$datatype], 2)."</td>
+								<td style='text-align:end;'>₱ ".number_format($CottageResult[$datatype]*$rounded_hours, 2)."</td>
 								</tr>";
 								$sum += intval($CottageResult[$datatype]);
 							}

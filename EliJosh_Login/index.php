@@ -69,7 +69,7 @@ if(isset($_POST["Loginbtn"])){
       <form action="" method="post">
         <input type="text" placeholder="Enter your email" required name="email">
         <input type="password" placeholder="Enter your password" required name="password">
-        <a href="#">Forgot password?</a>
+        <a href="./reset.php">Forgot password?</a>
         <input type="submit" name="Loginbtn" class="button" value="Login">
       </form>
       <div class="signup">

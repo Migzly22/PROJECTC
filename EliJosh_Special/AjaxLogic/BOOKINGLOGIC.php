@@ -41,6 +41,11 @@ function PRINTING($conn, $sqlcode3){
             </td>
             <td>".$result['Description']."</td>
             <td><a href='#' onclick='$onclicvalue'><span class='status $statuscolor'>".$result['ReservationStatus']."</span></a></td>
+            <td class='TableBtns'>
+									<a class='EditBTN' href='../Admins/Composer/paypal2.php?id=".$result['ReservationID']."'  rel='noopener noreferrer'>
+										<i class='bx bx-printer' ></i>
+									</a>
+								</td>
         </tr>";
     }
 

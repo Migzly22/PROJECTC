@@ -41,6 +41,7 @@
     $nAdult = isset($_GET['na']) ? $_GET['na'] : "1";
     $nKid = isset($_GET['nk']) ? $_GET['nk'] : "0";
     $nSenior = isset($_GET['ns']) ? $_GET['ns'] : "0";
+    $nStay =isset($_GET['nsy']) ? $_GET['nsy'] : "1";
     
     $dateTime = new DateTime($_GET['cin']);
     // Get the day of the week as a number (1 = Monday, 2 = Tuesday, etc.)
@@ -146,6 +147,23 @@
                         <small style="color: #D2042D;text-align:center;"></small>
                     </div>
                 </div>
+                <div class="layer-1">
+                  <?php 
+                      if($_GET['package'] != "Package1"){
+                    ?>
+                    <div class="form-group">
+                          <input type="number" class="form-control" name="" value="<?php echo $nStay?>" id="nStay"  required placeholder=" ">
+                          <label for=""  class="form-label">Number of Days (Rooms)<span class="requiredcolor">*</span></label>
+                          <small style="color: #D2042D;text-align:center;"></small>
+                          <p></p>
+                      </div>
+                      <div class="form-group f30">
+                      
+                      </div>
+                    <?php 
+                      }
+                    ?>
+                </div>
                 <div class="layer-3">
                     <div class="form-group f30">
                         <input type="number" class="form-control" name="" value="<?php echo $nAdult?>" id="nAdult"  required placeholder=" ">
@@ -214,6 +232,12 @@
             return false
           }
         }
+    function validateNumberInput22(inputElement) {
+      const inputValue = inputElement.value;
+      if (inputValue < 1) {
+        inputElement.value = 1;
+      } 
+    }
     function validateInput(inputElement) {
           const inputValue = inputElement.value;
           if (/[\d]/.test(inputValue)) {
@@ -252,14 +276,18 @@
       if (input.type === "number") {
         input.addEventListener('input', function() {
           let numnew = 0;
-          if(input.id.includes("Kid")){
-            numnew = kidval
-          }else if(input.id.includes("Adult")){
-            numnew = adultval
-          }else{
-            numnew = senior
-          }
-          validateNumberInput(this,numnew)
+          if(input.id === "nStay"){
+            validateNumberInput22(this)
+          }else {
+            if(input.id.includes("Kid")){
+              numnew = kidval
+            }else if(input.id.includes("Adult")){
+              numnew = adultval
+            }else{
+              numnew = senior
+            }
+            validateNumberInput(this,numnew)
+            }
         });
       }else  if(input.id === "phone"){
         input.addEventListener('input', function() {
@@ -357,9 +385,14 @@
           let theparams = currentURL.split("?")[1]
           var modifiedString = theparams.replace('&', '?');
           theparams = modifiedString.split("?")[1]
-          location.href = `./index.php?nzlz=booking_<?php echo $_GET["package"];?>&${theparams}&na=${REGFORM.nAdult.value}&nk=${REGFORM.nKid.value}&ns=${REGFORM.nSenior.value}&tinit=${compute2()}`
 
-          //location.href = `./Mainpage.php?nzlz=<?php echo $_GET["package"];?>&plk=2&cin=<?php echo $_GET["cin"];?>&ETIME=<?php echo $_GET["ETIME"];?>&adultval=${adultval}&kidval=${kidval}&senior=${senior}&package=<?php echo $_GET["package"];?>&tRANGE=<?php echo $_GET["tRANGE"];?>&na=${REGFORM.nAdult.value}&nk=${REGFORM.nKid.value}&ns=${REGFORM.nSenior.value}&tinit=${compute2()}`;
+          let nsy = 1;
+          if(REGFORM.nStay){
+            nsy = REGFORM.nStay.value
+          }
+
+          location.href = `./index.php?nzlz=booking_<?php echo $_GET["package"];?>&${theparams}&na=${REGFORM.nAdult.value}&nk=${REGFORM.nKid.value}&ns=${REGFORM.nSenior.value}&nsy=${nsy}&tinit=${compute2()}`
+
         }
         
  

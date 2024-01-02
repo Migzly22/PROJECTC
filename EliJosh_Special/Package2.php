@@ -68,7 +68,8 @@
     LEFT JOIN
     (SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate FROM roomsreservation d LEFT JOIN reservations e ON d.greservationID = e.ReservationID 
     WHERE e.CheckInDate = '".$_GET['cin']."' AND (e.timapackage = '".$_GET['tRANGE']."' OR e.timapackage = '22Hrs')) f ON a.RoomNum = f.Room_num WHERE f.RR_ID IS NULL  GROUP BY a.MaxPeople) g ON a.RoomType = g.RoomType
-    WHERE f.RR_ID IS NULL AND g.TOTAL >= '$guesttotalnumber';";;
+    WHERE f.RR_ID IS NULL;";
+
     $queryrunv1 = mysqli_query($conn, $sqlcodev1);
 
 
@@ -78,6 +79,8 @@
     // Remove the first element from the array
     array_shift($array);
     $newqueryparam = implode("&",$array);
+
+    $daysofstay = $_GET["nsy"];
 ?>
 
 <main>
@@ -130,7 +133,7 @@
 		<?php
 			$data1 = "";
 			while ($result = mysqli_fetch_assoc($queryrunv1)) {
-			if($_GET['tRANGE'] == "22Hrs"){
+			if($_GET['tRANGE'] == "22Hrs" || $daysofstay > 1){
 				$pricename = "Hours22";
 			}else{
 				$pricename = $_GET['tRANGE']."TimePrice";
@@ -143,10 +146,10 @@
 				<div class='textcontainers'>
 				<h2 style='text-align: center;'>".$result["roomname"]."</h2>
 				<small>Good for ".$result["MinPeople"]." - ".$result["MaxPeople"]." people</small>
-				<small>Price : ₱ ".number_format($result[$pricename],2) ."</small>
+				<small>Price : ₱ ".number_format($result[$pricename]*$daysofstay,2) ."</small>
 				</div>
 				<div class='spawnerbtn' style='display: flex;justify-content: center;padding:0.5em 1em;'>
-				<button type='button' class='ADDMEBTN' id='".$result["roomname"]."' onclick='activateClick(this,`".$result["roomname"]."-".$result[$pricename]."-".$result["MaxPeople"]."`)'>Add</button>
+				<button type='button' class='ADDMEBTN' id='".$result["roomname"]."' onclick='activateClick(this,`".$result["roomname"]."-".$result[$pricename]*$daysofstay."-".$result["MaxPeople"]."`)'>Add</button>
 				</div>
 			</div>
 			";
@@ -219,6 +222,7 @@
 		}
 	  }
 	  let clientstotalnumber = parseInt(`<?php echo $guesttotalnumber; ?>`)
+    console.log(totalnumperson,clientstotalnumber)
 
 	  if(pakagedetails === "Package2"){
 		if(Object.keys(datacontainer).length <= 0){

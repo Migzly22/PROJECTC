@@ -250,7 +250,7 @@
 	  var modifiedString = theparams.replace('&', '?');
 	  theparams = (modifiedString.split("?")[1]).split("&tinit")[0]
 
-	  location.href = `./index.php?nzlz=Package2&${theparams}&eventlist=${stringedJSON}&tinit=${TOTALINIT}`
+	  location.href = `./specialcon.php?nzlz=Package2&${theparams}&eventlist=${stringedJSON}&tinit=${TOTALINIT}`
 
 
 

@@ -61,7 +61,34 @@
     $currentURL = $_SERVER['REQUEST_URI'];
     $dataurl =  explode("?nzlz=booking_breakdown&",$currentURL)[1];
 
+    
     $arraynew['checkin'] = $_GET['cin'];
+
+
+    $startdatecheckin = $arraynew['checkin']." ".$_GET['ETIME'];
+
+    if(isset($_GET['nsy']) && $_GET['nsy'] > 1){
+        $daystostay = ($_GET['nsy'] - 1) * 24;
+        $newDate = date("Y-m-d", strtotime($startdatecheckin . " + $daystostay hours"));
+
+    }else{
+        $newDate = $arraynew['checkin'];
+    }
+
+
+    switch ($_GET['tRANGE']) {
+    case 'Day':
+        $newDate = $newDate." 17:00";
+        break;
+    case 'Night':
+        $newDate = date("Y-m-d", strtotime($newDate . " + 1 days"))." 07:00";
+        break;
+    case '22Hrs':
+        $newDate = date("Y-m-d", strtotime($newDate . " + 1 days"))." 12:00";
+        break;
+    }
+
+    $arraynew['checkout'] = $newDate;
     $arraynew['package'] = $_GET['package'];
     $arraynew["time"] = $timevalue2;
     $arraynew["trange"] = $_GET['tRANGE'];
@@ -234,9 +261,9 @@
               <tbody>
                 <?php
                   foreach ($eventjson as $key => $nestedArray) {
-
+                        $itemarr = explode("-", $key);
                       echo "<tr>
-                          <th >".$key."</th>
+                          <th >".$itemarr[0]."</th>
                           <td >1</td>
                           <td >₱ ".number_format($nestedArray["price"], 2)."</td>
                           </tr>";
@@ -320,7 +347,7 @@
             conditions.push(`${formValues[1]}`);
 
             if(formValues[0] !== "" && parseFloat(formValues[0]) >= parseFloat(downpayment)){
-                let sqlcodepayment = `INSERT INTO guestpayments ( ReservationID, PaymentDate, AmountPaid, PaymentMethod, Description) VALUES (':ID:', CURRENT_DATE , '${downpayment}', 'ONLINE','Downpayment');`;
+                let sqlcodepayment = `INSERT INTO guestpayments ( ReservationID, PaymentDate, AmountPaid, PaymentMethod, Description) VALUES (':ID:', CURRENT_DATE , '${downpayment}', '${formValues[1]}','Downpayment');`;
                 Inputtime(sqlcodepayment,'Downpayment')
             }else{
                 await Swal.fire({
@@ -404,7 +431,7 @@
         VALUES (NULL, '${dataid}', 
         '${jsonObject.checkin}', 
         '${jsonObject.checkin} ${timeitself2}',
-        '${newdata}', 
+        '${jsonObject.checkout}', 
          '${jsonObject["No. of Adult"]}', 
          '${jsonObject["No. of Kid"]}', 
          '${jsonObject["No. of Seniors"]}', 
