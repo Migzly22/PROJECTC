@@ -208,10 +208,10 @@
     function INPUTVALIDATE(params, left, name) {
         let value1 = params.value
 
-        if(value1 <= 0 ){
+        if(parseInt(value1) <= 0 ){
             params.value = 1
             value1 = 1
-        }else if (value1 > left){
+        }else if (parseInt(value1) > parseInt(left)){
             params.value = left
             value1 = left
         }
