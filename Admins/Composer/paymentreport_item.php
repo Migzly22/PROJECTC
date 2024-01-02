@@ -10,11 +10,56 @@ use PhpOffice\PhpWord\TemplateProcessor;
 // Fetch data from MySQL
 $selectedColumns = ['b.ChargeDescription', 'SUM(b.quantity) AS USEDQUANTITY', 'SUM(b.ChargeAmount) AS TOTALAMOUNT'];
 $sqlcode = "SELECT :*: FROM guestextracharges b WHERE b.ChargeDescription NOT LIKE '%Additional%' :{^^}: GROUP BY b.ChargeDescription;";
-$sql = str_replace(":*:", implode(', ', $selectedColumns), $sqlcode);
-$sql2 = str_replace(":{^^}:", $_GET["sqlcode"], $sql);
-$result = mysqli_query($conn, $sql2);
+$sql2 = str_replace(":{^^}:", $_GET["sqlcode"], $sqlcode);
+
+
+$msgarray = array();
+$monthsArray = [];
+
+for ($i = 1; $i <= 12; $i++) {
+    $monthsArray[$i] = date('F', mktime(0, 0, 0, $i, 1));
+}
+
+if(strpos($sql2, "b.ChargeDate") !== false){
+    if(strpos($sql2, "<=") !== false || strpos($sql2, ">=") !== false){
+
+        if(strpos($sql2, ">=") !== false){
+            $nn1 = explode(">= '",$sql2)[1];
+            $newcode = explode("'",$nn1)[0];
+            $msgarray[] = "from $newcode";
+        }
+        if(strpos($sql2, "<=") !== false){
+            $nn1 = explode("<= '",$sql2)[1];
+            $newcode = explode("'",$nn1)[0];
+            $msgarray[] = "to $newcode";
+        }
+        $STRINGMSG = implode(" ", $msgarray);
+    }else{
+        if(strpos($sql2, "MONTH(") !== false){
+            $nn1 = explode("MONTH(b.ChargeDate) = '",$sql2)[1];
+            $newcode = explode("'",$nn1)[0];
+            $msgarray[] = "the month of ".$monthsArray[$newcode];
+        }
+        if (strpos($sql2, "YEAR(") !== false){
+            $nn1 = explode("YEAR(b.ChargeDate) = '",$sql2)[1];
+            $newcode = explode("'",$nn1)[0];
+            $msgarray[] = "year $newcode";
+        }
+        $STRINGMSG = implode(" and ", $msgarray);
+    }
+
+    
+}else{
+    $STRINGMSG = "the beginning of the Sales";
+}
+
+$sql = str_replace(":*:", implode(', ', $selectedColumns), $sql2);
+
+
+
+$result = mysqli_query($conn, $sql);
 // Load the template DOCX file
-$templateFile = 'Payment.docx';
+$templateFile = 'Payment2.docx';
 $document = new TemplateProcessor($templateFile);
 
 // Replace placeholders or add other content as needed
@@ -29,6 +74,8 @@ $currentDate->setTimezone(new DateTimeZone('Asia/Taipei'));
 $formattedDate = $currentDate->format('Y-m-d');
 
 $document->setValue('{{DATETODAY}}', $formattedDate);
+$document->setValue('{{DATAMENT}}', $STRINGMSG);
+
 $document->setValue('{{DATATODAY}}', createTable($result));
 
 // Save the modified document
@@ -50,7 +97,7 @@ function createTable($result) {
     while ( $row = mysqli_fetch_assoc($result)) {
         $daterow = $row['ChargeDescription'];
         $PaymentMethod = $row['USEDQUANTITY'];
-        $AmountPaid = $row['TOTALAMOUNT'];
+        $AmountPaid = number_format($row['TOTALAMOUNT'], 2,".", ",");
         $tablerowdata .= '
         <w:tr>
                     <w:tc>

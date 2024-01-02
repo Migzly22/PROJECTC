@@ -10,8 +10,52 @@ use PhpOffice\PhpWord\TemplateProcessor;
 // Fetch data from MySQL
 $selectedColumns = ['PaymentDate', 'PaymentMethod', 'AmountPaid'];
 $sqlcode = $_GET["sqlcode"];
+
+$msgarray = array();
+$monthsArray = [];
+
+for ($i = 1; $i <= 12; $i++) {
+    $monthsArray[$i] = date('F', mktime(0, 0, 0, $i, 1));
+}
+
+if(strpos($sqlcode, "a.PaymentDate") !== false){
+    if(strpos($sqlcode, "<=") !== false || strpos($sqlcode, ">=") !== false){
+
+        if(strpos($sqlcode, ">=") !== false){
+            $nn1 = explode(">= '",$sqlcode)[1];
+            $newcode = explode("'",$nn1)[0];
+            $msgarray[] = "from $newcode";
+        }
+        if(strpos($sqlcode, "<=") !== false){
+            $nn1 = explode("<= '",$sqlcode)[1];
+            $newcode = explode("'",$nn1)[0];
+            $msgarray[] = "to $newcode";
+        }
+        $STRINGMSG = implode(" ", $msgarray);
+    }else{
+        if(strpos($sqlcode, "MONTH(") !== false){
+            $nn1 = explode("MONTH(a.PaymentDate) = '",$sqlcode)[1];
+            $newcode = explode("'",$nn1)[0];
+            $msgarray[] = "the month of ".$monthsArray[$newcode];
+        }
+        if (strpos($sqlcode, "YEAR(") !== false){
+            $nn1 = explode("YEAR(a.PaymentDate) = '",$sqlcode)[1];
+            $newcode = explode("'",$nn1)[0];
+            $msgarray[] = "year $newcode";
+        }
+        $STRINGMSG = implode(" and ", $msgarray);
+    }
+
+    
+}else{
+    $STRINGMSG = "the beginning of the Sales";
+}
+
+
 $sql = str_replace(":*:", implode(', ', $selectedColumns), $sqlcode);
 $result = mysqli_query($conn, $sql);
+
+
 
 // Load the template DOCX file
 $templateFile = 'Payment.docx';
@@ -29,6 +73,8 @@ $currentDate->setTimezone(new DateTimeZone('Asia/Taipei'));
 $formattedDate = $currentDate->format('Y-m-d');
 
 $document->setValue('{{DATETODAY}}', $formattedDate);
+$document->setValue('{{DATAMENT}}', $STRINGMSG);
+
 $document->setValue('{{DATATODAY}}', createTable($result));
 
 // Save the modified document
@@ -50,7 +96,7 @@ function createTable($result) {
     while ( $row = mysqli_fetch_assoc($result)) {
         $daterow = $row['PaymentDate'];
         $PaymentMethod = $row['PaymentMethod'];
-        $AmountPaid = $row['AmountPaid'];
+        $AmountPaid = number_format( $row['AmountPaid'],2, ".", ",");
         $tablerowdata .= '
         <w:tr>
                     <w:tc>
