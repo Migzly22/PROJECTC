@@ -18,6 +18,14 @@ $queryrun1 = mysqli_query($conn,$sqlcode1);
 				</li>
 			</ul>
 		</div>
+		<div class="RESERVATIONBTNS">
+			<div class="btn-download2" onclick="GUESTREPORT()">
+				<a href="#" class="">
+					<i class='bx bxs-report' ></i>
+					<span class="text">Guest List</span>
+				</a>
+			</div>
+		</div>
 	</div>
 
 	<div class="table-data">
@@ -191,4 +199,43 @@ $queryrun1 = mysqli_query($conn,$sqlcode1);
 		}
 
     }
+
+	async function GUESTREPORT() {
+		let design = `
+		<div style="display: flex; justify-content: space-between;align-items:center;margin-bottom:0.5em;">
+			<label for="inputLabel">Date Range</label>
+			<input type ="date" id="swal-input1" class="SWALinput" placeholder="From" required value="" style='padding:0.5em;width:120px;'>
+			-
+			<input type="date" id="swal-input2" class="SWALinput" placeholder="To" style='padding:0.5em;width:120px;'>
+		</div>
+		<div style="margin-top:1em;"><small>Note : If you save it without any changes. It will automatically print the list of the guest today</small></div>`
+
+        let formValues =await POPUPCREATE("Guest List",design,2)
+		let joinedString = "";
+		if(formValues){
+			if (formValues[0] !== "" || formValues[1] !== "") {
+				let conditions = [];
+
+				if(formValues[0] !== ""){
+					conditions.push(`
+						DATE(b.eCheckin)  >= '${formValues[0]}'
+					`);
+				}
+				if(formValues[1] !== ""){
+					conditions.push(`
+						DATE(b.CheckOutDate)  <= '${formValues[1]}'
+					`);
+				}
+
+
+	
+				joinedString = conditions.join(' AND ');
+
+			}else{
+				joinedString = ` DATE(b.eCheckin)  = CURRENT_DATE`;
+
+			}
+			location.href =`../Admins/Composer/guestlist.php?sqlcode=${joinedString}`;
+		}
+	}
 </script>
