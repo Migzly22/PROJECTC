@@ -207,6 +207,7 @@
 
     function INPUTVALIDATE(params, left, name) {
         let value1 = params.value
+
         if(value1 <= 0 ){
             params.value = 1
             value1 = 1
@@ -214,6 +215,8 @@
             params.value = left
             value1 = left
         }
+
+        console.log(value1)
         CheckItemsinbox[name]["newquan"] = value1;
         let number = value1 * parseFloat(CheckItemsinbox[name]["price"]);
         CheckItemsinbox[name]["totalprice"] = number.toFixed(2);
