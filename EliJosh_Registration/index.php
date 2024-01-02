@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Registration Form | EliJosh Resort & Events Place</title>
   
-    <link rel="stylesheet" href="./CSS/stylev2.css">
+    <link rel="stylesheet" href="./CSS/stylev3.css">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
@@ -16,7 +16,6 @@
 
      <link rel="icon" type="image/x-icon" href="../EliJosh_Dashboard/img/title_logo.ico">
    </head>
-   
 <body>
   <div class="container">
     <!--<div class="title">Registration</div>

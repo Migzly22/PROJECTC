@@ -87,6 +87,16 @@
 								<td><span class='status $statuscolor'>".$result['ReservationStatus']."</span></td>
 							</tr>";
 						}
+
+						if(mysqli_num_rows($queryrun3) <= 0){
+							$reservation = "<tr>
+							<td >
+								<p>No Data</p>
+							</td>
+							<td></td>
+							<td></td>
+						</tr>";
+						}
 						echo $reservation;
 
 					?>
