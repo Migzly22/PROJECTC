@@ -49,6 +49,12 @@ switch ($_POST["Process"]) {
     case 'Insertmore':   
         mysqli_query($conn,$sqlcode);
         break;  
+    case 'Insertmore2':   
+        $sqlcode = floatval($sqlcode);
+        $sqlcode11 = "UPDATE reservations SET TotalPrice = TotalPrice + $sqlcode WHERE ReservationID = '".$_POST["IDS"]."'";
+    
+        mysqli_query($conn,$sqlcode11);
+        break;  
     default:
         # code...
         break;

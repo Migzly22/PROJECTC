@@ -5,6 +5,10 @@ session_start();
 ob_start();
 
 $sqlcode = $_POST["sqlcode"];
+if(isset($_POST["ADDING"])){
+	$sqlcode = "UPDATE reservations SET NumExcessPax = NumExcessPax + ".$_POST["ADDING"]." WHERE ReservationID = '".$_POST["id2"]."'";
+}
+
 mysqli_query($conn,$sqlcode);
 
 

@@ -74,7 +74,18 @@
 			<?php 
 				}
 			?>
-	
+			<div class="btn-download2" onclick="this.querySelector('a').click()">
+				<a href="./index.php?nzlz=booking_addADDONS&ISU=<?php echo $userid;?>" class="">
+					<i class='bx bxs-plus-square' ></i>
+					<span class="text">Add Cottage</span>
+				</a>
+			</div>
+			<div class="btn-download2" onclick="this.querySelector('a').click()">
+				<a href="./index.php?nzlz=booking_addADDONS1&ISU=<?php echo $userid;?>" class="">
+					<i class='bx bxs-plus-square' ></i>
+					<span class="text">Add Room</span>
+				</a>
+			</div>
 		</div>
 		
 		
@@ -396,6 +407,9 @@
             let sqlcode = `INSERT INTO guestextracharges (ReservationID,ChargeDescription, quantity, ChargeAmount, ChargeDate)
 			 VALUES ( ${id}, 'Additional Number of Heads', '${formValues[0]}', '${totalamount}', CURRENT_DATE);`
 
+			let sqlcode2 = `UPDATE reservations SET NumExcessPax = NumExcessPax + ${formValues[0]} WHERE ReservationID = '${id}'`;
+
+			await AjaxSendv3(sqlcode2,"RESERVATIONLOGIC",`&id2=${id}&ADDING=${formValues[0]}`)
             Tabledata =await AjaxSendv3(sqlcode,"RESERVATIONLOGIC",`&id2=${id}`)
             
             const TBODYELEMENT = document.getElementById('TBODYELEMENT2')
