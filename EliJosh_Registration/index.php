@@ -106,80 +106,100 @@
   </div>
 
   <script>
-  async function fetchRegions() {
-    return fetch('https://ph-locations-api.buonzz.com/v1/regions')
-    .then(response => response.json())
-    .then(data => {
-      return data
-    })
-    .catch(error => console.error('Error:', error));
-  }
 
   async function fetchProvince(regioncode = null) {
-    return fetch('https://ph-locations-api.buonzz.com/v1/provinces')
-    .then(response => response.json())
-    .then(data => {
-      return (regioncode !== null) ? data.data.filter(province => province.region_code === `${regioncode}`) : data.data;
-    })
-    .catch(error => console.error('Error:', error));
+	return fetch('PH.json')
+	.then(response => {
+		if (!response.ok) {
+		throw new Error('Network response was not ok');
+		}
+		return response.json();
+	})
+	.then(data => {
+		return Object.keys(data[regioncode].province_list).sort()
+	})
+	.catch(error => {
+		console.error('Error fetching JSON:', error);
+	});
   }
 
-  async function fetchCities(regioncode = null) {
-    return fetch('https://ph-locations-api.buonzz.com/v1/cities')
-    .then(response => response.json())
-    .then(data => {
-      return (regioncode !== null )? data.data.filter(province => province.province_code === `${regioncode}`) : data.data;
-    })
-    .catch(error => console.error('Error:', error));
+  async function fetchCities(regioncode = null, province = null) {
+	return fetch('PH.json')
+	.then(response => {
+		if (!response.ok) {
+		throw new Error('Network response was not ok');
+		}
+		return response.json();
+	})
+	.then(data => {
+		return Object.keys(data[regioncode].province_list[province].municipality_list).sort()
+	})
+	.catch(error => {
+		console.error('Error fetching JSON:', error);
+	});
   }
 
   async function updateRegionOptions() {
     const regionSelect = document.getElementById('region');
-    const regions = await fetchRegions();
-    // Clear existing options
-    regionSelect.innerHTML = '<option value="" selected>--Select Region--</option>';
 
-    // Populate the select with the new options
-    regions.data.forEach(region => {
-      const option = document.createElement('option');
-      option.value = region.id;
-      option.text = region.name.split("(")[0];
-      regionSelect.add(option);
-    });
+	fetch('PH.json')
+	.then(response => {
+		if (!response.ok) {
+		throw new Error('Network response was not ok');
+		}
+		return response.json();
+	})
+	.then(data => {
+		// Now, 'data' contains the content of the JSON file
+		    // Clear existing options
+			regionSelect.innerHTML = '<option value="" selected>--Select Region--</option>';
+		// Populate the select with the new options
+		Object.keys(data).sort().forEach(region => {
+			const option = document.createElement('option');
+			option.value = region
+			option.text = region;
+			regionSelect.add(option);
+		});
 
+	})
+	.catch(error => {
+		console.error('Error fetching JSON:', error.message);
+	});
 
   }
 
   async function showProvince() {
     const regionSelect = document.getElementById('region').value;
     const ProvinceSelect = document.getElementById('Province');
-    const provinces = await fetchProvince(regionSelect)
 
+    const provinces = await fetchProvince(regionSelect)
     // Clear existing options
     ProvinceSelect.innerHTML = '<option value="" selected>--Select Province--</option>';
 
     // Populate the select with the new options
     provinces.forEach(region => {
-      const option = document.createElement('option');
-      option.value = `${region.id}[]${region.name.split("(")[0]}`;
-      option.text = region.name.split("(")[0];
-      ProvinceSelect.add(option);
+		const option = document.createElement('option');
+		option.value = region
+		option.text = region;
+		ProvinceSelect.add(option);
     });
   }
 
   async function showCities() {
     const ProvinceSelect = document.getElementById('Province').value.split("[]")[0];
+	const regionSelect = document.getElementById('region').value;
     const citiesSelect = document.getElementById('City');
-    const City = await fetchCities(ProvinceSelect)
+	
+    const City = await fetchCities(regionSelect,ProvinceSelect)
 
     // Clear existing options
     citiesSelect.innerHTML = '<option value="" selected>--Select City--</option>';
     // Populate the select with the new options
     City.forEach(region => {
-      const option = document.createElement('option');
-      option.value = region.name;
-      option.text = region.name.split("(")[0];
-      citiesSelect.add(option);
+		const option = document.createElement('option');
+		option.value = region
+		option.text = region;
+		citiesSelect.add(option);
     });
   }
   function convertToUppercase(inputElement) {
