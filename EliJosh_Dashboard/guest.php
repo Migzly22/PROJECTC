@@ -60,7 +60,7 @@ $queryrun1 = mysqli_query($conn,$sqlcode1);
 								<td>".$result['finalCheckout']."</td>
 								<td class='TableBtns'>
 									<a class='OpenBTN' href='./index.php?nzlz=guest_info&ISU=".$result['GuestID']."'  rel='noopener noreferrer'>
-										<i class='bx bx-book-open' ></i>
+										<i class='fa-regular2 fa-regular fa-eye'></i>
 									</a>
 								</td>
 							</tr>";

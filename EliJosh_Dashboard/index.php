@@ -404,6 +404,24 @@
 		background: #FD7238;
 	}
 
+	.TableBtns .EditBTN .fa-regular2{
+		font-size: 1.4em;
+		padding: .5em;
+		position: relative;
+		top: -50%;
+		translate: 0% 80%;
+	}
+	.TableBtns .EditBTN:hover .fa-regular2{
+		border-radius: 10px;
+	}
+
+	.TableBtns .OpenBTN .fa-regular2{
+		font-size: 1.4em;
+		padding: .5em;
+	}
+	.TableBtns .OpenBTN:hover .fa-regular2{
+		border-radius: 10px;
+	}
 </style>
 
 <body>

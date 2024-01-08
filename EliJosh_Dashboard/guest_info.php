@@ -45,6 +45,20 @@
 				</li>
 			</ul>
 		</div>
+		<div class="RESERVATIONBTNS">
+			<div class="btn-download2" onclick="CHECKIN()">
+				<a href="#" class="">
+					<i class='bx bxs-printer' ></i>
+					<span class="text">Check-in Report</span>
+				</a>
+			</div>
+			<div class="btn-download2" onclick="CHECKOUT()">
+				<a href="#" class="">
+					<i class='bx bxs-printer' ></i>
+					<span class="text">Check-out Report</span>
+				</a>
+			</div>
+		</div>
 	</div>
 
 	<ul class="box-info">
@@ -278,3 +292,14 @@
 	</div>
 </main>
 <!-- GUEST INFO MAIN -->
+
+<script>
+	
+	function CHECKIN() {
+		location.href =`../Admins/Composer/paypal3.php?id=<?php echo $data['ReservationID'];?>`;
+	}
+	function CHECKOUT() {
+		alert(123)
+		location.href =`../Admins/Composer/guestlist.php?sqlcode=${joinedString}`;
+	}
+</script>

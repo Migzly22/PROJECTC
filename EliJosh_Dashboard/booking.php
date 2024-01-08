@@ -58,12 +58,12 @@
 									<p>".$result['Name']."</p>
 									<small><i>".$result['Email']."</i></small>
 								</td>
-								<td>$time</td>
-								<td>".$result['finalCheckout']."</td>
-								<td><a href='#' onclick='showChangeStatus(`".$result['ReservationID']."`,`".$result['ReservationStatus']."`)'><span class='status $statuscolor'>".$result['ReservationStatus']."</span></a></td>
-								<td class='TableBtns'>
+								<td >$time</td>
+								<td >".$result['finalCheckout']."</td>
+								<td ><a href='#' onclick='showChangeStatus(`".$result['ReservationID']."`,`".$result['ReservationStatus']."`)'><span class='status $statuscolor'>".$result['ReservationStatus']."</span></a></td>
+								<td class='TableBtns' >
 									<a class='EditBTN' href='./index.php?nzlz=booking_info&ISU=".$result['ReservationID']."'  rel='noopener noreferrer'>
-										<i class='bx bx-edit-alt' ></i>
+										<i class='fa-regular2 fa-regular fa-eye'></i>
 									</a>
 								</td>
 							</tr>";
@@ -114,16 +114,14 @@
 
 		let item = swalvalue[0]
 		let searchcondition = `(
-            b.ReservationID LIKE '%${item}%' OR
-            b.GuestID LIKE '%${item}%' OR
-            b.RoomNumber LIKE '%${item}%' OR
-            b.CottageTypeID LIKE '%${item}%' OR
-            b.ReservationStatus LIKE '%${item}%' OR
-            a.FirstName LIKE '%${item}%' OR
-            a.LastName LIKE '%${item}%' OR
-            a.Email LIKE '%${item}%' OR
-            a.Phone LIKE '%${item}%' OR
-            CONCAT(a.LastName,', ', a.FirstName) LIKE '%${item}%' 
+			a.ReservationID LIKE '%${item}%' OR
+			a.GuestID LIKE '%${item}%' OR
+			a.ReservationStatus LIKE '%${item}%' OR
+			b.FirstName LIKE '%${item}%' OR
+			b.LastName LIKE '%${item}%' OR
+			b.Email LIKE '%${item}%' OR
+			b.Phone LIKE '%${item}%' OR
+			CONCAT(b.LastName,', ', b.FirstName) LIKE '%${item}%' 
         )`;
         const formattedText = mainquery.replace(/\[CONDITION\]/, searchcondition);
         console.log(formattedText)

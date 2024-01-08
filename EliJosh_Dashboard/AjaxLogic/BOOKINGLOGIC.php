@@ -26,9 +26,9 @@ function PRINTING($conn, $sqlcode3){
             <td>$time</td>
             <td>".$result['finalCheckout']."</td>
             <td><a href='#' onclick='showChangeStatus(`".$result['ReservationID']."`,`".$result['ReservationStatus']."`)'><span class='status $statuscolor'>".$result['ReservationStatus']."</span></a></td>
-            <td class='TableBtns'>
+            <td class='TableBtns' >
                 <a class='EditBTN' href='./index.php?nzlz=booking_info&ISU=".$result['ReservationID']."'  rel='noopener noreferrer'>
-                    <i class='bx bx-edit-alt' ></i>
+                    <i class='fa-regular2 fa-regular fa-eye'></i>
                 </a>
             </td>
         </tr>";
@@ -48,9 +48,6 @@ function PRINTING($conn, $sqlcode3){
 }
 
 
-function SPECIALPARTS($conn, $sqlcode3){
-
-}
 
 switch ($_POST["Process"]) {
     case 'Search':
