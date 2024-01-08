@@ -107,7 +107,7 @@
 				₱
 			</i>
 			<span class="text">
-				<h3>Total</h3>
+				<h3>Balance</h3>
 				<p><?php echo  number_format($total, 2);?> Pesos</p>
 			</span>
 		</li>

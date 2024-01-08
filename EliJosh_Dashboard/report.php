@@ -97,7 +97,7 @@
 	async function RESETTABLE() {
         const Tabledata =await AjaxSendv3("","REPORTLOGIC","&Process=Reset")
         TBODYELEMENT.innerHTML = Tabledata
-        ALLSQLCODE = "SELECT :*: FROM guestpayments a ORDER BY PaymentDate DESC;";
+        ALLSQLCODE = "1";
     }
 	async function FILTERING(){
         let design = `
@@ -160,16 +160,15 @@
             const joinedString = conditions.join(' AND ');
             const formattedText = sqlcode.replace(/:CONDITION:/g, joinedString);
 
-			console.log(formattedText)
             const Tabledata =await AjaxSendv3(formattedText,"REPORTLOGIC","&Process=Search")
             TBODYELEMENT.innerHTML = Tabledata
-            ALLSQLCODE = formattedText // set the printing sqlcode
+            ALLSQLCODE = joinedString // set the printing sqlcode
 
 
         }
     }
 
-	var ALLSQLCODE = "SELECT :*: FROM guestpayments a ORDER BY PaymentDate DESC;";
+	var ALLSQLCODE = "1";
 
 
     // Get the canvas element
@@ -340,6 +339,6 @@
     };
 
     function PRINT() {
-        location.href = `../Admins/Composer/paymentreport.php?sqlcode=${ALLSQLCODE}`///Composer/paymentreport.php?sqlcode=${ALLSQLCODE}
+        location.href = `../Admins/Composer/overallreport.php?sqlcode=${ALLSQLCODE}`///Composer/paymentreport.php?sqlcode=${ALLSQLCODE}
     }
 </script>
