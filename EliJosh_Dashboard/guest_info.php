@@ -299,7 +299,6 @@
 		location.href =`../Admins/Composer/paypal3.php?id=<?php echo $data['ReservationID'];?>`;
 	}
 	function CHECKOUT() {
-		alert(123)
-		location.href =`../Admins/Composer/guestlist.php?sqlcode=${joinedString}`;
+		location.href =`../Admins/Composer/checkoutv2.php?id=<?php echo $data['ReservationID'];?>`;
 	}
 </script>

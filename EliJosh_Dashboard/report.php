@@ -226,25 +226,23 @@
 	}
 
     async function CurrentMonthtarget (){
-        let sqlcode = `SELECT MONTH(PaymentDate) AS month ,SUM(AmountPaid) AS monthamount FROM guestpayments WHERE YEAR(PaymentDate) = YEAR(CURDATE()) GROUP BY MONTH(PaymentDate) ORDER BY month DESC`
+        let sqlcode = `SELECT MONTHNAME(PaymentDate) as month, SUM(AmountPaid) AS monthamount FROM guestpayments WHERE PaymentDate BETWEEN CURDATE() - INTERVAL 5 MONTH AND CURDATE() GROUP BY YEAR(PaymentDate), MONTH(PaymentDate) ORDER BY PaymentDate ASC;`
         let datajson = await AjaxSendv4(sqlcode,"REPORTLOGIC",`&Process=Chart`,"json")
         let arraydata = [];
 
         // Find the highest key
         let keys = Object.keys(datajson);
-        let highestKey = Math.max(...keys);
+        console.log(await datajson)
+  
 
-        for (let index = 0; index < highestKey; index++) {
-            if(datajson.hasOwnProperty(index+1)){
-                arraydata.push(parseFloat(datajson[index+1]));
-            }else{
-                arraydata.push(0);
-            }
+        for (let month in datajson) {
+            let amount = parseFloat(datajson[month]); // Convert string to float if needed
+            arraydata.push(amount);
         }
-        
+        console.log(keys);
 
 
-        let labels2 = generateMonthLabels(highestKey);
+        let labels2 = keys;
         const data = {
             labels: labels2,
             datasets: [{
@@ -307,9 +305,6 @@
 
     // Configure the chart
     var options = {
-        legend: {
-            onClick: function (event) { alert(123) }, // Set the onClick callback to null to make legend labels unclickable
-        },
       scales: {
         y: {
             beginAtZero: true,
@@ -325,7 +320,7 @@
                 color: 'rgba(192, 192, 192)', // X-axis grid line color
             },
             ticks: {
-                color: 'rgb(255, 255, 255)', // X-axis label color
+                color: 'rgb (192, 192, 192)', // X-axis label color
             },
         },
       },
