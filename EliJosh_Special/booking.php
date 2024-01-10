@@ -220,7 +220,7 @@
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
       if (input.type === "number" ) {
-        input.addEventListener('input', function() {
+        input.addEventListener('change', function() {
           let numnew = 0;
           if(input.id === "nStay"){
             validateNumberInput2(this)
