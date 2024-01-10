@@ -562,6 +562,7 @@
             },
             success:async function(){const filePath = '../Send2.php';
                 await sendinggmailnotif(dataid2, paymentdescription,jsonObject.USERINFO.Email,jsonObject.USERINFO.userID)
+                
             }
         }); 
 

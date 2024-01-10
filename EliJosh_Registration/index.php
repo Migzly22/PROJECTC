@@ -321,13 +321,14 @@
       let passwordnew = await AjaxSendv3(jsondata.password,"REGISTERLOGIC","&other=ENCRYPTION");
 
       const selects = document.querySelectorAll('select');
-      jsondata["city"] = selects[2].value+", "+selects[1].value.split("[]")[1]
+      jsondata["city"] = selects[2].value+", "+selects[1].value
 
       if(errcount == 0){
         let sqlcode= `INSERT INTO userscredentials (Password, Email, FirstName, LastName, MiddleName, Address, City, Country, PhoneNumber) 
         VALUES ('${passwordnew}', '${jsondata.email}', '${jsondata.fname}', '${jsondata.lname}', '${jsondata.mname}','${jsondata.address}', '${jsondata.city}', 'PH', '${jsondata.pnum}');`;
         
         console.log(sqlcode)
+
         await AjaxSendv3(sqlcode,"REGISTERLOGIC","")
 
         await Swal.fire({
@@ -350,7 +351,6 @@
           text: "Fill the form correctly",
           icon: "info"
         });
-
       }
 
 

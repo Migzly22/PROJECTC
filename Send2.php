@@ -57,7 +57,7 @@ function sending($to,$html){
 $array1 = array("text"=>"Sent Successfully","icon"=>"success");
 $email = $_POST['email'];
 $reservationvalue = $_POST['reservationvalue'];
-$pid = $_POST['pid'];
+$pid = $_POST['pid']; 
 $ids = $_POST['ids'];
   
   $html = file_get_contents("./Client/Template/Confirmation.html");
@@ -67,7 +67,7 @@ $ids = $_POST['ids'];
   ];
   $valuetochange = [
       $pid,
-      "https://elijoshresortandeventsplace.com/Admins/Composer/paypal2.php?id=$reservationvalue&&uid=$ids"
+      "https://elijoshresortandeventsplace.com/Admins/Composer/paypal2.php?id=$reservationvalue&uid=$ids"
   ];
 
   $html = str_replace($needtochange, $valuetochange, $html);
