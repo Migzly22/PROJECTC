@@ -65,6 +65,8 @@
       $entrance[] = $result[$columnstring];
     }
 
+
+
 ?>
 
 <main>
@@ -149,10 +151,18 @@
                         <p>₱ 0.00</p>
                     </div>
                 </div>
-                <div class="box3">
-                  <h3>Total : ₱ <span id="TOTALINIT"><?php echo ($_GET['package'] == "Package2") ? "0.00" : $entrance[0];?></span></h3>
-                  <small>This Package has no entrance / pool charges.</small>
-          </div>
+                
+                  <div class="box3">
+                    <h3>Total : ₱ <span id="TOTALINIT"><?php echo ($_GET['package'] == "Package2") ? "0.00" : $entrance[0];?></span></h3>
+                    <?php 
+                        if($_GET['package'] != "Package1"){
+                    ?>
+                      <small>This Package has no entrance / pool charges.</small>
+                    <?php 
+                        }
+                    ?>
+                  </div>  
+               
                 <div class="BUTTONHANDLER">
                     <button type="submit" class="ContinueBTN">Continue</button>
                 </div>
@@ -179,6 +189,26 @@
       compute();
       return true
     }
+
+    function compute(){
+      let sum = 0;
+      
+      if(packsss == "Package2"){
+        return '0.00'
+      }
+
+
+      let a = document.getElementById('nAdult').value 
+      let b = document.getElementById('nKid').value 
+      let c = document.getElementById('nSenior').value
+
+      sum = (parseFloat(a)*adultval) + (parseFloat(b)*kidval) + (parseFloat(c)*senior)
+
+      let TOTALINIT = document.getElementById('TOTALINIT')
+      TOTALINIT.innerText = sum
+     
+    }
+
     function validateNumberInput2(inputElement) {
       const inputValue = inputElement.value;
       if (inputValue < 1) {
@@ -229,6 +259,7 @@
       console.log(sum)
       return sum.toFixed(2)
     }
+
     const REGFORM = document.getElementById('REGFORM')
     REGFORM.addEventListener('submit', async (e) => {
 
@@ -250,32 +281,40 @@
               //location.href = `./${REGFORM.noSenior.value}.php?cin=${Checkin}&package=${REGFORM.noSenior.value}`;
           let TOTALINIT = document.getElementById('TOTALINIT').innerText.replace("Total : ₱ ", "");
 
-
+/*
           let specialTEXTAREA = `<?php
                     $getUSER = "SELECT * FROM userscredentials WHERE userID = '".$_SESSION["USERID"]."';";
                     $sqlquery32 = mysqli_query($conn,$getUSER);
                     $result = mysqli_fetch_assoc($sqlquery32);
                     echo json_encode($result, JSON_PRETTY_PRINT);?>`
-          let jsondataUSER = JSON.parse(specialTEXTAREA);
 
 
-          console.log(jsondataUSER)
-          let jsondata = {
-            userID : jsondataUSER.userID,
-            FirstName : jsondataUSER.FirstName,
-            MiddleName : jsondataUSER.MiddleName,
-            LastName : jsondataUSER.LastName,
-            PhoneNumber : jsondataUSER.PhoneNumber,
-            Address : jsondataUSER.Address,
-            City : jsondataUSER.City,
-            Email : jsondataUSER.Email
-          }
+if(specialTEXTAREA.includes("</font>")){
+  let jsondata = 
+}else{
+  let jsondataUSER = JSON.parse(specialTEXTAREA);
 
-          console.log(jsondata)
+
+
+  let jsondata = {
+    userID : jsondataUSER.userID,
+    FirstName : jsondataUSER.FirstName,
+    MiddleName : jsondataUSER.MiddleName,
+    LastName : jsondataUSER.LastName,
+    PhoneNumber : jsondataUSER.PhoneNumber,
+    Address : jsondataUSER.Address,
+    City : jsondataUSER.City,
+    Email : jsondataUSER.Email
+  }
+}
+
+
+   
+
 
           let insertguest =JSON.stringify(jsondata); 
           await AjaxSendv3(insertguest,"JSONTOARRAY")
-
+*/
 
           let currentURL = location.href;
           let theparams = currentURL.split("?")[1]

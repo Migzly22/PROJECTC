@@ -67,7 +67,7 @@ $ids = $_POST['ids'];
   ];
   $valuetochange = [
       $pid,
-      "https://elijoshresortandeventsplace.com/Admins/Composer/paypal3.php?id=$reservationvalue&&uid=$ids"
+      "https://elijoshresortandeventsplace.com/Admins/Composer/paypal2.php?id=$reservationvalue&&uid=$ids"
   ];
 
   $html = str_replace($needtochange, $valuetochange, $html);

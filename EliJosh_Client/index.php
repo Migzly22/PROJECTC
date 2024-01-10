@@ -511,7 +511,7 @@
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     sessionStorage.removeItem("MissedBooked");
-                    location.href = `./breakdownv2.php?${data}`
+                    location.href = `../EliJosh_Special/specialcon.php?nzlz=booking_breakdown&${data}`
                 }
             });
         }

@@ -7,14 +7,6 @@
 	date_default_timezone_set('Asia/Shanghai');
 
 
-    if (!isset($_SESSION["USERID"]) || !isset($_SESSION["ACCESS"])){
-        header("Location: ../EliJosh_Login/index.php");
-        ob_end_flush();
-        exit;
-    }
-
-
-
 	$usertoken = !isset($_SESSION["USERID"]) ?  null : $_SESSION["USERID"];
 	$targetlinks= isset($_GET["nzlz"]) ? $_GET["nzlz"] :"booking" ;
 ?>

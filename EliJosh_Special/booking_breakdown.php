@@ -1,4 +1,22 @@
 <?php 
+
+
+    if (!isset($_SESSION["USERID"]) || !isset($_SESSION["ACCESS"])){
+        $specialcase = isset(explode('?', $_SERVER['REQUEST_URI'])[1]) ? "?".explode('?', $_SERVER['REQUEST_URI'])[1] : "";
+        header("Location: ../EliJosh_Registration/index.php$specialcase");
+        ob_end_flush();
+        exit;
+    }
+    //get the user information
+    $getUSER = "SELECT * FROM userscredentials WHERE userID = '".$_SESSION["USERID"]."';";
+    $sqlquerygetUSER = mysqli_query($conn,$getUSER);
+    $datausersgetUSER = mysqli_fetch_assoc($sqlquerygetUSER);
+    $_SESSION["Walkinuser"] = $datausersgetUSER;
+
+
+
+
+
     $cin = isset($_GET['cin']) ? $_GET['cin'] : "";
     $ETIME = isset($_GET['ETIME']) ? $_GET['ETIME'] : "";
     $tRANGE = isset($_GET['tRANGE']) ? $_GET['tRANGE'] : "";
@@ -291,7 +309,28 @@
       $arraynew['KIDPAY'] = $entrance[1];
       $arraynew['SENIORPAY'] = $entrance[0]-(($entrance[0]*.2));
 
-      $_SESSION["Newcustomerappointment"] = json_encode($arraynew, JSON_PRETTY_PRINT);
+     
+
+
+      //transform the data to utf8 data so that there wont be any errors
+    function utf8_encode_recursive($array) {
+        foreach ($array as $key => &$value) {
+            if (is_array($value)) {
+                // If the element is an array, recursively encode its values
+                $value = utf8_encode_recursive($value);
+            } elseif (is_string($value)) {
+                // If the element is a string, apply utf8_encode
+                $value = utf8_encode($value);
+            }
+        }
+
+        return $array;
+    }
+    $encodedArray = utf8_encode_recursive($arraynew);
+
+
+      $_SESSION["Newcustomerappointment"] = json_encode($encodedArray);
+
     ?>
  <div class="table-data">
 				<div class="order">

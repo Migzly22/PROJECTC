@@ -82,5 +82,15 @@ if(isset($_POST["Loginbtn"])){
       </div>
     </div>
   </div>
+  <script>
+        let cururl = location.href;
+        
+        if(cururl.includes('?')){
+          let cururl = location.href
+          let data = cururl.split('?')[1]
+          sessionStorage.setItem('MissedBooked', data);
+          //REGFORM.action = `./breakdownv2.php?`+data
+        }
+  </script>
 </body>
 </html>
