@@ -323,9 +323,10 @@
 </main>
 <!-- BOOKING INFO MAIN -->
 <script>
+	var bal =  `<?php echo $total;?>`
 	async function PAYMENT(e){
 		console.log(e)
-		let balance = `<?php echo $total;?>`
+		let balance =bal
 
 		let design =  `
 		<div style="display: flex; justify-content: space-between;align-items:center;margin-bottom:0.5em;">
@@ -353,7 +354,7 @@
 
 			if(formValues[0] !== "" && parseFloat(formValues[0]) >= parseFloat(balance)){
 				conditions.push(`${balance}`);
-				let sqlcodepayment = `INSERT INTO guestpayments ( ReservationID, PaymentDate, AmountPaid, PaymentMethod, Description) VALUES ('${e}', CURRENT_DATE , '${formValues[0]}', '${formValues[1]}', 'CHECKOUT');`;
+				let sqlcodepayment = `INSERT INTO guestpayments ( ReservationID, PaymentDate, AmountPaid, PaymentMethod, Description) VALUES ('${e}', CURRENT_DATE , '${balance}', '${formValues[1]}', 'CHECKOUT');`;
 				await AjaxSendv3(sqlcodepayment,"GUESTLOGIC",`&Process=Insertmore`)
 				
 				let update12 =`UPDATE reservations SET ReservationStatus = 'CHECKOUT', finalCheckout = CURRENT_TIMESTAMP WHERE ReservationID = '${e}';`
@@ -409,6 +410,8 @@
 
 			let sqlcode2 = `UPDATE reservations SET NumExcessPax = NumExcessPax + ${formValues[0]} WHERE ReservationID = '${id}'`;
 
+
+			bal = parseFloat(bal) + parseFloat(totalamount) ;
 			await AjaxSendv3(sqlcode2,"RESERVATIONLOGIC",`&id2=${id}&ADDING=${formValues[0]}`)
             Tabledata =await AjaxSendv3(sqlcode,"RESERVATIONLOGIC",`&id2=${id}`)
             

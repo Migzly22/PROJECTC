@@ -50,14 +50,14 @@ $total = (floatval($data2["EXTRACHARGES"]) + floatval($data["TotalPrice"])) - fl
 			
 		</div>
 		<div class="RESERVATIONBTNS">
-			<div class="btn-download2">
+			<div class="btn-download2" onclick="ADDPERSON(`<?php echo $data['ReservationID']; ?>`)">
 				<a href="#" class="">
 					<i class='bx bxs-user-plus' ></i>
 					<span class="text">Add Person</span>
 				</a>
 			</div>
-			<div class="btn-download2">
-				<a href="#" class="">
+			<div class="btn-download2" onclick="this.querySelector('a').click()">
+				<a href="./index.php?nzlz=booking_additem&ISU=<?php echo $userid;?>" class="">
 					<i class='bx bxs-plus-square' ></i>
 					<span class="text">Add Item</span>
 				</a>
@@ -74,7 +74,18 @@ $total = (floatval($data2["EXTRACHARGES"]) + floatval($data["TotalPrice"])) - fl
 			<?php 
 				}
 			?>
-	
+			<div class="btn-download2" onclick="this.querySelector('a').click()">
+				<a href="./index.php?nzlz=booking_addADDONS&ISU=<?php echo $userid;?>" class="">
+					<i class='bx bxs-plus-square' ></i>
+					<span class="text">Add Cottage</span>
+				</a>
+			</div>
+			<div class="btn-download2" onclick="this.querySelector('a').click()">
+				<a href="./index.php?nzlz=booking_addADDONS1&ISU=<?php echo $userid;?>" class="">
+					<i class='bx bxs-plus-square' ></i>
+					<span class="text">Add Room</span>
+				</a>
+			</div>
 		</div>
 		
 		
