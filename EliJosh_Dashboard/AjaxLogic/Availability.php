@@ -25,9 +25,16 @@ switch ($sqlcode) {
         }
         break;
     case 'Package2':
-        $sqlcode3 = "SELECT a.*, f.*, CONCAT(a.RoomType, '-', a.RoomNum) AS roomname FROM 
-        (SELECT b.RoomID, b.RoomNum , c.* FROM rooms b LEFT JOIN roomtypes c ON b.RoomType = c.RoomType) a
-        LEFT JOIN (SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate FROM roomsreservation d LEFT JOIN reservations e ON d.greservationID = e.ReservationID WHERE e.CheckInDate = '".$_POST['cin']."' AND (e.timapackage = '".$_POST['tday']."' OR e.timapackage = '22Hrs')) f ON a.RoomNum = f.Room_num WHERE f.RR_ID IS NULL;";
+        $sqlcode3 = "SELECT b.RoomID, b.RoomNum, CONCAT(b.RoomType, '-', b.RoomNum) AS roomname, c.*
+        FROM rooms b
+        LEFT JOIN roomtypes c ON b.RoomType = c.RoomType
+        LEFT JOIN (
+            SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate, e.finalCheckout, e.CheckOutDate
+            FROM roomsreservation d
+            LEFT JOIN reservations e ON d.greservationID = e.ReservationID
+            WHERE (e.CheckOutDate >= '".$_POST['cin']."' AND (e.CheckInDate <= '".$_POST['cin']."' OR e.CheckOutDate <= '".$_POST['cin']."')) AND e.finalCheckout IS NULL
+        ) AS f ON b.RoomNum = f.Room_num
+        WHERE f.RR_ID IS NULL;";
         $query = mysqli_query($conn,$sqlcode3);
         if(mysqli_num_rows($query) > 0){
             echo "true";

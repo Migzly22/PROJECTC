@@ -58,16 +58,15 @@
 
     $guesttotalnumber = $_GET['na']+$_GET['nk']+$_GET['ns'];
 
-    $sqlcodev1 = "SELECT a.*, f.*, CONCAT(a.RoomType, '-', a.RoomNum) AS roomname, g.TOTAL FROM 
-    (SELECT b.RoomID, b.RoomNum , c.* FROM rooms b LEFT JOIN roomtypes c ON b.RoomType = c.RoomType) a
-    LEFT JOIN
-    (SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate FROM roomsreservation d LEFT JOIN reservations e ON d.greservationID = e.ReservationID 
-    WHERE e.CheckInDate = '".$_GET['cin']."' AND (e.timapackage = '".$_GET['tRANGE']."' OR e.timapackage = '22Hrs')) f ON a.RoomNum = f.Room_num 
-    LEFT JOIN 
-    (SELECT  a.RoomType, SUM(a.MaxPeople) AS TOTAL FROM (SELECT b.RoomID, b.RoomNum , c.* FROM rooms b LEFT JOIN roomtypes c ON b.RoomType = c.RoomType) a
-    LEFT JOIN
-    (SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate FROM roomsreservation d LEFT JOIN reservations e ON d.greservationID = e.ReservationID 
-    WHERE e.CheckInDate = '".$_GET['cin']."' AND (e.timapackage = '".$_GET['tRANGE']."' OR e.timapackage = '22Hrs')) f ON a.RoomNum = f.Room_num WHERE f.RR_ID IS NULL  GROUP BY a.MaxPeople) g ON a.RoomType = g.RoomType
+    $sqlcodev1 = "SELECT b.RoomID, b.RoomNum, CONCAT(b.RoomType, '-', b.RoomNum) AS roomname, c.*
+    FROM rooms b
+    LEFT JOIN roomtypes c ON b.RoomType = c.RoomType
+    LEFT JOIN (
+        SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate, e.finalCheckout, e.CheckOutDate
+        FROM roomsreservation d
+        LEFT JOIN reservations e ON d.greservationID = e.ReservationID
+        WHERE (e.CheckOutDate >= '$cin $ETIME' AND (e.CheckInDate <= '$cin' OR e.CheckOutDate <= '$cin $ETIME')) AND e.finalCheckout IS NULL
+    ) AS f ON b.RoomNum = f.Room_num
     WHERE f.RR_ID IS NULL;";
 
     $queryrunv1 = mysqli_query($conn, $sqlcodev1);
