@@ -3,8 +3,30 @@
 
     if (!isset($_SESSION["USERID"]) || !isset($_SESSION["ACCESS"])){
         $specialcase = isset(explode('?', $_SERVER['REQUEST_URI'])[1]) ? "?".explode('?', $_SERVER['REQUEST_URI'])[1] : "";
-        header("Location: ../EliJosh_Registration/index.php$specialcase");
-        ob_end_flush();
+        
+        echo "
+        <script>
+            Swal.fire({
+                icon : 'info',
+                text: `It seems you haven't logged in yet. Do you have an account ?`,
+                showDenyButton: true,
+                confirmButtonText: `Yes`,
+                denyButtonText: `No`,
+                allowOutsideClick: false
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    location.href = `../EliJosh_Login/index.php$specialcase`
+                } else if (result.isDenied) {
+                    location.href = `../EliJosh_Registration/index.php$specialcase`
+                }
+            });
+
+        </script>
+        ";
+        
+        //header("Location: ../EliJosh_Registration/index.php$specialcase");
+        //ob_end_flush();
         exit;
     }
     //get the user information

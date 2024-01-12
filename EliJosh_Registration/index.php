@@ -81,14 +81,14 @@
             <input type="password" placeholder="Confirm Password" id="cpassword" required>
             <small style="color:red;text-align:center;"></small>
           </div>
-        <!--<div class="note">
-            <h6>* At least 8 characters long<br>
-                * Contains at least One Uppercase letter<br>
-                * Contains at least One Lowercase letter<br>
-                * Contains at least One Digit<br>
-                * Contains atleast One Special Character (e.g.,!@#$%^&*)
-            </h6>
-        </div>-->
+          <div class="note">
+              <h6>* At least 8 characters long<br>
+                  * Contains at least One Uppercase letter<br>
+                  * Contains at least One Lowercase letter<br>
+                  * Contains at least One Digit<br>
+                  * Contains atleast One Special Character (e.g.,!@#$%^&*)
+              </h6>
+          </div>
        
         <div class="button">
             <input type="submit" value="Register">

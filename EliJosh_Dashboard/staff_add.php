@@ -437,13 +437,6 @@
         });
 
         let cururl = location.href;
-        
-        if(cururl.includes("?")){
-          let cururl = location.href
-          let data = cururl.split("?")[1]
-          sessionStorage.setItem("MissedBooked", data);
-          //REGFORM.action = `./index.php?nzlz=staff`
-        }
 
         REGFORM.submit();
       }else{

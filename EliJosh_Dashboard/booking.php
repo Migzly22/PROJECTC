@@ -141,6 +141,7 @@
 				break;
 			case "CHECKOUT":
 				access = 3;
+				return 0;
 				break;
 			case "CANCELLED":
 				access = 4;
@@ -152,7 +153,6 @@
 				<select class='SWALinput swalselect' id='swal-input1' aria-label='Floating label select example' style='padding:0.5em;'>
                     <option value='BOOKED' ${access == 1 ? "selected" : ""}>Booked</option>
                     <option value='CHECKIN' ${access == 2 ? "selected" : ""}>Checked in</option>
-                    <option value='CHECKOUT' ${access == 3 ? "selected" : ""}>Checked out</option>
                     <option value='CANCELLED' ${access == 4 ? "selected" : ""}>Cancelled</option>
                 </select>
 			</div>

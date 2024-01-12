@@ -366,7 +366,40 @@
 					text: `Change : ₱ ${(parseFloat(formValues[0]) - parseFloat(balance)).toFixed(2)}`,
 					icon: "info"
 				});
-				location.href = "./index.php?nzlz=booking";
+
+
+				//Loading Screen
+				$.ajax({
+					url:`../Admins/Composer/checkoutv2.php`,
+					type:"GET",
+					data:'id='+e,
+					beforeSend:function(){
+						Swal.fire({
+							text: "Loading Please Wait",
+							icon: "success",
+							allowOutsideClick: false,
+							timerProgressBar: true,
+							didOpen: () => {
+								Swal.showLoading();
+								location.href =`../Admins/Composer/checkoutv2.php?id=${e}`;
+							},
+							willClose: () => {
+								// Additional actions before closing the modal if needed
+							}
+						});
+					},
+					error: function() 
+					{
+						reject("An error occurred.");
+					},
+					success:async function(data){
+						await Swal.fire({
+							text: "Updated Successfully",
+							icon: "success"
+						});
+						location.href = "./index.php?nzlz=booking";
+					}
+				})
 			}else{
 				await Swal.fire({
 					title: "",
