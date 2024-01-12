@@ -212,25 +212,24 @@ $queryrun1 = mysqli_query($conn,$sqlcode1);
 
         let formValues =await POPUPCREATE("Guest List",design,2)
 		let joinedString = "";
+
+
 		if(formValues){
 			if (formValues[0] !== "" || formValues[1] !== "") {
 				let conditions = [];
 
+
+
 				if(formValues[0] !== ""){
-					conditions.push(`
-						DATE(b.eCheckin)  >= '${formValues[0]}'
-					`);
+					conditions.push(` DATE(b.eCheckin)  >= '${formValues[0]}' `);
 				}
 				if(formValues[1] !== ""){
-					conditions.push(`
-						DATE(b.CheckOutDate)  <= '${formValues[1]}'
-					`);
+					conditions.push(` DATE(b.eCheckin)  <= '${formValues[1]}' `);
 				}
 
 
 	
 				joinedString = conditions.join(' AND ');
-
 			}else{
 				joinedString = ` DATE(b.eCheckin)  = CURRENT_DATE`;
 

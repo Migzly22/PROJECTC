@@ -6,9 +6,7 @@ ob_start();
 
 $sqlcode = $_POST["sqlcode"];
 
-$default = "SELECT a.*, d.*, if(d.Status1 IS NULL, 'Available', d.Status1) AS Status FROM rooms a 
-LEFT JOIN (SELECT  b.*, IF(c.ReservationStatus IS NULL, 'Available', c.ReservationStatus) AS Status1, CONCAT(c.CheckInDate, ' to ', c.CheckOutDate) AS DT FROM roomsreservation b LEFT JOIN reservations c ON b.greservationID = c.ReservationID  WHERE CURDATE() BETWEEN c.CheckInDate AND c.CheckOutDate) d ON a.RoomNum = d.Room_num
-ORDER BY a.RoomID;";
+$default = "SELECT c.*, CONCAT(TIME(d.eCheckin), ' to ', TIME(d.CheckOutDate)) AS DT, IF(d.ReservationStatus IS NULL, 'Available', IF(d.ReservationStatus = 'CANCELLED', 'Available', d.ReservationStatus)) AS Status FROM rooms c LEFT JOIN (SELECT a.*, b.* FROM roomsreservation a LEFT JOIN (SELECT * FROM reservations WHERE CheckInDate = CURRENT_DATE() AND ReservationStatus != 'CHECKOUT') b ON a.greservationID = b.ReservationID WHERE b.ReservationID IS NOT NULL) d ON c.RoomNum = d.Room_num GROUP BY c.RoomID ORDER BY c.RoomNum ;";
 
 
 function PRINTING($conn, $sqlcode3){
@@ -19,17 +17,6 @@ function PRINTING($conn, $sqlcode3){
         # code...
 
         $statuscolor = ($result['Status'] == "BOOKED" ? "process" : ($result['Status'] == "Available" ? "pending" : "completed"));
-        
-        if ($_SESSION["ACCESS"] == "ADMIN"){
-            $tablebuttnon = "<td class='TableBtns'>
-            <div class='DeleteBTN' onclick='DELETION(this,`".$result["RoomID"]."`)'>
-                <i class='bx bx-trash-alt' ></i>
-            </div>
-        </td>";
-        }else{
-            $tablebuttnon = "";
-        }
-
 
         $data1 .= "
         <tr>
@@ -37,7 +24,6 @@ function PRINTING($conn, $sqlcode3){
             <td>".$result["RoomType"]."</td>
             <td>".$result["DT"]."</td>
             <td><span class='status $statuscolor'>".$result['Status']."</span></td>
-            $tablebuttnon
         </tr>
         ";
     }

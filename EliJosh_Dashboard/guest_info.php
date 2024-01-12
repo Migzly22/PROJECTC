@@ -13,7 +13,7 @@
 	$queryrun3 = mysqli_query($conn,$sqlcode3);
 	$data3 = mysqli_fetch_assoc($queryrun3);
 	
-	$total = (floatval($data2["EXTRACHARGES"]) + floatval($data["TotalPrice"])) - floatval($data3["PaidAmountTotal"]);
+	$total = (floatval($data2["EXTRACHARGES"]) + floatval($data["TotalPrice"])); //- floatval($data3["PaidAmountTotal"]);
 
 
 	$date1 = new DateTime($data["eCheckin"]);

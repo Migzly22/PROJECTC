@@ -247,6 +247,36 @@
 
     }
 
+
+    function changetRANGE (){
+        const tRANGE = document.getElementById('swal-input3')
+        const packages = document.getElementById('swal-input2')
+
+        var newOptions = [
+            ["Day" , "8:00 AM - 05: 00 PM"],
+            ["Night", "07:00 PM - 7: 00 AM"],
+        ];
+        tRANGE.innerHTML = '';
+        if(packages.value === "Package2"){
+
+
+            // Add new options
+            newOptions = [
+               ["Day" , "8:00 AM - 05: 00 PM"],
+               ["Night", "07:00 PM - 7: 00 AM"],
+               ["22Hrs", "02:00 PM- 12: 00 PM"]
+            ];
+
+ 
+        }
+
+        for (var i = 0; i < newOptions.length; i++) {
+                var option = document.createElement("option");
+                option.value = newOptions[i][0];
+                option.text = newOptions[i][1];
+                tRANGE.add(option);
+            }
+    }
 	async function OPENBOOKING(){
         let design = `
 		<div style="display: flex; justify-content: space-between;align-items:center;margin-bottom:0.5em;">
@@ -255,7 +285,7 @@
 		</div>
 		<div style="display: flex; justify-content: space-between;align-items:center;margin-bottom:0.5em;">
 			<label for="inputLabel">Package</label>
-			<select class='SWALinput swalselect' id='swal-input2' aria-label='Floating label select example' style='padding:0.5em;'>
+			<select class='SWALinput swalselect' id='swal-input2' onchange="changetRANGE()" aria-label='Floating label select example' style='padding:0.5em;'>
 				<option value="Package1">Swimming Only</option>
 				<option value='Package2'>Room + Swimming</option>
 				<option value='Package3'>Pavilions</option>
@@ -266,7 +296,6 @@
 			<select class='SWALinput swalselect' id='swal-input3' aria-label='Floating label select example' style='padding:0.5em;'>
 				<option value="Day">08:00 AM - 05:00 PM</option>
 				<option value='Night'>07:00 PM - 07:00 AM</option>
-				<option value='22Hrs'>02:00 PM - 12:00 PM</option>
 			</select>
 		</div>`
 

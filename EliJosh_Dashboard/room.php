@@ -45,13 +45,6 @@
 						<th>Type</th>
 						<th>Time</th>
 						<th>Status</th>
-						<?php
-							if($_SESSION["ACCESS"] == "ADMIN"){
-						?>
-							<th style="text-align: center;"><i class='bx bx-cog' ></i></th>
-						<?php
-							}
-						?>
 						
 					</tr>
 				</thead>
@@ -62,17 +55,6 @@
 							# code...
 
 							$statuscolor = ($result['Status'] == "BOOKED" ? "process" : ($result['Status'] == "Available" ? "pending" : "completed"));
-							
-							if ($_SESSION["ACCESS"] == "ADMIN"){
-								$tablebuttnon = "<td class='TableBtns'>
-								<div class='DeleteBTN' onclick='DELETION(this,`".$result["RoomID"]."`)'>
-									<i class='bx bx-trash-alt' ></i>
-								</div>
-							</td>";
-							}else{
-								$tablebuttnon = "";
-							}
-
 
 							$data1 .= "
 							<tr>
@@ -80,7 +62,6 @@
 								<td>".$result["RoomType"]."</td>
 								<td>".$result["DT"]."</td>
 								<td><span class='status $statuscolor'>".$result['Status']."</span></td>
-								$tablebuttnon
 							</tr>
 							";
 						}

@@ -161,7 +161,7 @@
                         PACKAGE      
                     </div>
                     <label for="">
-                        <select name="" id="packages">
+                        <select name="" id="packages" onchange="changetRANGE()">
                             <option value="Package1" selected>Swimming Only</option>
                             <option value="Package2">Rooms + Swimming</option>
                             <option value="Package3">Pavilions</option>
@@ -176,7 +176,6 @@
                         <select name="" id="tRANGE">
                             <option value="Day" selected>8:00 AM - 05: 00 PM</option>
                             <option value="Night" >07:00 PM - 7: 00 AM</option>
-                            <option value="22Hrs" >02:00 PM- 12: 00 PM</option>
                         </select>
                     </label>
                 </div>
@@ -499,6 +498,35 @@
         };
     </script>
 <script>
+    function changetRANGE (){
+        const tRANGE = document.getElementById('tRANGE')
+        const packages = document.getElementById('packages')
+
+        var newOptions = [
+            ["Day" , "8:00 AM - 05: 00 PM"],
+            ["Night", "07:00 PM - 7: 00 AM"],
+        ];
+        tRANGE.innerHTML = '';
+        if(packages.value === "Package2"){
+
+
+            // Add new options
+            newOptions = [
+               ["Day" , "8:00 AM - 05: 00 PM"],
+               ["Night", "07:00 PM - 7: 00 AM"],
+               ["22Hrs", "02:00 PM- 12: 00 PM"]
+            ];
+
+ 
+        }
+
+        for (var i = 0; i < newOptions.length; i++) {
+                var option = document.createElement("option");
+                option.value = newOptions[i][0];
+                option.text = newOptions[i][1];
+                tRANGE.add(option);
+            }
+    }
     const Onrun =async () =>{
         let data = sessionStorage.getItem("MissedBooked")
         if (data !== null){

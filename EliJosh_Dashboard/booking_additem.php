@@ -47,8 +47,10 @@
         <div class="order">
             <div class="head">
                 <h3>Item List</h3>
-                <i class='bx bx-search' onclick="showCustomAlert()"></i>
-                <i class='bx bx-reset' onclick="RESETTABLE()"></i>
+                <!--
+                    <i class='bx bx-search' onclick="showCustomAlert()"></i>
+                    <i class='bx bx-reset' onclick="RESETTABLE()"></i>
+                -->
             </div>
             <div class="SOitemlist" id="TBODYELEMENT ">
                 <?php
