@@ -404,22 +404,22 @@
 				</button>
 			</div>
 			<ul class="smoothmenu">
-				<li class="creator">
+				<li class="creator" onclick="NORETURN(this)">
 					<a href="../EliJosh_Client/index.php#HOME" class="textkainit">HOME</a>
 				</li>
-				<li>
+				<li onclick="NORETURN(this)">
 					<a href="../EliJosh_Client/index.php#ABOUT" class="textkainit">ABOUT</a>
 				</li>
-				<li>
+				<li onclick="NORETURN(this)">
 					<a href="../EliJosh_Client/index.php#TOUR" class="textkainit">TOUR</a>
 				</li>
-				<li class="HOMETITLELI">
+				<li class="HOMETITLELI" onclick="NORETURN(this)">
 					<a href="../EliJosh_Client/index.php#HOME" class="HOMETITLE">EliJosh</a>
 				</li>
-				<li>
+				<li onclick="NORETURN(this)">
 					<a href="../EliJosh_Client/index.php#GALLERY" class="textkainit">GALLERY</a>
 				</li>
-				<li>
+				<li onclick="NORETURN(this)">
 					<a href="../EliJosh_Client/index.php#CONTACT" class="textkainit">CONTACT</a>
 				</li>
 				<li class="dropdown">
@@ -429,7 +429,7 @@
 						<?php  
 							if($usertoken != null){
 						?>
-							<li><i class='bx bxs-cog' ></i><a href="../EliJosh_Special/specialcon.php?nzlz=settings">Account</a></li>
+							<li onclick="NORETURN(this)"><i class='bx bxs-cog' ></i><a href="../EliJosh_Special/specialcon.php?nzlz=settings">Account</a></li>
 							<?php
 								if($_SESSION["ACCESS"] != "CLIENT"){
 							?>
@@ -437,14 +437,14 @@
 							<?php
 								}
 							?>
-							<li><i class='bx bxs-bookmark-alt' ></i><a href="../EliJosh_Special/specialcon.php?nzlz=bookingDetails">Booking Details</a></li>
-							<li><i class='bx bxs-door-open' ></i><a href="../EliJosh_Client/logOut.php">Logout</a></li>
+							<li onclick="NORETURN(this)"><i class='bx bxs-bookmark-alt' ></i><a href="../EliJosh_Special/specialcon.php?nzlz=bookingDetails">Booking Details</a></li>
+							<li onclick="NORETURN(this)"><i class='bx bxs-door-open' ></i><a href="../EliJosh_Client/logOut.php">Logout</a></li>
 
 						<?php
 						}else{
 						?>
-						<li><i class='bx bxs-user-circle' ></i><a href="../EliJosh_Login/index.php">Login</a></li>
-						<li><i class='bx bxs-user-plus' ></i><a href="../EliJosh_Registration/index.php">Register</a></li>
+						<li onclick="NORETURN(this)"><i class='bx bxs-user-circle' ></i><a href="../EliJosh_Login/index.php">Login</a></li>
+						<li onclick="NORETURN(this)"><i class='bx bxs-user-plus' ></i><a href="../EliJosh_Registration/index.php">Register</a></li>
 						<?php
 						}
 						?>
@@ -474,6 +474,19 @@
                 $(".smoothmenu").slideDown();
             }
         };
+    </script>
+
+<script>
+        function NORETURN(e){
+             // Get the <a> tag element inside the clicked <li>
+            const anchorElement = e.querySelector('a');
+            
+            // Check if the <a> tag element exists
+            if (anchorElement) {
+                // Trigger a click event on the <a> tag
+                anchorElement.click();
+            }
+        }
     </script>
 </body>
 </html>
