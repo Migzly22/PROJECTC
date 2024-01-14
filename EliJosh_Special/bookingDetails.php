@@ -27,7 +27,7 @@
 	</div>
 
 	<div style="margin-left:auto;width:fit-content;">
-		<a class="box-add" onclick="OPENBOOKING()">
+		<a class="box-add" href="../EliJosh_Client/index.php">
 			<i class='bx bxs-add-to-queue' ></i>
 		</a>
 	</div>
