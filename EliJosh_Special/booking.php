@@ -140,13 +140,13 @@
                     </div>
                     <div class="form-group f30">
                         <input type="number" class="form-control" name="" value="<?php echo $nKid?>" id="nKid"  required placeholder=" ">
-                        <label for=""  class="form-label">Number of Kid <span class="requiredcolor">*</span></label>
+                        <label for=""  class="form-label">Number of Kids (3ft and above) <span class="requiredcolor">*</span></label>
                         <small style="color: #D2042D;text-align:center;"></small>
                         <p>₱ 0.00</p>
                     </div>
                     <div class="form-group f30">
                         <input type="number" class="form-control" name="" value="<?php echo $nSenior?>" id="nSenior" required placeholder=" ">
-                        <label for=""  class="form-label">Number of Senior <span class="requiredcolor">*</span></label>
+                        <label for=""  class="form-label">Number of Senior/PWD (20% Discount) <span class="requiredcolor">*</span></label>
                         <small style="color: #D2042D;text-align:center;"></small>
                         <p>₱ 0.00</p>
                     </div>
