@@ -301,11 +301,11 @@
                 <?php
                   foreach ($eventjson as $key => $nestedArray) {
 
-                        $itemarr = explode("-", $key);
+                        $itemarr = explode("-", $key); 
                       echo "<tr>
                           <th >".$itemarr[0]."</th>
                           <td >1</td>
-                          <td >₱ ".number_format($itemarr[1], 2)."</td>
+                          <td >₱ ".number_format($eventjson[$key]["price"], 2)."</td>
                           </tr>";
                   }
                 ?>

@@ -142,7 +142,7 @@
 				<small>Price : ₱ ".number_format($pavprice[$result["Pavtype"]],2) ."</small>
 				</div>
 				<div class='spawnerbtn' style='display: flex;justify-content: center;padding:0.5em 1em;'>
-				<button type='button' class='ADDMEBTN' id='".$result["Pavtype"]."' onclick='activateClick(this,`".$result["Pavtype"]."-".$pavprice[$result["Pavtype"]]."-".$result["MaxPax"]."`)'>Add</button>
+				<button type='button' class='ADDMEBTN' id='".$result["Pavtype"]."' onclick='activateClick(this,`".$result["Pavtype"]."- -".$pavprice[$result["Pavtype"]]."-".$result["MaxPax"]."`)'>Add</button>
 				</div>
 			</div>
 			";
@@ -174,6 +174,8 @@
 			  num :  arrval[1],
 			  max : arrval[3]
 			}
+
+      console.log(datacontainer)
 		}else{
 			e.classList.add('ADDMEBTN')
 			e.classList.remove('REMOVEMEBTN')
