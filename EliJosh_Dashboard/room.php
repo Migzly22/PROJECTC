@@ -1,5 +1,14 @@
 <?php
-	$sqlcode1 = "SELECT c.*, CONCAT(TIME(d.eCheckin), ' to ', TIME(d.CheckOutDate)) AS DT, IF(d.ReservationStatus IS NULL, 'Available', IF(d.ReservationStatus = 'CANCELLED', 'Available', d.ReservationStatus)) AS Status FROM rooms c LEFT JOIN (SELECT a.*, b.* FROM roomsreservation a LEFT JOIN (SELECT * FROM reservations WHERE CheckInDate = CURRENT_DATE() AND ReservationStatus != 'CHECKOUT') b ON a.greservationID = b.ReservationID WHERE b.ReservationID IS NOT NULL) d ON c.RoomNum = d.Room_num GROUP BY c.RoomID ORDER BY c.RoomNum ;";
+	$sqlcode1 = "SELECT a.*, a.RoomType AS roomname, f.*, if(f.ReservationStatus is null, 'Available', f.ReservationStatus) AS Status, CONCAT(g.LastName, ', ', g.FirstName) AS Name
+	FROM rooms a
+	LEFT JOIN (
+		SELECT d.*, e.*
+		FROM roomsreservation d
+		LEFT JOIN reservations e ON d.greservationID = e.ReservationID
+		WHERE (e.ReservationStatus != 'CHECKOUT') AND (DATE(e.CheckInDate) <= CURRENT_DATE AND e.CheckOutDate >= CURRENT_TIMESTAMP)
+	) f ON f.Room_num = a.RoomID
+	LEFT JOIN guests g ON f.GuestID = g.GuestID
+	ORDER BY a.RoomID;";
 	$queryrun1 = mysqli_query($conn, $sqlcode1);
 
 ?>
@@ -20,16 +29,7 @@
 			</ul>
 		</div>
 	</div>
-	
-	<?php
-		if($_SESSION["ACCESS"] == "ADMIN"){
-	?>
-		<div class="box-add" onclick="ADDROOM()">
-			<i class='bx bxs-add-to-queue' ></i>
-		</div>
-	<?php
-		}
-	?>
+
 
 	<div class="table-data">
 		<div class="order">
@@ -41,9 +41,9 @@
 			<table>
 				<thead>
 					<tr>
-						<th>#</th>
-						<th>Type</th>
-						<th>Time</th>
+						<th></th>
+						<th>Guest Name</th>
+						<th>Arrival</th>
 						<th>Status</th>
 						
 					</tr>
@@ -58,9 +58,9 @@
 
 							$data1 .= "
 							<tr>
-								<td>".$result["RoomNum"]."</td>
 								<td>".$result["RoomType"]."</td>
-								<td>".$result["DT"]."</td>
+								<td>".$result["Name"]."</td>
+								<td>".$result["eCheckin"]."</td>
 								<td><span class='status $statuscolor'>".$result['Status']."</span></td>
 							</tr>
 							";
@@ -85,7 +85,17 @@
 <!-- ROOM MAIN -->
 
 <script>
-const mainquery = `SELECT c.*, CONCAT(TIME(d.eCheckin), ' to ', TIME(d.CheckOutDate)) AS DT, IF(d.ReservationStatus IS NULL, 'Available', IF(d.ReservationStatus = 'CANCELLED', 'Available', d.ReservationStatus)) AS Status FROM rooms c LEFT JOIN (SELECT a.*, b.* FROM roomsreservation a LEFT JOIN (SELECT * FROM reservations WHERE CheckInDate = CURRENT_DATE() AND ReservationStatus != 'CHECKOUT') b ON a.greservationID = b.ReservationID WHERE b.ReservationID IS NOT NULL) d ON c.RoomNum = d.Room_num  WHERE [CONDITION] GROUP BY c.RoomID ORDER BY c.RoomNum ;`
+const mainquery = `SELECT a.*, a.RoomType AS roomname, f.*, if(f.ReservationStatus is null, 'Available', f.ReservationStatus) AS Status, CONCAT(g.LastName, ', ', g.FirstName) AS Name
+	FROM rooms a
+	LEFT JOIN (
+		SELECT d.*, e.*
+		FROM roomsreservation d
+		LEFT JOIN reservations e ON d.greservationID = e.ReservationID
+		WHERE (e.ReservationStatus != 'CHECKOUT') AND ([CONDITION2])
+	) f ON f.Room_num = a.RoomID
+	LEFT JOIN guests g ON f.GuestID = g.GuestID
+	WHERE [CONDITION1]
+	ORDER BY a.RoomID;`
 const TBODYELEMENT = document.getElementById('TBODYELEMENT')
 
 
@@ -100,6 +110,7 @@ async function RESETTABLE() {
 
 async function FILTERING(){
 	let design = `
+	
 	<div style="display: flex; justify-content: space-between;align-items:center;margin-bottom:0.5em;" >
 		<label for="inputLabel">Room Status</label>
 		<select class='SWALinput swalselect' id='swal-input1' aria-label='Floating label select example' style='padding:0.5em;'>
@@ -107,11 +118,10 @@ async function FILTERING(){
 			<option value='Available'>Available</option>
 			<option value='BOOKED'>Booked</option>
 			<option value='Checked in'>Checked in</option>
-			<option value='Checked out'>Checked out</option>
 		</select>
 	</div>
 	<div style="display: flex; justify-content: space-between;align-items:center;margin-bottom:0.5em;" >
-		<label for="inputLabel">Room Status</label>
+		<label for="inputLabel">Room Type</label>
 		<select class='SWALinput swalselect' id='swal-input2' aria-label='Floating label select example' style='padding:0.5em;'>
 			<option value="-">-</option>
 			<option value='Superior Room'>Superior Room</option>
@@ -119,27 +129,48 @@ async function FILTERING(){
 			<option value='Family Room'>Family Room</option>
 			<option value='Barkada Room'>Barkada Room</option>
 		</select>
+	</div>
+	<div style="display: flex; justify-content: space-between;align-items:center;margin-bottom:0.5em;">
+			<label for="inputLabel">Date Range</label>
+			<input type ="date" id="swal-input3" class="SWALinput" placeholder="From" required value="" style='padding:0.5em;width:120px;'>
+			-
+			<input type="date" id="swal-input4" class="SWALinput" placeholder="To" style='padding:0.5em;width:120px;'>
 	</div>`
 
-	let formValues =await POPUPCREATE("Filter",design,2)
+	let formValues =await POPUPCREATE("Filter",design,4)
 	if (formValues) {
 		let conditions = [];
-		if(formValues[0] !== "-" || formValues[1] !== "-"){
+		if(formValues[0] !== "-" || formValues[1] !== "-" || formValues[2] !== "" || formValues[3] !== ""){
 
 			if(formValues[0] !== "-"){
-				conditions.push(`IF(
-					d.ReservationStatus IS NULL, 'Available', IF(
-						d.ReservationStatus = 'CANCELLED', 'Available', d.ReservationStatus)
-						)=  '${formValues[0]}'`);
+				conditions.push(`if(f.ReservationStatus is null, 'Available', f.ReservationStatus) = '${formValues[0]}'`);
 			}
 			if(formValues[1] !== "-"){
-				conditions.push(`c.RoomType = '${formValues[1]}'`);
+				conditions.push(`a.RoomType LIKE '%${formValues[1]}%'`);
 			}
-			const joinedString = conditions.join(' AND ');
-			const formattedText = mainquery.replace(/\[CONDITION\]/, joinedString);
+			//DATE(e.CheckInDate) <= CURRENT_DATE AND e.CheckOutDate >= CURRENT_TIMESTAMP
+			let condition2 = []
+			if(formValues[2] !== ""){
+				condition2.push(`DATE(e.CheckInDate) <= '${formValues[2]}'`);
+			}else{
+				condition2.push(`DATE(e.CheckInDate) <= CURRENT_DATE`);
+			}
+			if(formValues[3] !== ""){
+				condition2.push(`DATE(e.CheckOutDate) >= '${formValues[3]}'`);
+			}else{
+				condition2.push(`e.CheckOutDate >= CURRENT_TIMESTAMP`);
+			}
 
-			console.log(formattedText)
-			const Tabledata =await AjaxSendv3(formattedText,"ROOMSLOGIC","&Process=Search")
+			if(conditions.length === 0){
+				conditions.push( '1')
+			}
+
+			let joinedString = conditions.join(' AND ');
+			let joinedString2 = condition2.join(' OR ');
+			const formattedText1 = mainquery.replace(/\[CONDITION1\]/, joinedString);
+			const formattedText2 = formattedText1.replace(/\[CONDITION2\]/, joinedString2);
+
+			const Tabledata =await AjaxSendv3(formattedText2,"ROOMSLOGIC","&Process=Search")
 			TBODYELEMENT.innerHTML = Tabledata
 		}else{
 			await Swal.fire({

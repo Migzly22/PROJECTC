@@ -72,10 +72,10 @@
 <main>
     <div class="head-title">
         <div class="left">
-            <h1>Booking</h1>
+            <h1>Reservation</h1>
             <ul class="breadcrumb">
                 <li>
-                    <a href="#">Booking</a>
+                    <a href="#">Reservation</a>
                 </li>
                 <li><i class='bx bx-chevron-right' ></i></li>
                 <li>
@@ -87,7 +87,7 @@
 	<div class="table-data">
         <div class="order">
             <div class="head">
-                <h3>Booking Information</h3>
+                <h3>Reservation Information</h3>
             </div>
             <div class="layer-3">
                 <div class="form-group f30">

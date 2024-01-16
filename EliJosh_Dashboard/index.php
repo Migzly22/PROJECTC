@@ -443,7 +443,7 @@
 			<li class="<?php echo ($activecode == 2) ? "active" : ""; ?>">
 				<a href="./index.php?nzlz=booking">
 					<i class='bx bxs-bookmark-alt-plus' ></i> <!--bookmark or book-add-->
-					<span class="text">Booking</span>
+					<span class="text">Reservations</span>
 				</a>
 			</li>
 			<li class="<?php echo ($activecode == 3) ? "active" : ""; ?>"> 
@@ -464,7 +464,7 @@
 				<li class="<?php echo ($activecode == 5) ? "active" : ""; ?>">
 					<a href="./index.php?nzlz=product">
 						<i class='bx bxs-collection' ></i> <!--cabinet or collection or package-->
-						<span class="text">Product Items</span>
+						<span class="text">Rental Items</span>
 					</a>
 				</li>
 				<li class="<?php echo ($activecode == 6) ? "active" : ""; ?>">

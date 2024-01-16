@@ -37,8 +37,7 @@ if(mysqli_num_rows($sqlquery2)){
             $pricename = $arraynew['timapackage']."Price";
         }
         
-        $Carrvalues[$result["NAME"]] = $result[$pricename];
-        $COTTAGECON = $Carrvalues;
+        $COTTAGECON[$result["NAME"]] = $result[$pricename];
     }
 }
 
@@ -52,8 +51,14 @@ $total_hours = $interval->h + ($interval->days * 24);
 // Round up to the nearest multiple of 24 hours
 $rounded_hours = ceil($total_hours / 24) ;
 
-$SQLCODE3 = "SELECT a.*, CONCAT(b.RoomType, '-', b.RoomNum) as NAME, c.* FROM roomsreservation a LEFT JOIN rooms b ON a.Room_num = b.RoomNum LEFT JOIN roomtypes c ON b.RoomType = c.RoomType WHERE a.greservationID  = '$reserveid';";
+$SQLCODE3 = "SELECT a.*, b.*, CONCAT(b.RoomType) as NAME FROM roomsreservation a LEFT JOIN rooms b ON a.Room_num = b.RoomID
+WHERE a.greservationID  = '$reserveid';";
+
+
+
 $sqlquery3 = mysqli_query($conn,$SQLCODE3);
+
+
 if(mysqli_num_rows($sqlquery3)){
     $ROOMCON = array();
     while ($result = mysqli_fetch_assoc($sqlquery3)) {
@@ -65,10 +70,12 @@ if(mysqli_num_rows($sqlquery3)){
             $pricename = $arraynew['timapackage']."TimePrice";
         }
 
-        $Carrvalues[$result["NAME"]] = $result[$pricename];
-        $ROOMCON = $Carrvalues;
+        $ROOMCON[$result["NAME"]] = $result[$pricename];
     }
 }
+
+
+
 $SQLCODE4 = "SELECT a.* FROM eventreservation a WHERE a.reservationID = '$reserveid';";
 $sqlquery4 = mysqli_query($conn,$SQLCODE4);
 if(mysqli_num_rows($sqlquery3)){
@@ -83,8 +90,7 @@ if(mysqli_num_rows($sqlquery3)){
         $result2 = mysqli_fetch_assoc($sqlquery4v1);
 
 
-        $Carrvalues[$result["eventname"]] = $result2["PRICE"];
-        $PAVCON = $Carrvalues;
+        $PAVCON[$result["eventname"]] = $result2["PRICE"];
     }
 }   
 
@@ -118,6 +124,7 @@ if(isset($arraynew['COTTAGE'])){
 if(isset($arraynew['ROOM'])){
     $rooms = implode(', ',array_keys($arraynew['ROOM']));
     foreach ($arraynew['ROOM'] as $item) {
+
         $sumOfROOM +=intval($item)*intval($rounded_hours);
     }
 }

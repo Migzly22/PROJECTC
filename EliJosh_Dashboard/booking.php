@@ -7,10 +7,10 @@
 <main>
 	<div class="head-title">
 		<div class="left">
-			<h1>Booking</h1>
+			<h1>Reservations</h1>
 			<ul class="breadcrumb">
 				<li>
-					<a href="#">Booking</a>
+					<a href="#">Reservations</a>
 				</li>
 				<li><i class='bx bx-chevron-right' ></i></li>
 				<li>
@@ -30,7 +30,7 @@
 	<div class="table-data">
 		<div class="order">
 			<div class="head">
-				<h3>Reservations</h3>
+				<h3>Reservations List</h3>
 				<i class='bx bx-search' onclick="showCustomAlert()"></i>
 				<i class='bx bx-filter' onclick="FILTERING()"></i>
 				<i class='bx bx-reset' onclick="RESETTABLE()"></i>

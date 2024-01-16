@@ -6,7 +6,20 @@ ob_start();
 
 $sqlcode = $_POST["sqlcode"];
 
-
+switch ($_POST['tday']) {
+    case 'Day':
+        # code...
+        $datas = "17:00";
+        break;
+    case 'Night':
+        # code...
+        $datas = "07:00";
+        break;    
+    case '22Hrs':
+        # code...
+        $datas = "12:00";
+        break;
+}
 
 switch ($sqlcode) {
     case 'Package1':
@@ -25,16 +38,15 @@ switch ($sqlcode) {
         }
         break;
     case 'Package2':
-        $sqlcode3 = "SELECT b.RoomID, b.RoomNum, CONCAT(b.RoomType, '-', b.RoomNum) AS roomname, c.*
-        FROM rooms b
-        LEFT JOIN roomtypes c ON b.RoomType = c.RoomType
+        $sqlcode3 = "SELECT a.*,f.*
+        FROM rooms a
         LEFT JOIN (
             SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate, e.finalCheckout, e.CheckOutDate
             FROM roomsreservation d
             LEFT JOIN reservations e ON d.greservationID = e.ReservationID
-            WHERE (e.CheckOutDate >= '".$_POST['cin']."' AND (e.CheckInDate <= '".$_POST['cin']."' OR e.CheckOutDate <= '".$_POST['cin']."')) AND e.finalCheckout IS NULL
-        ) AS f ON b.RoomNum = f.Room_num
-        WHERE f.RR_ID IS NULL;";
+            WHERE (DATE(e.CheckInDate) <= '".$_POST['cin']."' AND e.CheckOutDate >= '".$_POST['cin']." $datas') AND e.finalCheckout is null
+        ) f ON f.Room_num = a.RoomID WHERE f.RR_ID is null
+        ORDER BY a.RoomID;";
         $query = mysqli_query($conn,$sqlcode3);
         if(mysqli_num_rows($query) > 0){
             echo "true";

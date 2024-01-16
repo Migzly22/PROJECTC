@@ -13,10 +13,10 @@
 <main>
 	<div class="head-title">
 		<div class="left">
-			<h1>Booking Details</h1>
+			<h1>Reservation Details</h1>
 			<ul class="breadcrumb">
 				<li>
-					<a href="#">Booking Details</a>
+					<a href="#">Reservation Details</a>
 				</li>
 				<li><i class='bx bx-chevron-right' ></i></li>
 				<li>

@@ -54,7 +54,8 @@ $total_hours = $interval->h + ($interval->days * 24);
 // Round up to the nearest multiple of 24 hours
 $rounded_hours = ceil($total_hours / 24) ;
 
-$SQLCODE3 = "SELECT a.*, CONCAT(b.RoomType, '-', b.RoomNum) as NAME, c.* FROM roomsreservation a LEFT JOIN rooms b ON a.Room_num = b.RoomNum LEFT JOIN roomtypes c ON b.RoomType = c.RoomType WHERE a.greservationID  = '$reserveid';";
+$SQLCODE3 = "SELECT a.*, b.*, CONCAT(b.RoomType) as NAME FROM roomsreservation a LEFT JOIN rooms b ON a.Room_num = b.RoomID
+WHERE a.greservationID  = '$reserveid';";
 $sqlquery3 = mysqli_query($conn,$SQLCODE3);
 if(mysqli_num_rows($sqlquery3)){
     $ROOMCON = array();

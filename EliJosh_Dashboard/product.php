@@ -9,7 +9,7 @@
 <main>
 	<div class="head-title">
 		<div class="left">
-			<h1>Items</h1>
+			<h1>Rental Items</h1>
 			<ul class="breadcrumb">
 				<li>
 					<a href="#">Items</a>

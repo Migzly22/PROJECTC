@@ -86,7 +86,7 @@
 	<div class="table-data">
 		<div class="order">
 			<div class="head">
-				<h3>Booking Report</h3>
+				<h3>Reservation Report</h3>
 			</div>
 			<table>
 
@@ -187,7 +187,7 @@
 							echo $data1;
 						}
 
-						$ROOMLIST = "SELECT a.*, b.*, c.* FROM roomsreservation a LEFT JOIN rooms b ON a.Room_num = b.RoomNum LEFT JOIN roomtypes c ON b.RoomType = c.RoomType  WHERE a.greservationID = '".$data["ReservationID"]."';";
+						$ROOMLIST = "SELECT a.*, b.*, CONCAT(b.RoomType) as NAME FROM roomsreservation a LEFT JOIN rooms b ON a.Room_num = b.RoomID WHERE a.greservationID = '".$data["ReservationID"]."';";
 						$ROOMLISTQuery =  mysqli_query($conn, $ROOMLIST);
 						$data2 = "";
 
@@ -200,7 +200,7 @@
 								}
 
 								$data2 .= "<tr>
-								<th style='text-align:start;'>".$CottageResult["RoomType"]."-".$CottageResult["RoomNum"]."</th>
+								<th style='text-align:start;'>".$CottageResult["RoomType"]."</th>
 								<td style='text-align:center;'>1</td>
 								<td style='text-align:end;'>₱ ".number_format($CottageResult[$datatype]*$rounded_hours, 2)."</td>
 								</tr>";

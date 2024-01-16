@@ -101,7 +101,7 @@
                           <?php
                             }
                           ?>
-                          <li onclick="NORETURN(this)"><i class='bx bxs-bookmark-alt' ></i><a href="../EliJosh_Special/specialcon.php?nzlz=bookingDetails">Booking Details</a></li>
+                          <li onclick="NORETURN(this)"><i class='bx bxs-bookmark-alt' ></i><a href="../EliJosh_Special/specialcon.php?nzlz=bookingDetails">Reservation Details</a></li>
                           <li onclick="NORETURN(this)"><i class='bx bxs-door-open' ></i><a href="./logOut.php">Logout</a></li>
 
                     <?php
@@ -531,7 +531,7 @@
         let data = sessionStorage.getItem("MissedBooked")
         if (data !== null){
             await Swal.fire({
-                title: "Do you want to continue the booking ?",
+                title: "Do you want to continue your reservation ?",
                 showDenyButton: true,
                 confirmButtonText: "Yes",
                 denyButtonText: `No`
@@ -563,8 +563,6 @@
 
             // Assuming Checkin is a string representing a date, replace it with your actual variable
             const inputDate = new Date(Checkin);
-
-
 
             let valdata = Math.floor((new Date(currentDate) - inputDate) / (1000 * 60 * 60 * 24))
             console.log(valdata)

@@ -33,10 +33,10 @@
 <main id="TBODYELEMENT2">
 	<div class="head-title">
 		<div class="left">
-			<h1>Booking</h1>
+			<h1>Reservations</h1>
 			<ul class="breadcrumb">
 				<li>
-					<a href="#">Booking</a>
+					<a href="#">Reservations</a>
 				</li>
 				<li><i class='bx bx-chevron-right' ></i></li>
 				<li>
@@ -116,7 +116,7 @@
 	<div class="table-data">
 		<div class="order">
 			<div class="head">
-				<h3>Booking Report</h3>
+				<h3>Reservation Report</h3>
 			</div>
 			<table>
 
@@ -217,7 +217,8 @@
 							echo $data1;
 						}
 
-						$ROOMLIST = "SELECT a.*, b.*, c.* FROM roomsreservation a LEFT JOIN rooms b ON a.Room_num = b.RoomNum LEFT JOIN roomtypes c ON b.RoomType = c.RoomType  WHERE a.greservationID = '".$data["ReservationID"]."';";
+
+						$ROOMLIST = "SELECT a.*, b.*, CONCAT(b.RoomType) as NAME FROM roomsreservation a LEFT JOIN rooms b ON a.Room_num = b.RoomID WHERE a.greservationID = '".$data["ReservationID"]."';";
 						$ROOMLISTQuery =  mysqli_query($conn, $ROOMLIST);
 						$data2 = "";
 
@@ -230,7 +231,7 @@
 								}
 
 								$data2 .= "<tr>
-								<th style='text-align:start;'>".$CottageResult["RoomType"]."-".$CottageResult["RoomNum"]."</th>
+								<th style='text-align:start;'>".$CottageResult["RoomType"]."</th>
 								<td style='text-align:center;'>1</td>
 								<td style='text-align:end;'>₱ ".number_format($CottageResult[$datatype]*$rounded_hours, 2)."</td>
 								</tr>";
@@ -239,6 +240,7 @@
 							echo $data2;
 							
 						}
+
 
 
 						$EVENTLIST = "SELECT a.*, b.* FROM eventreservation a LEFT JOIN eventpav b ON a.eventname = b.Pavtype WHERE a.reservationID = '".$data["ReservationID"]."';";

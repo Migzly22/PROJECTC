@@ -6,11 +6,19 @@ ob_start();
 
 $sqlcode = $_POST["sqlcode"];
 
-$default = "SELECT c.*, CONCAT(TIME(d.eCheckin), ' to ', TIME(d.CheckOutDate)) AS DT, IF(d.ReservationStatus IS NULL, 'Available', IF(d.ReservationStatus = 'CANCELLED', 'Available', d.ReservationStatus)) AS Status FROM rooms c LEFT JOIN (SELECT a.*, b.* FROM roomsreservation a LEFT JOIN (SELECT * FROM reservations WHERE CheckInDate = CURRENT_DATE() AND ReservationStatus != 'CHECKOUT') b ON a.greservationID = b.ReservationID WHERE b.ReservationID IS NOT NULL) d ON c.RoomNum = d.Room_num GROUP BY c.RoomID ORDER BY c.RoomNum ;";
+$default = "SELECT a.*, a.RoomType AS roomname, f.*, if(f.ReservationStatus is null, 'Available', f.ReservationStatus) AS Status, CONCAT(g.LastName, ', ', g.FirstName) AS Name
+FROM rooms a
+LEFT JOIN (
+    SELECT d.*, e.*
+    FROM roomsreservation d
+    LEFT JOIN reservations e ON d.greservationID = e.ReservationID
+    WHERE (e.ReservationStatus != 'CHECKOUT') AND (DATE(e.CheckInDate) <= CURRENT_DATE AND e.CheckOutDate >= CURRENT_TIMESTAMP)
+) f ON f.Room_num = a.RoomID
+LEFT JOIN guests g ON f.GuestID = g.GuestID
+ORDER BY a.RoomID;";
 
 
 function PRINTING($conn, $sqlcode3){
- 
     $queryrun1 = mysqli_query($conn,$sqlcode3);
     $data1 = "";
     while ($result = mysqli_fetch_assoc($queryrun1)) {
@@ -20,9 +28,9 @@ function PRINTING($conn, $sqlcode3){
 
         $data1 .= "
         <tr>
-            <td>".$result["RoomNum"]."</td>
             <td>".$result["RoomType"]."</td>
-            <td>".$result["DT"]."</td>
+            <td>".$result["Name"]."</td>
+            <td>".$result["eCheckin"]."</td>
             <td><span class='status $statuscolor'>".$result['Status']."</span></td>
         </tr>
         ";

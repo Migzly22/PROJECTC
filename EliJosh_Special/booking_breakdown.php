@@ -144,11 +144,11 @@
                 </li>
                 <li><i class='bx bx-chevron-right' ></i></li>
                 <li>
-                    <a class="active" href="./index.php?nzlz=booking">Home</a>
+                    <a class="active" href="./specialcon.php?nzlz=booking&<?php echo $dataurl;?>">Home</a>
                 </li>
                 <li><i class='bx bx-chevron-right' ></i></li>
                 <li>
-                    <a class="active" href="./index.php?nzlz=booking_walkin&<?php echo $dataurl;?>">Walk-ins</a>
+                    <a class="active" href="./specialcon.php?nzlz=booking_walkin&<?php echo $dataurl;?>">Walk-ins</a>
                 </li>
                 <li><i class='bx bx-chevron-right' ></i></li>
                 <li>

@@ -21,16 +21,19 @@
     }
 
     switch ($_GET['tRANGE']) {
-    case 'Day':
-        $timevalue = "08:00 AM - 05: 00 PM";
-        break;
-    case 'Night':
-        $timevalue = "07:00 PM - 07: 00 AM";
-        break;
-    case '22Hrs':
-        $timevalue = "02:00 PM - 12: 00 PM";
-        break;
-    }
+      case 'Day':
+          $timevalue = "08:00 AM - 05: 00 PM";
+          $datas = "17:00";
+          break;
+      case 'Night':
+          $timevalue = "07:00 PM - 07: 00 AM";
+          $datas = "07:00";
+          break;
+      case '22Hrs':
+          $timevalue = "02:00 PM - 12: 00 PM";
+          $datas = "12:00";
+          break;
+      }
 
     $nAdult = isset($_GET['nAdult']) ? $_GET['nAdult'] : "1";
     $nKid = isset($_GET['nKid']) ? $_GET['nKid'] : "0";
@@ -58,16 +61,15 @@
 
     $guesttotalnumber = $_GET['na']+$_GET['nk']+$_GET['ns'];
 
-    $sqlcodev1 = "SELECT b.RoomID, b.RoomNum, CONCAT(b.RoomType, '-', b.RoomNum) AS roomname, c.*
-    FROM rooms b
-    LEFT JOIN roomtypes c ON b.RoomType = c.RoomType
+    $sqlcodev1 = "SELECT a.*, a.RoomType AS roomname ,f.*
+    FROM rooms a
     LEFT JOIN (
         SELECT d.*, e.GuestID, e.timapackage, e.CheckInDate, e.finalCheckout, e.CheckOutDate
         FROM roomsreservation d
         LEFT JOIN reservations e ON d.greservationID = e.ReservationID
-        WHERE (e.CheckOutDate >= '$cin $ETIME' AND (e.CheckInDate <= '$cin' OR e.CheckOutDate <= '$cin $ETIME')) AND e.finalCheckout IS NULL
-    ) AS f ON b.RoomNum = f.Room_num
-    WHERE f.RR_ID IS NULL;";
+        WHERE (DATE(e.CheckInDate) <= '$cin' AND e.CheckOutDate >= '$cin $datas') AND e.finalCheckout is null
+    ) f ON f.Room_num = a.RoomID WHERE f.RR_ID is null
+    ORDER BY a.RoomID;";
 
     $queryrunv1 = mysqli_query($conn, $sqlcodev1);
 
@@ -138,30 +140,30 @@
       </div>
       <div class="listcontroller">
         <?php
-          $data1 = "";
-          while ($result = mysqli_fetch_assoc($queryrunv1)) {
+      			$data1 = "";
+            while ($result = mysqli_fetch_assoc($queryrunv1)) {
             if($_GET['tRANGE'] == "22Hrs" || $daysofstay > 1){
               $pricename = "Hours22";
             }else{
               $pricename = $_GET['tRANGE']."TimePrice";
             }
             
-
+      
             $data1 .= "
             <div class='boxcontainers'>
-              <img src='../Client/RoomsEtcImg/Rooms/".$result['RoomType'].".jpeg' alt=''>
+              <img src='../Elijosh_Special/RoomsEtcImg/Rooms/".explode("-",$result["roomname"])[0].".jpeg' alt=''>
               <div class='textcontainers'>
-                <h2 style='text-align: center;'>".$result["roomname"]."</h2>
-                <small>Good for ".$result["MinPeople"]." - ".$result["MaxPeople"]." people</small>
-                <small>Price :  ₱ ".number_format($result[$pricename]*$daysofstay,2) ."</small>
+              <h2 style='text-align: center;'>".$result["roomname"]."</h2>
+              <small>Good for ".$result["MinPeople"]." - ".$result["MaxPeople"]." people</small>
+              <small>Price : ₱ ".number_format($result[$pricename]*$daysofstay,2) ."</small>
               </div>
               <div class='spawnerbtn' style='display: flex;justify-content: center;padding:0.5em 1em;'>
-                <button type='button' class='ADDMEBTN' id='".$result["roomname"]."' onclick='activateClick(this,`".$result["roomname"]."-".$result[$pricename]*$daysofstay."-".$result["MaxPeople"]."`)'>Add</button>
+              <button type='button' class='ADDMEBTN' id='".$result["roomname"]."' onclick='activateClick(this,`".$result["roomname"]."-".$result[$pricename]*$daysofstay."-".$result["MaxPeople"]."-".$result["RoomID"]."`)'>Add</button>
               </div>
             </div>
             ";
-          }
-          echo $data1;
+            }
+            echo $data1;
         ?>
         
 
@@ -190,8 +192,8 @@
                 datacontainer[`${arrval[0]}-${arrval[1]}`] = {
                   price :  arrval[2],
                   name :  arrval[0],
-                  num :  arrval[1],
-                  max : arrval[3]
+                  num :  arrval[4],
+                  max : arrval[3],
                 }
             }else{
                 e.classList.add('ADDMEBTN')
@@ -199,6 +201,8 @@
                 e.innerText = "Add"
                 delete datacontainer[`${arrval[0]}-${arrval[1]}`];
             }
+
+            console.log(datacontainer)
             updatePrice()
 
         }
