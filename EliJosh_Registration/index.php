@@ -336,6 +336,7 @@
           icon: "success"
         });
 
+
         let cururl = location.href;
         
         if(cururl.includes("?")){
@@ -355,7 +356,30 @@
 
 
   })
+      async function sendinggmailnotif (email,ids){
+          $.ajax({    
+              type: "post",
+              url: "../Send3.php",             
+              data: "email="+email,      
+              beforeSend:function(){
+                  // Set the content of the loading container
+              },  
+              error:function(response){
+                  // Remove the loading screen
+                  console.log(response)
+                  
+              },
+              success: async function(response) {
 
+                  await Swal.fire({
+                      text: "Sent Successfully",
+                      icon: "success"
+                  });
+              }
+
+
+          });
+      }
 </script> 
   
 

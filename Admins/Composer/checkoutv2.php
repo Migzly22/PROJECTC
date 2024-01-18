@@ -6,6 +6,8 @@ ob_start();
 
 use PhpOffice\PhpWord\TemplateProcessor;
 
+
+$print = true;
 // Load the template DOCX file
 $templateFile = 'Checkout.docx';
 
@@ -54,7 +56,7 @@ $total_hours = $interval->h + ($interval->days * 24);
 // Round up to the nearest multiple of 24 hours
 $rounded_hours = ceil($total_hours / 24) ;
 
-$SQLCODE3 = "SELECT a.*, CONCAT(b.RoomType, '-', b.RoomNum) as NAME, c.* FROM roomsreservation a LEFT JOIN rooms b ON a.Room_num = b.RoomNum LEFT JOIN roomtypes c ON b.RoomType = c.RoomType WHERE a.greservationID  = '$reserveid';";
+$SQLCODE3 = "SELECT a.*,b.RoomType as NAME, b.* FROM roomsreservation a LEFT JOIN rooms b ON a.Room_num = b.RoomID WHERE a.greservationID =  '$reserveid';";
 $sqlquery3 = mysqli_query($conn,$SQLCODE3);
 if(mysqli_num_rows($sqlquery3)){
     $ROOMCON = array();
@@ -732,6 +734,7 @@ if (file_exists($templateFile)) {
     $outputFile = 'export.docx';
     $document->saveAs($outputFile);
     
+    if($print){
 
     // Set headers for file download
     header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
@@ -745,7 +748,7 @@ if (file_exists($templateFile)) {
 
      // Clean output buffer
     ob_end_flush();
-
+}
     /// Set a session flash message
     //$_SESSION['redirect_message'] = 'Redirect after download';
     

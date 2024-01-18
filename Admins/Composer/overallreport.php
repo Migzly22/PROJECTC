@@ -49,10 +49,12 @@ if(strpos($sqlcode, "a.PaymentDate") !== false){
 }
 
 
+
 $sql = "SELECT a.*, if(a.Description = 'Downpayment', 'WALKIN', a.Description) AS DESCK, CONCAT(c.LastName, ', ', c.FirstName) AS NAME, b.timapackage, b.eCheckin, b.CheckOutDate , (b.NumAdults+b.NumChildren+b.NumSeniors+b.NumExcessPax) AS NUMGUEST 
 FROM guestpayments a LEFT JOIN reservations b ON a.ReservationID = b.ReservationID LEFT JOIN guests c ON b.GuestID = c.GuestID
 where $sqlcode
 ORDER BY  CASE WHEN a.Description = 'CHECKOUT' THEN 1 ELSE 0 END, a.PaymentDate DESC ;";
+
 $result = mysqli_query($conn, $sql);
 
 $tablerowdata = "";
@@ -103,7 +105,8 @@ while ( $row = mysqli_fetch_assoc($result)) {
         $datatype2 = $row["timapackage"]."TimePrice";
     }
 
-    $sqlroom = "SELECT a.*, SUM(c.$datatype2) AS TOTAL FROM roomsreservation a LEFT JOIN rooms b ON a.Room_num = b.RoomNum LEFT JOIN roomtypes c ON b.RoomType = c.RoomType WHERE a.greservationID = '$ReservationID';";
+    $sqlroom = "SELECT a.*, SUM(b.$datatype2) AS TOTAL FROM roomsreservation a LEFT JOIN rooms b ON a.Room_num = b.RoomID WHERE a.greservationID = '$ReservationID';";
+    
     $roomquery = mysqli_query($conn, $sqlroom);
     $roomresult = mysqli_fetch_assoc($roomquery);
     $ROOM[$ReservationID] = ($description == "CHECKOUT") ? floatval($roomresult["TOTAL"])*$rounded_hours : (floatval($roomresult["TOTAL"])*$rounded_hours)/2;
@@ -294,6 +297,55 @@ $tsr = $csr + $rsr + $psr;
 
 
 
+$base64Image = $_SESSION['imgs'] ;
+// Remove the data:image/png;base64 prefix
+$base64Image = str_replace('data:image/png;base64,', '', $base64Image);
+
+// Decode the base64-encoded image
+$imageData = base64_decode($base64Image);
+
+// Specify the file path to save the image
+$filePath = './base64_image.png';
+
+// Save the image to the file
+
+if (file_put_contents($filePath, $imageData) === false) {
+    die("Error saving the image.");
+}
+
+$imageshit = '
+  <w:body>
+    <w:p>
+      <w:r>
+        <w:t>../base64_image.png</w:t>
+      </w:r>
+    </w:p>
+
+    <!-- Inserting an image -->
+    <w:p>
+      <w:r>
+        <w:drawing>
+          <!-- Your drawing code here -->
+        </w:drawing>
+      </w:r>
+    </w:p>
+    <w:p>
+        <w:pict>
+            <v:shape type="#_x0000_t75" style="width: 200px;;height:200px" stroked="f">
+                <v:imagedata r:id="rId1" o:title="My Image"/>
+            </v:shape>
+        </w:pict>
+    </w:p>
+  </w:body>
+
+  <!-- Add the relationship for the image -->
+  <w:relationships>
+    <w:relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="../base64_image.png"/>
+  </w:relationships>
+';
+$printtest = false;
+
+
 // Load the template DOCX file
 $templateFile = 'SalesReport.docx';
 $document = new TemplateProcessor($templateFile);
@@ -315,19 +367,38 @@ $document->setValue('{PSR}', number_format( $psr,2, ".", ","));
 $document->setValue('{ISR}', number_format( $isr,2, ".", ","));
 $document->setValue('{TSR}', number_format( $tsr,2, ".", ","));
 $document->setValue('{{DATAMENT}}', $STRINGMSG);
+//$document->setImageValue('{{GRAPHREP}}', $imageElement);
+// Add image to the template
+//$document->setImageValue('{{DATETODAY}}', 'base64_image.png');
+//$document->setValue('{{DATETODAY}}', $imageshit);
+try {
+   $document->setValue('{{GRAPHREP}}', 'wewer');
+} catch (Exception $e) {
+    echo 'Error: ' . $e->getMessage();
+}
+//$document->setImageValue('{{DATETODAY}}', 'path/to/company/logo.png');
+//$document->setImageValue('{{DATETODAY}}', array('path' => 'path/to/logo.png', 'width' => 100, 'height' => 100, 'ratio' => false));
+
+//$document->setImageValue('{{DATETODAY}}', file_get_contents($filePath));
 
 $document->setValue('{{DATATODAY}}', $table);
 
 // Save the modified document
+
 $outputFile = 'export.docx';
 $document->saveAs($outputFile);
 
-// Set headers for file download
-header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-header('Content-Disposition: attachment; filename="Elijosh_Report.docx"');
-header('Content-Length: ' . filesize($outputFile));
-header('Connection: close');
 
-// Output the file content
-readfile($outputFile);
+
+// Set headers for file download
+if($printtest){
+    header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    header('Content-Disposition: attachment; filename="Elijosh_Report.docx"');
+    header('Content-Length: ' . filesize($outputFile));
+    header('Connection: close');
+
+    // Output the file content
+    readfile($outputFile);
+}
+
 ?>

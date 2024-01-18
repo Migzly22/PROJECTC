@@ -1,9 +1,57 @@
-<br />
-<font size='1'><table class='xdebug-error xe-warning' dir='ltr' border='1' cellspacing='0' cellpadding='1'>
-<tr><th align='left' bgcolor='#f57900' colspan="5"><span style='background-color: #cc0000; color: #fce94f; font-size: x-large;'>( ! )</span> Warning: mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in C:\wamp64\www\PROJECTC\EliJosh_Client\AjaxLogic\Availability.php on line <i>32</i></th></tr>
-<tr><th align='left' bgcolor='#e9b96e' colspan='5'>Call Stack</th></tr>
-<tr><th align='center' bgcolor='#eeeeec'>#</th><th align='left' bgcolor='#eeeeec'>Time</th><th align='left' bgcolor='#eeeeec'>Memory</th><th align='left' bgcolor='#eeeeec'>Function</th><th align='left' bgcolor='#eeeeec'>Location</th></tr>
-<tr><td bgcolor='#eeeeec' align='center'>1</td><td bgcolor='#eeeeec' align='center'>0.0005</td><td bgcolor='#eeeeec' align='right'>365816</td><td bgcolor='#eeeeec'>{main}(  )</td><td title='C:\wamp64\www\PROJECTC\EliJosh_Client\AjaxLogic\Availability.php' bgcolor='#eeeeec'>...\Availability.php<b>:</b>0</td></tr>
-<tr><td bgcolor='#eeeeec' align='center'>2</td><td bgcolor='#eeeeec' align='center'>0.0087</td><td bgcolor='#eeeeec' align='right'>480752</td><td bgcolor='#eeeeec'><a href='http://www.php.net/function.mysqli-num-rows' target='_new'>mysqli_num_rows</a>( <span>$result = </span><span>FALSE</span> )</td><td title='C:\wamp64\www\PROJECTC\EliJosh_Client\AjaxLogic\Availability.php' bgcolor='#eeeeec'>...\Availability.php<b>:</b>32</td></tr>
-</table></font>
-false
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chart.js to Image</title>
+  <!-- Include Chart.js from a CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<!-- Create a canvas for the chart -->
+<canvas id="myChart" width="400" height="400"></canvas>
+
+<!-- Create a button to trigger the image download -->
+<button onclick="downloadChartImage()">Download Chart Image</button>
+
+<script>
+  // Your chart configuration
+  var chartConfig = {
+    type: 'bar',
+    data: {
+      labels: ['Label 1', 'Label 2', 'Label 3'],
+      datasets: [{
+        label: 'My Dataset',
+        data: [10, 20, 30],
+        backgroundColor: ['red', 'green', 'blue']
+      }]
+    },
+    options: {
+      // Your chart options
+    }
+  };
+
+  // Create a new Chart instance
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var myChart = new Chart(ctx, chartConfig);
+
+  // Function to convert the chart to a base64-encoded image and trigger download
+  function downloadChartImage() {
+    // Convert the chart to a base64-encoded image
+    var chartImage = myChart.toBase64Image();
+
+    // Create a link element
+    var downloadLink = document.createElement('a');
+    downloadLink.href = chartImage;
+
+    // Set the download attribute with a filename
+    downloadLink.download = 'chart.png';
+
+    // Trigger a click on the link to initiate the download
+    downloadLink.click();
+  }
+</script>
+
+</body>
+</html>

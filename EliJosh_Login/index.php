@@ -41,12 +41,27 @@ if(isset($_POST["Loginbtn"])){
 
   if ($row) {
       // The row exists, you can access its data
-      $_SESSION["USERID"] = $row["userID"];
-      $_SESSION["ACCESS"] = $row["Access"];
+      if($row["Verified"] == 'TRUE'){
+        $_SESSION["USERID"] = $row["userID"];
+        $_SESSION["ACCESS"] = $row["Access"];
+  
+        header("Location: ../EliJosh_Client/index.php");
+        ob_end_flush();
+        exit; // Ensure no further code is executed after the header  
+      }else{
+        echo "<script>
+        Swal.fire({
+          title: '',
+          text: 'Unverified email. Please try again later.',
+          icon: 'info',
+          confirmButtonText: 'Resend email verification',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            sendinggmailnotif(`".$row["Email"]."`,`".$row["userID"]."`)
+          }
+        });</script>";
+      }
 
-      header("Location: ../EliJosh_Client/index.php");
-      ob_end_flush();
-      exit; // Ensure no further code is executed after the header  
 
 
   }else{
@@ -91,6 +106,31 @@ if(isset($_POST["Loginbtn"])){
           sessionStorage.setItem('MissedBooked', data);
           //REGFORM.action = `./breakdownv2.php?`+data
         }
+
+        async function sendinggmailnotif (email,ids){
+          $.ajax({    
+              type: "post",
+              url: "../Send3.php",             
+              data: "email="+email+"&ids="+ids,      
+              beforeSend:function(){
+                  // Set the content of the loading container
+              },  
+              error:function(response){
+                  // Remove the loading screen
+                  console.log(response)
+                  
+              },
+              success: async function(response) {
+
+                  await Swal.fire({
+                      text: "Sent Successfully",
+                      icon: "success"
+                  });
+              }
+
+
+          });
+      }
   </script>
 </body>
 </html>
