@@ -178,7 +178,7 @@
                 const joinedString = conditions.join(' AND ');
                 const formattedText = sqlcodenew.replace(/:CONDITION:/g, joinedString);
 
-                const Tabledata =await AjaxSendv3(formattedText,"REPORTLOGICV2","&Process=Search")
+                const Tabledata =await AjaxSendv3(formattedText,"REPORTLOGICv2","&Process=Search")
                 TBODYELEMENT.innerHTML = Tabledata
                 ALLSQLCODE = joinedString // set the printing sqlcode
                 ALLSQLCODEv2 = formattedText;
