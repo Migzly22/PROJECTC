@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="dist/gutenberg.css">
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  text-align:  left;
+  padding: 8px;
+}
+th:last-child{
+  text-align: center ;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.text-center{
+  text-align: center;
+}
+.sechead{
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.sechead img{
+    width: 100px;
+}
+
+.tablecontainter{
+  padding: 2em;
+}
+.text-alignright{
+  text-align: right;
+}
+</style>
+</head>
+<body>
+
+
+<section class="all">
+    <div class="header">
+      <p class="text-center"> <b><i>PROJECT IN ITEC 106A</i></b></p>
+      <table>
+          <tr>
+            <td class="sechead"><img src="{{IMG}}" alt=""></td>
+            <td class="text-alignright">
+              <p><i> DIOCESE OF EMMAUS</i></p>
+              <p><i>PARISH OF EMMAUS</i></p>
+            </td>
+          </tr>
+      </table>
+    </div>
+    <div class="tablecontainter">
+      <table>
+        <tbody id="hehez">
+          <tr>
+            <td><b>Date of Baptism:</b></td>
+            <td>{{Baptismdate}}</td> 
+          </tr>
+          <tr>
+            <td><b>Name of Child:</b></td>
+            <td>{{Childname}}</td> 
+          </tr>
+          <tr>
+            <td><b>Date of Birth:</b></td>
+            <td>{{Cbday}}</td> 
+          </tr>
+          <tr>
+            <td><b>Place of Birth:</b></td>
+            <td>{{Bplace}}</td> 
+          </tr>
+          <tr>
+            <td><b>Name of Father:</b></td>
+            <td>{{Fathername}}</td> 
+          </tr>
+          <tr>
+            <td><b>Place of Birth:</b></td>
+            <td>{{Fbplace}}</td> 
+          </tr>
+          <tr>
+            <td><b>Name of Mother:</b></td>
+            <td>{{Mothersname}}</td> 
+          </tr>
+          <tr>
+            <td><b>Place of Birth:</b></td>
+            <td>{{Mbplace}}</td> 
+          </tr>
+          <tr>
+            <td><b>Present Residence:</b></td>
+            <td>{{Address}}</td> 
+          </tr>
+          <tr>
+            <td><b>Name of Sponsor: (Ninong)</b></td>
+            <td>{{Ninong}}</td> 
+          </tr>
+          <tr>
+            <td><b>Residence:</b></td>
+            <td>{{NinongAddress}}</td> 
+          </tr>
+          <tr>
+            <td><b>Name of Sponsor: (Ninang)</b></td>
+            <td>{{Ninang}}</td> 
+          </tr>
+          <tr>
+            <td><b>Residence:</b></td>
+            <td>{{NinangAddress}}</td> 
+          </tr>
+          <tr>
+            <td><b>Other Sponsors:</b></td>
+            <td>{{Others}}</td> 
+          </tr>
+          <tr>
+            <td><b>Parish Priest:</b></td>
+            <td>{{Priest}}</td> 
+          </tr>
+  
+        </tbody>
+      </table>
+    </div>
+
+
+</section>
+
+</body>
+</html>
