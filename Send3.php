@@ -20,12 +20,12 @@ function sending($to,$html){
   $mail->Port       = 587;
   $mail->IsHTML(true);
   $mail->IsSMTP();
-  $mail->SMTPDebug  = 0;  
+  $mail->SMTPDebug  = 2;  
   $mail->CharSet='UTF-8';
   //$mail->Host       = "smtp.mail.yahoo.com";
   $mail->Username   = "noncre123@gmail.com";
-  $mail->Password   = "wnzlrspbqltueygx";
-  $mail->SetFrom("cvsuHM@gmail.com",'TechSupport');
+  $mail->Password   = "cajbokiljmnuzgow";
+  $mail->SetFrom("elijosh111923@gmail.com",'ElijoshResort&EventPlace');
   $mail->SMTPOptions = array(
   'ssl' => [
   'verify_peer' => false,
@@ -61,8 +61,8 @@ $email = $_POST['email'];
       "https://elijoshresortandeventsplace.com/EliJosh_Login/verify.php?id=$email"
   ];
 
-  $html = str_replace($needtochange, $valuetochange, $html);
-  sending($email,$html);
+$html = str_replace($needtochange, $valuetochange, $html);
+sending($email,$html);
 
 
 

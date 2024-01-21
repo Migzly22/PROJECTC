@@ -28,8 +28,8 @@ function sending($to,$html){
   $mail->CharSet='UTF-8';
   //$mail->Host       = "smtp.mail.yahoo.com";
   $mail->Username   = "noncre123@gmail.com";
-  $mail->Password   = "wnzlrspbqltueygx";
-  $mail->SetFrom("cvsuHM@gmail.com",'TechSupport');
+  $mail->Password   = "cajbokiljmnuzgow";
+  $mail->SetFrom("elijosh111923@gmail.com",'ElijoshResort');
   $mail->SMTPOptions = array(
   'ssl' => [
   'verify_peer' => false,
