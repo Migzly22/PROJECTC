@@ -34,7 +34,7 @@ function sending($to,$html){
   'verify_peer_name' => false,
   ]
   );
-  $mail ->Subject = "Payment Confirmation and Documents";
+  $mail ->Subject = "Email Verification";
   $mail ->AddAddress($to,'');
   $mail ->Body = $html;
   
