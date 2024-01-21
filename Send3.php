@@ -20,7 +20,7 @@ function sending($to,$html){
   $mail->Port       = 587;
   $mail->IsHTML(true);
   $mail->IsSMTP();
-  $mail->SMTPDebug  = 2;  
+  $mail->SMTPDebug  = 0;  
   $mail->CharSet='UTF-8';
   //$mail->Host       = "smtp.mail.yahoo.com";
   $mail->Username   = "noncre123@gmail.com";
