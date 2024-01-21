@@ -4,7 +4,11 @@ require("../Database.php");
 session_start();
 ob_start();
 
+//PhpOffice\PhpWord\Settings::setPdfRendererPath('vendor/mpdf/mpdf');
+//PhpOffice\PhpWord\Settings::setPdfRendererName('MPDF');
+
 use PhpOffice\PhpWord\TemplateProcessor;
+//use PhpOffice\PhpWord\IOFactory;
 
 $sqlcode = $_GET["sqlcode"];
 
@@ -343,7 +347,7 @@ $imageshit = '
     <w:relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="../base64_image.png"/>
   </w:relationships>
 ';
-$printtest = false;
+$printtest = true;
 
 
 // Load the template DOCX file
@@ -367,26 +371,15 @@ $document->setValue('{PSR}', number_format( $psr,2, ".", ","));
 $document->setValue('{ISR}', number_format( $isr,2, ".", ","));
 $document->setValue('{TSR}', number_format( $tsr,2, ".", ","));
 $document->setValue('{{DATAMENT}}', $STRINGMSG);
-//$document->setImageValue('{{GRAPHREP}}', $imageElement);
-// Add image to the template
-//$document->setImageValue('{{DATETODAY}}', 'base64_image.png');
-//$document->setValue('{{DATETODAY}}', $imageshit);
-try {
-   $document->setValue('{{GRAPHREP}}', 'wewer');
-} catch (Exception $e) {
-    echo 'Error: ' . $e->getMessage();
-}
-//$document->setImageValue('{{DATETODAY}}', 'path/to/company/logo.png');
-//$document->setImageValue('{{DATETODAY}}', array('path' => 'path/to/logo.png', 'width' => 100, 'height' => 100, 'ratio' => false));
-
-//$document->setImageValue('{{DATETODAY}}', file_get_contents($filePath));
-
 $document->setValue('{{DATATODAY}}', $table);
 
 // Save the modified document
 
-$outputFile = 'export.docx';
+$outputFile = './REPORTTING.docx';
 $document->saveAs($outputFile);
+
+
+
 
 
 
@@ -397,6 +390,18 @@ if($printtest){
     header('Content-Length: ' . filesize($outputFile));
     header('Connection: close');
 
+    /*
+    $phpWord = IOFactory::load($outputFile);
+    
+    $pdfWriter = IOFactory::createWriter($phpWord, 'PDF');
+    
+    // Save the PDF file
+    $pdfFile = 'REPORTTING.pdf';
+    $pdfWriter->save($pdfFile);
+    */
+    
+    //echo 'Conversion completed. PDF file created at: ' . $pdfFile;
+    
     // Output the file content
     readfile($outputFile);
 }

@@ -1,133 +1,68 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="dist/gutenberg.css">
-<style>
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: .5em;
+      }
+      h3{
+        padding: .5em;
+      }
+      td,
+      th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
 
-td, th {
-  text-align:  left;
-  padding: 8px;
-}
-th:last-child{
-  text-align: center ;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-
-.text-center{
-  text-align: center;
-}
-.sechead{
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-}
-.sechead img{
-    width: 100px;
-}
-
-.tablecontainter{
-  padding: 2em;
-}
-.text-alignright{
-  text-align: right;
-}
-</style>
-</head>
-<body>
-
-
-<section class="all">
-    <div class="header">
-      <p class="text-center"> <b><i>PROJECT IN ITEC 106A</i></b></p>
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+      .text-cent{
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h3 style="text-align: center; background: #9cc2e5;color:#fff;">SALES REPORT</h3>
+      <h4>Date : {{DATE}}</h4>
+      <p style="padding: 0em 2em">
+        <i>This was the overall items report in {{DATAMENT}}</i>
+      </p>
+      <div style="margin: auto; display: flex; justify-content: center">
+        <p class="text-cent">Monthly Sales Report</p>
+        <img src="{{IMG}}" width="100%" height="300px" alt="" />
+      </div>
       <table>
-          <tr>
-            <td class="sechead"><img src="{{IMG}}" alt=""></td>
-            <td class="text-alignright">
-              <p><i> DIOCESE OF EMMAUS</i></p>
-              <p><i>PARISH OF EMMAUS</i></p>
-            </td>
-          </tr>
+        <tr>
+          <th class="text-cent">Month</th>
+          <th class="text-cent">Amount</th>
+        </tr>
+        {{REPORT1}}
       </table>
-    </div>
-    <div class="tablecontainter">
+
+    </section>
+
+    <section>
+      <h3 style="text-align: center; background: #9cc2e5;color:#fff;">
+        GUEST PAYMENT BREAKDOWN
+      </h3>
       <table>
-        <tbody id="hehez">
-          <tr>
-            <td><b>Date of Baptism:</b></td>
-            <td>{{Baptismdate}}</td> 
-          </tr>
-          <tr>
-            <td><b>Name of Child:</b></td>
-            <td>{{Childname}}</td> 
-          </tr>
-          <tr>
-            <td><b>Date of Birth:</b></td>
-            <td>{{Cbday}}</td> 
-          </tr>
-          <tr>
-            <td><b>Place of Birth:</b></td>
-            <td>{{Bplace}}</td> 
-          </tr>
-          <tr>
-            <td><b>Name of Father:</b></td>
-            <td>{{Fathername}}</td> 
-          </tr>
-          <tr>
-            <td><b>Place of Birth:</b></td>
-            <td>{{Fbplace}}</td> 
-          </tr>
-          <tr>
-            <td><b>Name of Mother:</b></td>
-            <td>{{Mothersname}}</td> 
-          </tr>
-          <tr>
-            <td><b>Place of Birth:</b></td>
-            <td>{{Mbplace}}</td> 
-          </tr>
-          <tr>
-            <td><b>Present Residence:</b></td>
-            <td>{{Address}}</td> 
-          </tr>
-          <tr>
-            <td><b>Name of Sponsor: (Ninong)</b></td>
-            <td>{{Ninong}}</td> 
-          </tr>
-          <tr>
-            <td><b>Residence:</b></td>
-            <td>{{NinongAddress}}</td> 
-          </tr>
-          <tr>
-            <td><b>Name of Sponsor: (Ninang)</b></td>
-            <td>{{Ninang}}</td> 
-          </tr>
-          <tr>
-            <td><b>Residence:</b></td>
-            <td>{{NinangAddress}}</td> 
-          </tr>
-          <tr>
-            <td><b>Other Sponsors:</b></td>
-            <td>{{Others}}</td> 
-          </tr>
-          <tr>
-            <td><b>Parish Priest:</b></td>
-            <td>{{Priest}}</td> 
-          </tr>
-  
-        </tbody>
+        <tr>
+          <th class="text-cent">Date</th>
+          <th class="text-cent">Name</th>
+          <th class="text-cent">Description / ID</th>
+          <th class="text-cent">Amount</th>
+        </tr>
+        {{REPORT2}}
       </table>
-    </div>
 
-
-</section>
-
-</body>
+    </section>
+  </body>
 </html>

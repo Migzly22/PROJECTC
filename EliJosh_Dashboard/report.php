@@ -1,5 +1,11 @@
 <?php
-	$sqlcode1 = "SELECT a.*, CONCAT(c.LastName, ', ', c.FirstName) AS Name FROM guestpayments a LEFT JOIN reservations b ON a.ReservationID = b.ReservationID LEFT JOIN guests c ON b.GuestID = c.GuestID ORDER BY a.PaymentDate DESC;";
+	$sqlcode1 = "SELECT 
+    CASE
+        WHEN (MONTHNAME(PaymentDate) = MONTHNAME(CURRENT_DATE)) AND (YEAR(PaymentDate) = YEAR(CURRENT_DATE)) THEN CONCAT(MONTHNAME(CURRENT_DATE),' ',DAY(CURRENT_DATE),' ',YEAR(CURRENT_DATE))
+        ELSE CONCAT(MONTHNAME(PaymentDate),' ',YEAR(PaymentDate))
+    END as DateData, SUM(AmountPaid) AS monthamount FROM guestpayments
+    WHERE PaymentDate <= CURRENT_DATE
+    GROUP BY YEAR(PaymentDate), MONTH(PaymentDate) ORDER BY PaymentDate DESC;";
 	$queryrun1 = mysqli_query($conn,$sqlcode1);
 ?>
 <!-- REPORTS MAIN -->
@@ -32,9 +38,11 @@
 
 	<ul class="box-info">
 		<li style="min-height:200px;height:100%;width:100%;position:relative;">
+            <p style="position:absolute;top:0%;left:50%;translate:-50% -50%;background:#f9f9f9;padding:.5em;border-radius:20px;">Monthly Sales Report</p>
 			<canvas id="myChart"></canvas>
 		</li>
 		<li style="min-height:200px;height:100%;width:100%;position:relative;">
+            <p style="position:absolute;top:0%;left:50%;translate:-50% -50%;background:#f9f9f9;padding:.5em;border-radius:20px;">Weekly Sales Report</p>
 			<canvas id="myChart2"></canvas>
 		</li>
 	</ul>
@@ -42,7 +50,7 @@
 	<div class="table-data">
 		<div class="tableright">
 			<div class="head">
-				<h3>Overall Sales Report</h3>
+				<h3>Sales Report</h3>
 				<i class='bx bx-filter' onclick="FILTERING()"></i>
 				<i class='bx bx-reset' onclick="RESETTABLE()"></i>
 				<i class='bx bx-printer' onclick="PRINT()" ></i>
@@ -50,9 +58,7 @@
 			<table>
 				<thead>
 					<tr>
-						<th>Name</th>
-						<th>Date</th>
-						<th>Payment</th>
+						<th></th>
 						<th>Amount</th>
 					</tr>
 				</thead>
@@ -63,11 +69,9 @@
 							$data .= "
 								<tr>
 									<td>
-										<p>".$result['Name']."</p>
+										<p>".$result['DateData']."</p>
 									</td>
-									<td>".$result['PaymentDate']."</td>
-									<td>".$result['PaymentMethod']."</td>
-									<td>₱ ".number_format($result['AmountPaid'],2)."</td>
+									<td>₱ ".number_format($result['monthamount'],2)."</td>
 								</tr>
 							";
 						}
@@ -76,8 +80,7 @@
 								<tr>
 									<td>No Data</td>
 									<td></td>
-									<td></td>
-									<td></td>
+
 								</tr>
 							";
 						}
@@ -93,11 +96,17 @@
 </main>
 <!-- REPORTS MAIN -->
 <script>
+    var sqlcodemain = `<?php echo $sqlcode1?>`
+
 	const TBODYELEMENT= document.getElementById('TBODYELEMENT')
 	async function RESETTABLE() {
-        const Tabledata =await AjaxSendv3("","REPORTLOGIC","&Process=Reset")
+        const Tabledata =await AjaxSendv3("","REPORTLOGICv2","&Process=Reset")
         TBODYELEMENT.innerHTML = Tabledata
         ALLSQLCODE = "1";
+
+        sqlcodemain = `<?php echo $sqlcode1?>`
+        ALLSQLCODEv2 = sqlcodemain;
+        CurrentMonthtarget();
     }
 	async function FILTERING(){
         let design = `
@@ -132,54 +141,67 @@
 
         let formValues =await POPUPCREATE("Filter",design,4)
 
-        if (!formValues.every(value => value === "")) {
-            console.log(formValues)
-            let conditions = [];
-            let sqlcode = `SELECT a.*, CONCAT(c.LastName, ', ', c.FirstName) AS Name FROM guestpayments a LEFT JOIN reservations b ON a.ReservationID = b.ReservationID LEFT JOIN guests c ON b.GuestID = c.GuestID WHERE :CONDITION: ORDER BY a.PaymentDate DESC;`
+        if(formValues){
+            if (!formValues.every(value => value === "")) {
+                let conditions = [];
+                let sqlcode = `SELECT a.*, CONCAT(c.LastName, ', ', c.FirstName) AS Name FROM guestpayments a LEFT JOIN reservations b ON a.ReservationID = b.ReservationID LEFT JOIN guests c ON b.GuestID = c.GuestID WHERE :CONDITION: ORDER BY a.PaymentDate DESC;`
 
-            let showcounter = true;
-            if(formValues[2] !== ""){
-                conditions.push(`a.PaymentDate >= '${formValues[2]}'`);
-				showcounter = false
+
+                let sqlcodenew = `SELECT 
+                                    CASE
+                                        WHEN (MONTHNAME(PaymentDate) = MONTHNAME(CURRENT_DATE)) AND (YEAR(PaymentDate) = YEAR(CURRENT_DATE)) THEN CONCAT(MONTHNAME(CURRENT_DATE),' ',DAY(CURRENT_DATE),' ',YEAR(CURRENT_DATE))
+                                        ELSE CONCAT(MONTHNAME(PaymentDate),' ',YEAR(PaymentDate))
+                                    END as DateData, SUM(AmountPaid) AS monthamount FROM guestpayments
+                                    WHERE :CONDITION:
+                                    GROUP BY YEAR(PaymentDate), MONTH(PaymentDate) ORDER BY PaymentDate DESC;`
+                let showcounter = true;
+                if(formValues[2] !== ""){
+                    conditions.push(`PaymentDate >= '${formValues[2]}'`);
+                    showcounter = false
+                }
+                if(formValues[3] !== ""){
+                    conditions.push(`PaymentDate <= '${formValues[3]}'`);
+                    sqlcodenew = sqlcodenew.replace(/CURRENT_DATE/g, `'${formValues[3]}'`);
+                    showcounter = false
+                }
+
+                if(showcounter){
+                    if(formValues[0] !== ""){
+                        conditions.push(`YEAR(PaymentDate) = '${formValues[0]}'`);
+                    }
+                    if(formValues[1] !== ""){
+                        conditions.push(`MONTH(PaymentDate) = '${formValues[1]}'`);
+                    }
+                }
+        
+                
+                const joinedString = conditions.join(' AND ');
+                const formattedText = sqlcodenew.replace(/:CONDITION:/g, joinedString);
+
+                const Tabledata =await AjaxSendv3(formattedText,"REPORTLOGICV2","&Process=Search")
+                TBODYELEMENT.innerHTML = Tabledata
+                ALLSQLCODE = joinedString // set the printing sqlcode
+                ALLSQLCODEv2 = formattedText;
+
+
+
+                
+                CurrentMonthtarget(formattedText)
+                
             }
-			if(formValues[3] !== ""){
-                conditions.push(`a.PaymentDate <= '${formValues[3]}'`);
-				showcounter = false
-            }
-
-			if(showcounter){
-				if(formValues[0] !== ""){
-					conditions.push(`YEAR(a.PaymentDate) = '${formValues[0]}'`);
-				}
-				if(formValues[1] !== ""){
-					conditions.push(`MONTH(a.PaymentDate) = '${formValues[1]}'`);
-				}
-			}
-	
-            
-            const joinedString = conditions.join(' AND ');
-            const formattedText = sqlcode.replace(/:CONDITION:/g, joinedString);
-
-            const Tabledata =await AjaxSendv3(formattedText,"REPORTLOGIC","&Process=Search")
-            TBODYELEMENT.innerHTML = Tabledata
-            ALLSQLCODE = joinedString // set the printing sqlcode
-
-
         }
+  
     }
 
 	var ALLSQLCODE = "1";
+    var ALLSQLCODEv2 = sqlcodemain;
 
 
     // Get the canvas element
     var ctx = document.getElementById('myChart').getContext('2d');
     var ctx2 = document.getElementById('myChart2').getContext('2d');
 
-   // Function to generate month labels
-    function generateMonthLabels(count = 12) {
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      return months.slice(0, count);
-    }
+
     function generateWeekLabels() {
         const today = new Date();
         const last5Days = [];
@@ -225,44 +247,61 @@
 		});
 	}
 
-    async function CurrentMonthtarget (){
-        let sqlcode = `SELECT MONTHNAME(PaymentDate) as month, SUM(AmountPaid) AS monthamount FROM guestpayments WHERE PaymentDate BETWEEN CURDATE() - INTERVAL 5 MONTH AND CURDATE() GROUP BY YEAR(PaymentDate), MONTH(PaymentDate) ORDER BY PaymentDate ASC;`
-        let datajson = await AjaxSendv4(sqlcode,"REPORTLOGIC",`&Process=Chart`,"json")
-        let arraydata = [];
 
-        // Find the highest key
+    var myChart = null
+    async function CurrentMonthtarget(DATASQLCODE = "") {
+ 
+        
+        // Destroy existing chart instance if it exists
+        if (myChart) {
+            myChart.destroy();
+        }
+
+        // Assuming 'ctx' is defined somewhere in your code
+        let ctx = document.getElementById('myChart').getContext('2d');
+
+        let sqlcode = (DATASQLCODE.length == 0) ? sqlcodemain.replace('PaymentDate DESC', 'PaymentDate ASC') : DATASQLCODE;
+        let datajson = await AjaxSendv4(sqlcode, "REPORTLOGICv2", `&Process=Chart`, "json");
+        console.log(datajson);
+
+        let arraydata = [];
         let keys = Object.keys(datajson);
-        console.log(await datajson)
-  
 
         for (let month in datajson) {
             let amount = parseFloat(datajson[month]); // Convert string to float if needed
             arraydata.push(amount);
         }
-        console.log(keys);
-
 
         let labels2 = keys;
+
         const data = {
             labels: labels2,
             datasets: [{
-                label: 'Monthy Sales Report',
+                label: 'Sales Amount',
                 data: arraydata,
-                fill: false,
+                backgroundColor: 'rgba(14,255,0,0.5)',
                 borderColor: 'rgb(14,255,0)',
-                tension: 0.1
+                borderWidth: 1
             }]
         };
 
-        
         const config = {
-            type: 'line',
+            type: 'bar',
             data: data,
-            options: options,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Monthly Sales Report', // Set the title text here
+                    font: {
+                        size: 16
+                    }
+                }
+            },
             plugins: []
-        }
+        };
+
         // Create the chart
-        var myChart = new Chart(ctx, config);
+        myChart = new Chart(ctx, config);
     }
 
     CurrentMonthtarget()
@@ -282,7 +321,7 @@
         const data2 = {
             labels: labels,
             datasets: [{
-                label: 'Weekly Sale Report',
+                label: 'Sales Amount',
                 data: arraydata,
                 fill: false,
                 borderColor: 'rgb(14,255,0)',
@@ -301,7 +340,6 @@
         // Create the chart
         var myChart2 = new Chart(ctx2, config2);
     }
-
 
     // Configure the chart
     var options = {
@@ -334,6 +372,42 @@
     };
 
     function PRINT() {
-        location.href = `../Admins/Composer/overallreport.php?sqlcode=${ALLSQLCODE}`///Composer/paymentreport.php?sqlcode=${ALLSQLCODE}
+
+        var chartImage = myChart.toBase64Image();
+/*
+        // Create a link element
+        var downloadLink = document.createElement('a');
+        downloadLink.href = chartImage;
+
+        // Set the download attribute with a filename
+        downloadLink.download = 'chart.png';
+
+        // Trigger a click on the link to initiate the download
+        downloadLink.click();
+*/    
+        //var ALLSQLCODEv2 = sqlcodemain;
+
+            console.log(ALLSQLCODEv2)
+            $.ajax({
+				url:`./AjaxLogic/SPECIALSESSION.php`,
+				type:"POST",
+				data:`imgs=${encodeURIComponent(chartImage)}&jinks=${ALLSQLCODEv2}`,
+				beforeSend:function(){
+			
+				},
+				error: function() 
+				{
+					SweetError();
+					reject("An error occurred.");
+				},
+				success:function(data){
+				
+					SweetSuccess();
+                    location.href = `../Admins/Composer/REPORTITSELF.php?sqlcode=${ALLSQLCODE}`///Composer/paymentreport.php?sqlcode=${ALLSQLCODE}
+					//console.log(data)
+				}
+			}); 
+        
     }
+
 </script>
