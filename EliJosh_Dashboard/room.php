@@ -137,7 +137,7 @@ async function FILTERING(){
 			<input type="date" id="swal-input4" class="SWALinput" placeholder="To" style='padding:0.5em;width:120px;'>
 	</div>`
 
-	let formValues =await POPUPCREATE("Filter",design,4)
+	let formValues =await POPUPCREATE("Filter",design,4,"Search")
 	if (formValues) {
 		let conditions = [];
 		if(formValues[0] !== "-" || formValues[1] !== "-" || formValues[2] !== "" || formValues[3] !== ""){

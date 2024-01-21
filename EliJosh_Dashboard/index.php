@@ -63,7 +63,7 @@
 	
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-	<script src="./JS/compilation.js" defer></script>
+	<script src="./JS/compilationv3.js" defer></script>
 
 
 

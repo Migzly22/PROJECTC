@@ -54,13 +54,13 @@ function AjaxSendv3(sqlcode,link,table = "", htmlParam="html", inside="",targetb
 }
 
 
-async function POPUPCREATE(title,HTMLDESIGN ,numberOfInputs){
+async function POPUPCREATE(title,HTMLDESIGN ,numberOfInputs, confirmmsg = "Save"){
     const { value: formValues } = await Swal.fire({
         title: title,
         html: HTMLDESIGN,
         focusConfirm: false,
         showDenyButton: true,
-        confirmButtonText: 'Save',
+        confirmButtonText: confirmmsg,
         denyButtonText: `Cancel`,
         preConfirm: () => {
 

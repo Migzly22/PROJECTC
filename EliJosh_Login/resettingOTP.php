@@ -50,6 +50,7 @@
               icon: 'success',
               text: 'Updated Successfully',
             })
+            location.href = '../EliJosh_Login/index.php'
             </script>";
         }
       } else {

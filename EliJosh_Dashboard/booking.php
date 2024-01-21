@@ -242,7 +242,7 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
                 </select>
 		</div>`
 
-		let formValues = await POPUPCREATE("Filters", design, 3)
+		let formValues = await POPUPCREATE("Filters", design, 3, "Search")
 		if (formValues) {
 			if (formValues[0] !== "" || formValues[1] !== "" || formValues[2] !== "-") {
 				let conditions = [];
