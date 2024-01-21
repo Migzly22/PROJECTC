@@ -98,7 +98,7 @@ $queryrun1 = mysqli_query($conn,$sqlcode1);
 				<input type="text" id="swal-input1" placeholder="Enter text..." style='padding:0.5em;'>
 			</div>
 		`
-		let swalvalue = await POPUPCREATE('Search Information',design,1)
+		let swalvalue = await POPUPCREATE('Search Information',design,1, "Search")
 
 		if(swalvalue[0].length <= 0 ){
 			await Swal.fire({
@@ -210,7 +210,7 @@ $queryrun1 = mysqli_query($conn,$sqlcode1);
 		</div>
 		<div style="margin-top:1em;"><small>Note : If you save it without any changes. It will automatically print the list of the guest today</small></div>`
 
-        let formValues =await POPUPCREATE("Guest List",design,2)
+        let formValues =await POPUPCREATE("Guest List",design,2, "Print")
 		let joinedString = "";
 
 

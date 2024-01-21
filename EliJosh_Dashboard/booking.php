@@ -137,7 +137,7 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 				<input type="text" id="swal-input1" placeholder="Enter text..." style='padding:0.5em;'>
 			</div>
 		`
-		let swalvalue = await POPUPCREATE('Search Information', design, 1)
+		let swalvalue = await POPUPCREATE('Search Information', design, 1,"Search")
 
 		if (swalvalue[0].length <= 0) {
 			await Swal.fire({
@@ -191,7 +191,7 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
                 </select>
 			</div>
 		`
-		let swalvalue = await POPUPCREATE('Status Change', design, 1)
+		let swalvalue = await POPUPCREATE('Status Change', design, 1,"Submit")
 
 		if (swalvalue[0].length <= 0) {
 			await Swal.fire({
@@ -338,7 +338,7 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 			</select>
 		</div>`
 
-		let formValues = await POPUPCREATE("Walk-in Registration", design, 3)
+		let formValues = await POPUPCREATE("Walk-in Registration", design, 3, "Submit")
 		if (formValues) {
 			if (!formValues[0]) {
 				await Swal.fire({

@@ -93,7 +93,7 @@
 				<input type="text" id="swal-input1" placeholder="Enter text..." style='padding:0.5em;'>
 			</div>
 		`
-		let swalvalue = await POPUPCREATE('Search Information',design,1)
+		let swalvalue = await POPUPCREATE('Search Information',design,1, "Search")
 
 		if(swalvalue[0].length <= 0 ){
 			await Swal.fire({
