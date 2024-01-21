@@ -12,7 +12,8 @@ CASE
   WHEN a.package = 'Package2'THEN 'Rooms + Swimming'
   ELSE 'Pavilion'
 END AS packagesname,
-b.* FROM reservations a LEFT JOIN guestpayments b ON a.ReservationID = b.ReservationID WHERE a.UserID = '" . $_SESSION["USERID"] . "' AND b.Description is NOT NULL ORDER BY a.ReservationID DESC;";
+b.*, c.*
+FROM reservations a LEFT JOIN guestpayments b ON a.ReservationID = b.ReservationID AND b.Description != 'CHECKOUT' LEFT JOIN notification c ON a.ReservationID =c.reservationID AND c.Type = 'NOTIF'  WHERE a.UserID = '" . $_SESSION["USERID"] . "' AND b.Description is NOT NULL ORDER BY a.ReservationID DESC;";
 
 
 function PRINTING($conn, $sqlcode3)
@@ -21,7 +22,9 @@ function PRINTING($conn, $sqlcode3)
     $queryrun1 = mysqli_query($conn, $sqlcode3);
     $data1 = "";
     while ($result = mysqli_fetch_assoc($queryrun1)) {
+        $time = $result['eCheckin'];
         $statuscolor = ($result['ReservationStatus'] == "BOOKED" ? "process" : ($result['ReservationStatus'] == "CANCELLED" ? "pending" : "completed"));
+
 
         if ($result['ReservationStatus'] != "CANCELLED" && $result['ReservationStatus'] != "CHECKOUT") {
             $onclicvalue = "showChangeStatus(`" . $result['ReservationID'] . "`,`" . $result['ReservationStatus'] . "`)";
@@ -29,36 +32,49 @@ function PRINTING($conn, $sqlcode3)
             $onclicvalue = "";
         }
 
+        $notif = "";
+        if ($result["notifID"] != NULL) {
+            $notif = "<a class='EditBTN' onclick='FORMRQUEST(`" . $result["reservationID"] . "`,`" . $result["Message"] . "`,`" . $result['notifID'] . "`)' href='#" . $result['ReservationID'] . "'  rel='noopener noreferrer'>
+								<i class='bx bx-bell' ></i>
+							</a>";
+        }
+
         $data1 .= "
-        <tr>
-            <td style='display:flex;flex-direction:column;align-items:start;'>
-                <p>" . $result['eCheckin'] . "</p>
-            </td>
-            <td>
-            " . $result['timapackage'] . " " . $result['packagesname'] . "
-            </td>
-            <td>
-                ₱ " . number_format($result['Downpayment'], 2) . "
-            </td>
-            <td>" . $result['Description'] . "</td>
-            <td><a href='#' onclick='$onclicvalue'><span class='status $statuscolor'>" . $result['ReservationStatus'] . "</span></a></td>
-            <td class='TableBtns'>
+							<tr>
+								<td style='display:flex;flex-direction:column;align-items:start;'>
+									<p>" . $result['eCheckin'] . "</p>
+								</td>
+								<td>
+								" . $result['timapackage'] . " " . $result['packagesname'] . "
+								</td>
+								<td>
+								 ₱ " . number_format($result['Downpayment'], 2) . "
+								</td>
+								<td>" . $result['Description'] . "</td>
+
+
+								<td><a href='#' onclick='$onclicvalue'><span class='status $statuscolor'>" . $result['ReservationStatus'] . "</span></a></td>
+								
+								
+								<td class='TableBtns'>
 									<a class='EditBTN' href='../Admins/Composer/paypal2.php?id=" . $result['ReservationID'] . "'  rel='noopener noreferrer'>
 										<i class='bx bx-printer' ></i>
 									</a>
+									$notif
+							
 								</td>
-        </tr>";
+							</tr>";
     }
 
     if (mysqli_num_rows($queryrun1) <= 0) {
         $data1 .= "
-        <tr>
-            <td>No Data</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>";
+							<tr>
+								<td>No Data</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>";
     }
     echo $data1;
 }

@@ -44,6 +44,12 @@ $targetlinks = isset($_GET["nzlz"]) ? $_GET["nzlz"] : "booking";
 </head>
 <style>
 	/* Override default styles for the textarea */
+	
+
+	a{
+		text-decoration: none !important;
+	}
+
 	.swal2-popup .custom-textarea {
 		height: 100px;
 		border-radius: 10px;

@@ -1,11 +1,12 @@
 <?php
 $sqlcode1 = "SELECT  a.*, (a.NumAdults + a.NumChildren + a.NumSeniors + a.NumExcessPax) AS noguest,
-	CASE
-	  WHEN a.package = 'Package1' THEN 'Swimming'
-	  WHEN a.package = 'Package2'THEN 'Rooms + Swimming'
-	  ELSE 'Pavilion'
-	END AS packagesname,
-  b.* FROM reservations a LEFT JOIN guestpayments b ON a.ReservationID = b.ReservationID WHERE a.UserID = '" . $_SESSION["USERID"] . "' AND b.Description is NOT NULL ORDER BY a.ReservationID DESC;";
+CASE
+  WHEN a.package = 'Package1' THEN 'Swimming'
+  WHEN a.package = 'Package2'THEN 'Rooms + Swimming'
+  ELSE 'Pavilion'
+END AS packagesname,
+b.*, c.*
+FROM reservations a LEFT JOIN guestpayments b ON a.ReservationID = b.ReservationID AND b.Description != 'CHECKOUT' LEFT JOIN notification c ON a.ReservationID =c.reservationID AND c.Type = 'NOTIF'  WHERE a.UserID = '" . $_SESSION["USERID"] . "' AND b.Description is NOT NULL ORDER BY a.ReservationID DESC;";
 $queryrun1 = mysqli_query($conn, $sqlcode1);
 ?>
 
@@ -31,7 +32,6 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 			<i class='bx bxs-add-to-queue'></i>
 		</a>
 	</div>
-
 
 	<div class="table-data">
 		<div class="order">
@@ -65,6 +65,13 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 							$onclicvalue = "";
 						}
 
+						$notif = "";
+						if ($result["notifID"] != NULL) {
+							$notif = "<a class='EditBTN' onclick='FORMRQUEST(`" . $result["reservationID"] . "`,`" . $result["Message"] . "`,`" . $result['notifID'] . "`)' href='#" . $result['ReservationID'] . "'  rel='noopener noreferrer'>
+								<i class='bx bx-bell' ></i>
+							</a>";
+						}
+
 						$data1 .= "
 							<tr>
 								<td style='display:flex;flex-direction:column;align-items:start;'>
@@ -86,6 +93,8 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 									<a class='EditBTN' href='../Admins/Composer/paypal2.php?id=" . $result['ReservationID'] . "'  rel='noopener noreferrer'>
 										<i class='bx bx-printer' ></i>
 									</a>
+									$notif
+							
 								</td>
 							</tr>";
 					}
@@ -116,6 +125,33 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 	// Function to show SweetAlert with custom HTML
 	//var mainquery = "SELECT a.*, b.*, CONCAT(b.LastName,', ', b.FirstName) as Name FROM reservations a LEFT JOIN guests b ON a.GuestID = b.GuestID WHERE [CONDITION] ORDER BY a.CheckInDate DESC;";
 	const TBODYELEMENT = document.getElementById('TBODYELEMENT');
+
+	async function FORMRQUEST(id, msg, reqid) {
+		if (msg.includes("[WEBSITE]")) {
+			msg = msg.replace(/\[WEBSITE\]/g, "");
+			await Swal.fire({
+				title: '',
+				text: msg,
+				icon: 'info',
+				showCancelButton: true,
+				confirmButtonText: "Go to Contact Us"
+			}).then((result) => {
+				/* Read more about isConfirmed, isDenied below */
+				if (result.isConfirmed) {
+					location.href = '../EliJosh_Client/index.php#CONTACT';
+				}
+		});
+	}
+	else {
+		await Swal.fire({
+			title: '',
+			text: msg,
+			icon: 'info',
+		});
+	}
+
+
+	}
 
 	async function showChangeStatus(IDS, VALUES) {
 		let access = 0;
@@ -158,7 +194,7 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 					if (result.isConfirmed) {
 						// Handle the cancellation reason (result.value)
 						let sqlcode = `INSERT INTO notification ( reservationID, Message, Type, Status) VALUES ( '${IDS}', '${result.value}', 'Request', 'PENDING');`
-						await AjaxSendv3(sqlcode,"BOOKINGLOGIC","&Process=insertion")
+						await AjaxSendv3(sqlcode, "BOOKINGLOGIC", "&Process=insertion")
 						await Swal.fire({
 							title: 'Cancellation Request',
 							text: 'Your cancellation request is now pending. We will review it shortly.',

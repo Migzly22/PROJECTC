@@ -102,7 +102,7 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 
 <script>
 	// Function to show SweetAlert with custom HTML
-	var mainquery = "SELECT a.*, b.*, CONCAT(b.LastName,', ', b.FirstName) as Name FROM reservations a LEFT JOIN guests b ON a.GuestID = b.GuestID WHERE [CONDITION] ORDER BY a.CheckInDate DESC;";
+	var mainquery = "SELECT a.*, b.*, CONCAT(b.LastName,', ', b.FirstName) as Name, c.* FROM reservations a LEFT JOIN guests b ON a.GuestID = b.GuestID LEFT JOIN notification c ON a.ReservationID = c.reservationID AND c.Status = 'Pending' WHERE [CONDITION]  ORDER BY a.CheckInDate DESC;";
 	const TBODYELEMENT = document.getElementById('TBODYELEMENT');
 
 
@@ -119,9 +119,10 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 
 				let msgnotif = 'Your reservation cancellation has been approved. Thank you for choosing our service, and we hope to serve you in the future.';
 				let sql2 = `UPDATE notification SET Status = 'DONE' WHERE notifID = ${reqid};`;
-				let sql3 = `INSERT INTO notification (notifID, reservationID, Message, Type, Status) VALUES (NULL, ${id}, ${msgnotif}, 'NOTIF', 'DONE');`;
+				let sql3 = `INSERT INTO notification (notifID, reservationID, Message, Type, Status) VALUES (NULL, '${id}', '${msgnotif}', 'NOTIF', 'DONE');`;
 				
 				await AjaxSendv3(sql2, "BOOKINGLOGIC", "&Process=insertion")
+		
 				await AjaxSendv3(sql3, "BOOKINGLOGIC", "&Process=insertion")
 				const Tabledata = await AjaxSendv3(searchcondition, "BOOKINGLOGIC", "&Process=AccessUpdate")
 				TBODYELEMENT.innerHTML = Tabledata
@@ -199,6 +200,11 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 			});
 		}
 
+		if(swalvalue[0] == "CANCELLED"){
+			let msgnotif = `We regret to inform you that your reservation has been canceled due to no show or no appearance at the resort. If you have any questions or require further assistance, please visit our Contact Us section on our website [WEBSITE].`;
+			let sql3 = `INSERT INTO notification (notifID, reservationID, Message, Type, Status) VALUES (NULL, '${IDS}', "${msgnotif}", 'NOTIF', 'DONE');`;
+			await AjaxSendv3(sql3, "BOOKINGLOGIC", "&Process=insertion")
+		}
 		let item = swalvalue[0]
 		let searchcondition = `UPDATE reservations SET ReservationStatus = '${item}' WHERE ReservationID = ${IDS};`;
 		const Tabledata = await AjaxSendv3(searchcondition, "BOOKINGLOGIC", "&Process=AccessUpdate")
