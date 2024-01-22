@@ -32,6 +32,9 @@ switch (explode("_", $targetlinks)[0]) {
 	case 'report':
 		$activecode = 7;
 		break;
+	case 'content':
+		$activecode = 8;
+		break;
 }
 
 
@@ -612,7 +615,7 @@ if (!isset($_SESSION["USERID"]) || !isset($_SESSION["ACCESS"])) {
 						<span class="text">Manage Staff</span>
 					</a>
 				</li>
-				<li class="<?php echo ($activecode == 5) ? "active" : ""; ?>">
+				<li class="<?php echo ($activecode == 8) ? "active" : ""; ?>">
 					<a href="./index.php?nzlz=content_gallery">
 						<i class='bx bxs-collection'></i>
 						<span class="text">Content</span>
