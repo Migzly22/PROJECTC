@@ -77,7 +77,7 @@
 				₱
 			</i>
 			<span class="text">
-				<h3>Total</h3>
+				<h3>Total Payment</h3>
 				<p><?php echo  number_format($total, 2);?> Pesos</p>
 			</span>
 		</li>
@@ -86,7 +86,7 @@
 	<div class="table-data">
 		<div class="order">
 			<div class="head">
-				<h3>Reservation Report</h3>
+				<h3>Reservation Details</h3>
 			</div>
 			<table>
 
@@ -247,7 +247,7 @@
 	<div class="table-data">
 		<div class="order">
 			<div class="head">
-				<h3>Additional Expenses Report</h3>
+				<h3>Additional Expenses</h3>
 			</div>
 			<table>
 			

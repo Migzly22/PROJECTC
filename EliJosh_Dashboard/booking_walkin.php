@@ -240,6 +240,7 @@
     }
     function validateInput(inputElement) {
           const inputValue = inputElement.value;
+          console.log(inputElement)
           if (/[\d]/.test(inputValue)) {
             inputElement.parentNode.children[2].innerText = 'Inputs should not contain numbers.';
             return false
@@ -351,13 +352,16 @@
         if (input.type === "number") {
           
         }else  if(input.type !== "hidden"){
-          if(input.id === "phone"){
+          if(!input.id.includes("swal-input")){
+            if(input.id === "phone" ){
             console.log(input.id, validateInput(input))
             !(validateNumberInput2(input)) ? errcount++ : ""
           }else if (input.id !== "address" && input.id !== "email"){
               console.log(input.id, validateInput(input))
               !(validateInput(input))? errcount++ : ""
           }
+          }
+          
         }
       })
 

@@ -151,7 +151,7 @@
       
             $data1 .= "
             <div class='boxcontainers'>
-              <img src='./RoomsEtcImg/Rooms/".explode("-",$result["roomname"])[0].".jpeg' alt=''>
+              <img src='../RoomsEtcImg/Rooms/".$result["imgpath"]."' alt=''>
               <div class='textcontainers'>
               <h2 style='text-align: center;'>".$result["roomname"]."</h2>
               <small>Good for ".$result["MinPeople"]." - ".$result["MaxPeople"]." people</small>

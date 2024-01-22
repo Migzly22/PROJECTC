@@ -28,8 +28,25 @@
 				</li>
 			</ul>
 		</div>
+		<div class="RESERVATIONBTNS">
+			<div class="btn-download2" onclick="ADDPERSON()">
+				<a href="./index.php?nzlz=room_report" class="">
+					<i class='bx bxs-report' ></i>
+					<span class="text">Room Sales</span>
+				</a>
+			</div>
+		</div>
 	</div>
-
+	<?php
+		if($_SESSION["ACCESS"] == "ADMIN"){
+	?>
+		<div class="box-add" onclick="this.querySelector('a').click()">
+			<a href="./index.php?nzlz=facilities" ></a>
+			<i class='bx bxs-cog' ></i>
+		</div>
+	<?php
+		}
+	?>
 
 	<div class="table-data">
 		<div class="order">
