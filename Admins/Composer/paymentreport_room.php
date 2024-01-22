@@ -210,7 +210,7 @@ function createTable($result) {
                         </w:tcPr>
                         <w:p>
                             <w:r>
-                                <w:t></w:t>
+                                <w:t>Reservation Count</w:t>
                             </w:r>
                         </w:p>
                     </w:tc>

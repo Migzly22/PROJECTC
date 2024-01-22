@@ -50,7 +50,7 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 				<thead>
 					<tr>
 						<th>Room</th>
-						<th></th>
+						<th>Reservation Count</th>
 						<th>Profit</th>
 					</tr>
 				</thead>
