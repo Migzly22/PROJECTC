@@ -25,6 +25,35 @@
 
 	// Round up to the nearest multiple of 24 hours
 	$rounded_hours = ceil($total_hours / 24) ;
+
+
+	    //error_reporting(E_ERROR | E_PARSE);
+		$pacvalue = "";
+		$timevalue = "";
+	
+		switch ($data['package']) {
+		case 'Package1':
+			$pacvalue = "Swimming Only";
+			break;
+		case 'Package2':
+			$pacvalue = "Rooms + Swimming";
+			break;
+		case 'Package3':
+			$pacvalue = "Pavilions";
+			break;
+		}
+	
+		switch ($data['timapackage']) {
+		case 'Day':
+			$timevalue = "08:00 AM - 05: 00 PM";
+			break;
+		case 'Night':
+			$timevalue = "07:00 PM - 07: 00 AM";
+			break;
+		case '22Hrs':
+			$timevalue = "02:00 PM - 12: 00 PM";
+			break;
+		}
 ?>
 <!-- GUEST INFO MAIN -->
 <main>
@@ -70,14 +99,21 @@
 				<small><b>Contact # : </b> <?php echo $data['Phone']; ?></small>
 				<br>
 				<small><b>Address : </b> <?php echo $data['Address']; ?></small>
+				<br>
+				<small><b>Time : </b><?php echo $data['eCheckin']." - ".$data['CheckOutDate']; ?></small>
+				<br>
+				<small><b>Package : </b> <?php echo $pacvalue; ?></small>
+				<br>
 			</span>
 		</li>
+
+
 		<li>
 			<i class="bx">
 				₱
 			</i>
 			<span class="text">
-				<h3>Total Payment</h3>
+				<h3>Total Payment : </h3>
 				<p><?php echo  number_format($total, 2);?> Pesos</p>
 			</span>
 		</li>

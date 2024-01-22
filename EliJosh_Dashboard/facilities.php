@@ -98,7 +98,7 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 			$data .= "
 						<li class='Listopener'>
 					<div class='boxxy02'>
-						<img src='../RoomsEtcImg/ROOMS/" . $result['imgpath'] . "' alt=''>
+						<img src='../RoomsEtcImg/Rooms/" . $result['imgpath'] . "' alt=''>
 					</div>
 					<span class='text'>
 						<h3>" . $result['RoomType'] . "</h3>
