@@ -509,6 +509,8 @@ if (!isset($_SESSION["USERID"]) || !isset($_SESSION["ACCESS"])) {
 		background: rgba(0, 0, 0, 0.5);
 		z-index: 919000;
 	}
+
+
 </style>
 
 <body>
@@ -517,8 +519,9 @@ if (!isset($_SESSION["USERID"]) || !isset($_SESSION["ACCESS"])) {
 		<form action="./AjaxLogic/SAVING1.php" id="SHET" method="post" enctype="multipart/form-data">
 			<h1 id="SWALTITLE" style="text-align: center;padding-bottom:.5em;">Edit</h1>
 			<input type="hidden" id = "hidid" name="hidid">
+			<input type="hidden" id = "hidid2" name="hidid2" value=''>
 			<div style="display: flex; justify-content: space-between;align-items:center;margin-bottom:0.5em;">
-				<label for="inputLabel">Room Name</label>
+				<label for="inputLabel">Name</label>
 				<input required type="text" id="swal-input11" name="swal-input1" class="SWALinput swal2Put" required value='' style='padding:0.5em;'>
 			</div>
 			<div style="display: flex; justify-content: space-between;align-items:center;margin-bottom:0.5em;">
@@ -549,9 +552,9 @@ if (!isset($_SESSION["USERID"]) || !isset($_SESSION["ACCESS"])) {
 				<label for="inputLabel">Image</label>
 				<input required type="file" id="swal-input18" name="swal-input8" accept="image/*">
 			</div>
-			<div style="text-align: right;">
-				<button type="button" onclick="closeModal()">Close</button>
-				<button type="submit">Save</button>
+			<div style="text-align: right;" class="SPECIALBTNN02">
+				<button type="button" class="DeleteBTN" onclick="closeModal()">Close</button>
+				<button type="submit" class="EditBTN">Save</button>
 			</div>
 		</form>
 	</div>
@@ -607,6 +610,12 @@ if (!isset($_SESSION["USERID"]) || !isset($_SESSION["ACCESS"])) {
 					<a href="./index.php?nzlz=staff">
 						<i class='bx bxs-user-detail'></i> <!--user-account or user-badge or user-detail-->
 						<span class="text">Manage Staff</span>
+					</a>
+				</li>
+				<li class="<?php echo ($activecode == 5) ? "active" : ""; ?>">
+					<a href="./index.php?nzlz=content_gallery">
+						<i class='bx bxs-collection'></i>
+						<span class="text">Content</span>
 					</a>
 				</li>
 				<li class="<?php echo ($activecode == 7) ? "active" : ""; ?>">

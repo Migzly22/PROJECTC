@@ -308,44 +308,43 @@
           <div class="heading_top flex1">
             <div class="heading">
               <h5>WELCOME TO OUR PHOTO GALLERY</h5>
-              <h2>Satisfied Guests</h2>
             </div>
           </div>
     
           <div class="owl-carousel owl-theme">
-            <div class="item">
-              <img src="./Images/s1.jpg" alt="">
-            </div>
-            <div class="item">
-              <img src="./Images/s2.jpg" alt="">
-            </div>
-            <div class="item">
-              <img src="./Images/s3.jpg" alt="">
-            </div>
-            <div class="item">
-              <img src="./Images/s4.jpg" alt="">
-            </div>
-            <div class="item">
-              <img src="./Images/s5.jpg" alt="">
-            </div>
-            <div class="item">
-              <img src="./Images/s6.jpg" alt="">
-            </div>
-            <div class="item">
-              <img src="./Images/s7.jpg" alt="">
-            </div>
-            <div class="item">
-              <img src="./Images/s8.jpg" alt="">
-            </div>
-          </div>
+            <?php
+
+                $folderPath = '../RoomsEtcImg/Gallery';
+                
+                // Get the list of all files in the folder
+                $files = scandir($folderPath);
+                
+                // Filter out only image files (you can customize the list of allowed extensions)
+                $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+                $imageFiles = array_filter($files, function($file) use ($allowedExtensions) {
+                    $extension = pathinfo($file, PATHINFO_EXTENSION);
+                    return in_array(strtolower($extension), $allowedExtensions);
+                });
+                
+                // Generate HTML markup for each image
+                foreach ($imageFiles as $imageFile) {
+                    $imagePath = "../RoomsEtcImg/Gallery/" . $imageFile;
+                    echo '<div class="item">';
+                    echo '  <img src="' . $imagePath . '" alt="">';
+                    echo '</div>';
+                }
     
+ 
+
+            ?>
+        
         </div>
       </section>
       
     <section class="CONTAINERSECTIONS" id="CONTACT">
         <div class="box2">
             <div class="heading">
-                <h2>Connect with Us</h2>
+                <h2>Contact Us</h2>
             </div>
             <div class="boxbox23">
                 <div class="rightcontainerbb2">

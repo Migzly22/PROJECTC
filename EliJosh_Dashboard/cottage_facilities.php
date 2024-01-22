@@ -1,5 +1,5 @@
 <?php
-$sqlcode1 = "SELECT * FROM rooms ORDER BY RoomID";
+$sqlcode1 = "SELECT * FROM cottage ORDER BY CottageID";
 
 $queryrun1 = mysqli_query($conn, $sqlcode1);
 
@@ -10,14 +10,14 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 <main>
 	<div class="head-title">
 		<div class="left">
-			<h1>Room</h1>
+			<h1>Cottage</h1>
 			<ul class="breadcrumb">
 				<li>
 					<a href="#">Facilities</a>
 				</li>
 				<li><i class='bx bx-chevron-right'></i></li>
 				<li>
-					<a class="active" href="#">Room Facilities</a>
+					<a class="active" href="#">Cottage</a>
 				</li>
 			</ul>
 		</div>
@@ -123,17 +123,17 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 			$data .= "
 						<li class='Listopener'>
 					<div class='boxxy02'>
-						<img src='../RoomsEtcImg/Rooms/" . $result['imgpath'] . "' alt=''>
+						<img src='../RoomsEtcImg/Cottages/" . $result['imgpath'] . "' alt=''>
 					</div>
 					<span class='text'>
-						<h3>" . $result['RoomType'] . "</h3>
-						<p>Price : ₱ " . $result['DayTimePrice'] . " - ₱ " . $result['Hours22'] . "</p>
-						<p>Max : " . $result['MaxPeople'] . "</p>
+						<h3>" . $result['cottagename'] . "</h3>
+						<p>Price : ₱ " . $result['DayPrice'] . " - ₱ " . $result['NightPrice'] . "</p>
+						<p>Max : " . $result['MaxPersons'] . "</p>
 					</span>
 					<div class='buttonholder02'>
 						
-						<button class='bex EditBTN' onclick='VIEW(`" . $result['RoomType'] . "`, `" . $result['DayTimePrice'] . "`,`" . $result['NightTimePrice'] . "`, `" . $result['Hours22'] . "`,`" . $result['MaxPeople'] . "`, `" . $result['Description'] . "`)'><i class='fa-solid fa-eye'></i></button>
-						<button class='bex EditBTN' onclick='ADDROOM(`Edit`,`" . $result['RoomID'] . "`,`" . $result['RoomType'] . "`, `" . $result['DayTimePrice'] . "`,`" . $result['NightTimePrice'] . "`, `" . $result['Hours22'] . "`,`" . $result['MaxPeople'] . "`, `" . $result['Description'] . "`)'><i class='fa-solid fa-pen-to-square'></i></button>
+						<button class='bex EditBTN' onclick='VIEW(`" . $result['cottagename'] . "`, `" . $result['DayPrice'] . "`,`" . $result['NightPrice'] . "`, ``,`" . $result['MaxPersons'] . "`)'><i class='fa-solid fa-eye'></i></button>
+						<button class='bex EditBTN' onclick='ADDROOM(`Edit`,`" . $result['CottageID'] . "`,`" . $result['cottagename'] . "`, `" . $result['DayPrice'] . "`,`" . $result['NightPrice'] . "`, ``,`" . $result['MaxPersons'] . "`)'><i class='fa-solid fa-pen-to-square'></i></button>
 					</div>
 
 				</li>";
@@ -152,21 +152,30 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 		// Display the modal and overlay
 		document.getElementById('modal').style.display = 'block';
 		document.getElementById('overlay').style.display = 'block';
+
+
+		document.getElementById('swal-input14').removeAttribute('required');
+		document.getElementById('swal-input16').removeAttribute('required');
+		document.getElementById('swal-input17').removeAttribute('required');
+  // Add the 'required' attribute back
+
 	}
 
 	function closeModal() {
 		// Hide the modal and overlay
 		document.getElementById('modal').style.display = 'none';
 		document.getElementById('overlay').style.display = 'none';
+		document.getElementById('swal-input14').parentNode.style.display = 'block';
+		document.getElementById('swal-input16').parentNode.style.display = 'block';
+		document.getElementById('swal-input17').parentNode.style.display = 'block';
+		document.getElementById('swal-input14').setAttribute('required', 'true');
+		document.getElementById('swal-input16').setAttribute('required', 'true');
+		document.getElementById('swal-input17').setAttribute('required', 'true');
 	}
 </script>
 
 <script>
-	async function VIEW(rname = "", dprice = "", nprice = "", hprice = "", max = "", jsondata = `{
-		"AMENITIES": "",
-		"DESCRIPTION": ""
-	}`) {
-		jsondata = JSON.parse(jsondata)
+	async function VIEW(rname = "", dprice = "", nprice = "", hprice = "", max = "") {
 		//const rowCount = TBODYELEMENT.rows[TBODYELEMENT.rows.length - 1].cells[0].innerText //(TBODYELEMENT.rows.length )+1;
 		let design = `
 		<div style="display: flex; justify-content: space-between;align-items:center;margin-bottom:0.5em;">
@@ -182,20 +191,8 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 				<input  required type="number" id="swal-input3" name="swal-input3" class="SWALinput swal2Put" required value='${nprice}' style='padding:0.5em;'>
 			</div>
 			<div style="display: flex; justify-content: space-between;align-items:center;margin-bottom:0.5em;">
-				<label for="inputLabel">22 Hours Price</label>
-				<input  required type="number" id="swal-input4" name="swal-input4" class="SWALinput swal2Put" required value='${hprice}' style='padding:0.5em;'>
-			</div>
-			<div style="display: flex; justify-content: space-between;align-items:center;margin-bottom:0.5em;">
 				<label for="inputLabel">Max Number</label>
 				<input  required type="number" id="swal-input5"  name="swal-input5" class="SWALinput swal2Put" required value='${max}' style='padding:0.5em;'>
-			</div>
-			<div style="display: flex; justify-content: space-between;align-items:center;margin-bottom:0.5em;">
-				<label for="inputLabel">Description</label>
-				<textarea  required  id="swal-input6"  name="swal-input6" cols="30" rows="10" style='padding:0.5em;'>${jsondata['DESCRIPTION']}</textarea>
-			</div>
-			<div style="display: flex; justify-content: space-between;align-items:center;margin-bottom:0.5em;">
-				<label for="inputLabel">Amenities</label>
-				<textarea required id="swal-input7"  name="swal-input7" cols="30" rows="10" style='padding:0.5em;'>${jsondata['AMENITIES']}</textarea>
 			</div>`
 		const {
 			value: formValues
@@ -207,21 +204,21 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 
 	}
 
-	async function ADDROOM(title = "EDIT", id = "", rname = "", dprice = "", nprice = "", hprice = "", max = "", jsondata = `{
-		"AMENITIES": "",
-		"DESCRIPTION": ""
-	}`) {
-		jsondata = JSON.parse(jsondata)
+	async function ADDROOM(title = "EDIT", id = "", rname = "", dprice = "", nprice = "", hprice = "", max = "") {
 		document.getElementById('SWALTITLE').innerHTML = title;
 		document.getElementById('swal-input11').value = rname;
 		document.getElementById('swal-input12').value = dprice;
 		document.getElementById('swal-input13').value = nprice;
-		document.getElementById('swal-input14').value = hprice;
+
 		document.getElementById('swal-input15').value = max;
-		document.getElementById('swal-input16').value = jsondata['DESCRIPTION'];
-		document.getElementById('swal-input17').value = jsondata['AMENITIES'];
+
+
+		document.getElementById('swal-input14').parentNode.style.display = 'none';
+		document.getElementById('swal-input16').parentNode.style.display = 'none';
+		document.getElementById('swal-input17').parentNode.style.display = 'none';
 		document.getElementById('hidid').value = id;
-		document.getElementById('hidid2').value = 'Room';
+		document.getElementById('hidid2').value = 'Cottage';
+
 
 		openModal()
 
