@@ -17,7 +17,7 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 				</li>
 				<li><i class='bx bx-chevron-right'></i></li>
 				<li>
-					<a class="active" href="#">Gallery Images</a>
+					<a class="active" href="#">Slider Images</a>
 				</li>
 			</ul>
 		</div>
@@ -120,22 +120,27 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 	<ul class="box-info" id='datatable'>
 
 		<?php
-		$folderPath = '../RoomsEtcImg/Gallery';
+		$folderPath = '../RoomsEtcImg/Sliders';
 
 		// Get the list of all files in the folder
 		$files = scandir($folderPath);
 
 		// Filter out only image files (you can customize the list of allowed extensions)
 		$allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+
 		$imageFiles = array_filter($files, function ($file) use ($allowedExtensions) {
 			$extension = pathinfo($file, PATHINFO_EXTENSION);
 			return in_array(strtolower($extension), $allowedExtensions);
 		});
 
+
+		// Generate HTML markup for each image
+		$imageFilesnew = array_values($imageFiles);
+		$arrayLength = count($imageFilesnew);
 		$data = "";
 		// Generate HTML markup for each image
-		foreach ($imageFiles as $imageFile) {
-			$imagePath = "../RoomsEtcImg/Gallery/" . $imageFile;
+		foreach ($imageFilesnew as $imageFile) {
+			$imagePath = "../RoomsEtcImg/Sliders/" . $imageFile;
 
 
 			$data .= "<li class='Listopener'>
@@ -171,7 +176,7 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 </script>
 <script>
 	async function DELETEBTN(imgname) {
-		const newgal = await AjaxSendv3(imgname, "Content", "&Process=Deletion")
+		const newgal = await AjaxSendv3(imgname, "Contentv2", "&Process=Deletion")
 		document.getElementById('datatable').innerHTML = newgal
 		Swal.fire({
 			title: "",
@@ -181,6 +186,15 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 	}
 
 	async function ADDROOM() {
+		let num = parseInt(`<?php echo $arrayLength; ?>`)
+		if (num >= 5) {
+			Swal.fire({
+				title: "",
+				text: "Sorry, you have reached the maximum allowed number of images in the slider.",
+				icon: "info"
+			});
+			return
+		}
 		await Swal.fire({
 			title: 'Select an image',
 			input: 'file',
@@ -199,7 +213,7 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 
 				// Perform AJAX request to your PHP script
 				$.ajax({
-					url: './AjaxLogic/Content.php',
+					url: './AjaxLogic/Contentv2.php',
 					type: 'POST',
 					data: formData,
 					contentType: false,

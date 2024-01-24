@@ -1,0 +1,84 @@
+/*--------------home--------*/
+.home{
+  height: 100dvh;
+  position: relative;
+  top: 0;
+}
+.home .image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  filter: brightness(0.4);
+}
+
+
+.home .text {
+  max-width: 50%;
+  color: white;
+  margin: 20% 0 0 10%;
+}
+
+.home h1 {
+  font-size: 80px;
+  font-weight: 400;
+}
+
+.home p {
+  font-weight: 400;
+  line-height: 25px;
+  font-family: sans-serif;
+  font-size: 17px;
+  margin: 50px 0 0 50px;
+}
+
+
+.home button {
+  margin-left: 50px;
+}
+
+.HOMEWHOLE .image_item {
+  position: absolute;
+  top: 13%;
+  right: 10%;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.HOMEWHOLE .image_item img {
+  width: 140px;
+  height: 78px;
+  margin: 10px;
+  transition: 0.5s;
+  border: 2px solid white;
+}
+
+.HOMEWHOLE .image_item img.active {
+  border: 2px solid white;
+}
+
+.MiddlePARTv2{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  text-align: center;
+  color: #fff;
+}
+.MiddlePARTv2 .textkainit{
+  letter-spacing: .4ch;
+}
+.MiddlePARTv2 h1{
+  text-align: center;
+  font-size: 3em;
+  display: flex;
+}
+.MiddlePARTv2 h1 .H1p2{
+  margin-top: .5em;
+}
+.MiddlePARTv2 h1 .H1p3{
+  margin-top: 1em;
+}
