@@ -26,7 +26,7 @@ $webitself = mysqli_fetch_assoc($sqlqueryrunwebitself);
     <link rel="icon" type="image/x-icon" href="./img/title_logo.ico">
 
     <link rel="stylesheet" href="./css/newcss.css">
-    <link rel="stylesheet" href="./css/stylev3.css">
+    <link rel="stylesheet" href="./css/stylev4.css">
     <link href="./CSS/style.scss" rel="stylesheet/scss" type="text/css">
     <link rel="stylesheet" href="./CSS/app.css">
     <link rel="stylesheet" href="./Calendar/app.css">
@@ -197,35 +197,35 @@ $webitself = mysqli_fetch_assoc($sqlqueryrunwebitself);
 
             <?php
 
-                $sliderFolderPath = '../RoomsEtcImg/Sliders';
+            $sliderFolderPath = '../RoomsEtcImg/Sliders';
 
-                // Get the list of all files in the folder
-                $sliderFiles = scandir($sliderFolderPath);
-                // Filter out only image files (you can customize the list of allowed extensions)
-                $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-                $imageFiles2 = array_filter($sliderFiles, function ($file) use ($allowedExtensions) {
-                    $extension = pathinfo($file, PATHINFO_EXTENSION);
-                    return in_array(strtolower($extension), $allowedExtensions);
-                });
+            // Get the list of all files in the folder
+            $sliderFiles = scandir($sliderFolderPath);
+            // Filter out only image files (you can customize the list of allowed extensions)
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+            $imageFiles2 = array_filter($sliderFiles, function ($file) use ($allowedExtensions) {
+                $extension = pathinfo($file, PATHINFO_EXTENSION);
+                return in_array(strtolower($extension), $allowedExtensions);
+            });
 
-                // Generate HTML markup for each image
-                $imageFilesnew = array_values($imageFiles2);
-                echo '<div class="bgimages">
-                    <img src="../RoomsEtcImg/Sliders/'.$imageFilesnew[0].'" alt="" class="slide">
+            // Generate HTML markup for each image
+            $imageFilesnew = array_values($imageFiles2);
+            echo '<div class="bgimages">
+                    <img src="../RoomsEtcImg/Sliders/' . $imageFilesnew[0] . '" alt="" class="slide">
                 </div>';
-                echo '<div class="image_item">';
-                $arrsave = array();
-                foreach ($imageFilesnew as $index => $imageFile) {
-                    $imagePath = "../RoomsEtcImg/Sliders/" . $imageFile;
-                    $arrsave[] = $imagePath;
-                    if ($index == 0) {
-                        echo '<img src="' . $imagePath . '" alt="" class="slide active" onclick="img(`' . $imagePath . '`)">';
-                    }else{
-                        echo '<img src="' . $imagePath . '" alt="" class="slide" onclick="img(`' . $imagePath . '`)">';
-                    }
+            echo '<div class="image_item">';
+            $arrsave = array();
+            foreach ($imageFilesnew as $index => $imageFile) {
+                $imagePath = "../RoomsEtcImg/Sliders/" . $imageFile;
+                $arrsave[] = $imagePath;
+                if ($index == 0) {
+                    echo '<img src="' . $imagePath . '" alt="" class="slide active" onclick="img(`' . $imagePath . '`)">';
+                } else {
+                    echo '<img src="' . $imagePath . '" alt="" class="slide" onclick="img(`' . $imagePath . '`)">';
                 }
-                $arrcreator = json_encode($arrsave);
-                echo '</div>';
+            }
+            $arrcreator = json_encode($arrsave);
+            echo '</div>';
 
 
             ?>
@@ -243,14 +243,13 @@ $webitself = mysqli_fetch_assoc($sqlqueryrunwebitself);
         }
 
         function changeBackgroundPeriodically() {
-            const images = eval(<?php echo $arrcreator;?>); // Add more image URLs as needed
+            const images = eval(<?php echo $arrcreator; ?>); // Add more image URLs as needed
             let index = 0;
 
             setInterval(function() {
                 const line = document.querySelector('.bgimages');
                 img(images[index]);
                 index = (index + 1) % images.length;
-                console.log(index)
             }, 3000);
         }
 
@@ -379,54 +378,104 @@ $webitself = mysqli_fetch_assoc($sqlqueryrunwebitself);
             <div class="heading">
                 <h5>RAISING COMFORT TO THE HIGHEST LEVEL</h5>
                 <h2>Welcome to Elijosh Resort and Events Place</h2>
-                <p>            
-                    <?php 
-                            echo $webitself["about"];
+                <p>
+                    <?php
+                    echo $webitself["about"];
                     ?>
                 </p>
             </div>
         </div>
     </section>
-    <!--
-    <section class="ABOUT">
-        <img src="./Images/c8.jpg" alt="" class="imagebg">
+
+    <style>
+        .text {
+            display: none;
+            transition: all 1s ease-in-out;
+        }
+
+        .TEXTactive {
+            display: block;
+        }
+    </style>
+    <section class="ABOUT" id="ALLABOUTTHATROOMS">
+
+        <img src="./Images/c8.jpg" alt="" class="imagebg" id="heheroomslistimg">
         <div class="wrapper top">
             <div class="container">
-                <div class="text">
-                    <h2>Our Amenities</h2>
-                    <p>Discover a world of luxury and tranquility at Elijosh Resort and Event Place. Our amenities are designed to provide you with an unforgettable experience. Dive into our crystal-clear pools, surrounded by lush greenery for the ultimate relaxation. Enjoy exquisite dining at our on-site restaurants. At Elijosh, we redefine hospitality, ensuring your stay is filled with comfort, elegance, and lasting memories.</p>
 
-                    <div class="content">
-                        <div class="box flex">
-                            <i class="fas fa-swimming-pool"></i>
-                            <span>Swimming pool</span>
+                <?php
+                $sqlcodeWEBROOM = "SELECT * FROM rooms ORDER BY RoomID";
+                $queryrunWEBROOM = mysqli_query($conn, $sqlcodeWEBROOM);
+
+                $WEBROOM = "";
+                while ($result = mysqli_fetch_assoc($queryrunWEBROOM)) {
+                    $phpArray = json_decode($result['Description'], true);
+
+                    $WEBROOM .= "
+                    <div class='text '>
+                    <input type='hidden' value='../RoomsEtcImg/Rooms/" . $result['imgpath'] . "'>
+                    <h2>" . $result['RoomType'] . "</h2>
+                    <p>" . $phpArray['DESCRIPTION'] . "</p>
+
+                    <h4>Amenities</h4>
+                    <div class='content'>
+                        <div class='box flex'>
+                            <i class='fa-solid fa-rectangle-list'></i>
+                            <span> " . $phpArray['AMENITIES'] . "</span>
                         </div>
-                        <div class="box flex">
-                            <i class="fas fa-dumbbell"></i>
-                            <span>Karaoke & KTV</span>
+                        <div class='' >
+                             <h3>Day Price : ₱ " . $result['DayTimePrice'] . "</h3>
                         </div>
-                        <div class="box flex">
-                            <i class="fas fa-spa"></i>
-                            <span>Cottages</span>
+                        <div class='box flex' >
+                            <h3>Night Price : ₱ " . $result['NightTimePrice'] . "</h3>
                         </div>
-                        <div class="box flex">
-                            <i class="fas fa-ship"></i>
-                            <span>Bar</span>
-                        </div>
-                        <div class="box flex">
-                            <i class="fas fa-swimmer"></i>
-                            <span>Gym & yoga</span>
-                        </div>
-                        <div class="box flex">
-                            <i class="fas fa-microphone"></i>
-                            <span>Pavilion</span>
+                        <div class='box flex' >
+                            <h3>22 Hours Stay : ₱ " . $result['Hours22'] . "</h3>
                         </div>
                     </div>
-                </div>
+                </div>";
+                }
+                echo $WEBROOM;
+                ?>
+
+
             </div>
         </div>
     </section>
-    -->
+    <script>
+        const ALLABOUTTHATROOMS = document.getElementById('ALLABOUTTHATROOMS');
+        const heheroomslistimg = document.getElementById('heheroomslistimg');
+
+        let testing05 = ALLABOUTTHATROOMS.children[1].children[0].children[0]
+        testing05.classList.add("TEXTactive");
+        heheroomslistimg.src = testing05.children[0].value;
+
+        function changePeriodicallyAbout() {
+
+            let index2 = 0;
+            let data32TESTING = ALLABOUTTHATROOMS.children[1].children[0].children
+            let changertadatle = ALLABOUTTHATROOMS.children[1].children[0]
+
+
+            setInterval(function() {
+
+                for (let x = 0; x < data32TESTING.length; x++) {
+                    changertadatle.children[x].classList.remove("TEXTactive");
+                }
+
+                changertadatle.children[index2].classList.add("TEXTactive");
+                heheroomslistimg.src = changertadatle.children[index2].children[0].value; // Use square brackets to access elements
+
+                index2 = (index2 + 1) % data32TESTING.length;
+            }, 3000);
+
+
+        }
+
+        // Call the function to start changing the background image every 2 seconds
+        changePeriodicallyAbout();
+    </script>
+
     <section class="CONTAINERSECTIONS" id="TOUR">
         <div class="box2">
             <div class="heading">
@@ -507,7 +556,7 @@ $webitself = mysqli_fetch_assoc($sqlqueryrunwebitself);
                                         <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z" />
                                     </svg>
                                     <?php
-                                        echo $webitself["contactnum"];
+                                    echo $webitself["contactnum"];
                                     ?>
                                 </div>
                             </div>
@@ -516,11 +565,11 @@ $webitself = mysqli_fetch_assoc($sqlqueryrunwebitself);
                             <h3>Follow Us</h3>
                             <div class="ISCONTAINER">
                                 <a href="http://" target="_blank" rel="noopener noreferrer"></a>
-                                <a target="_blank" rel="noopener noreferrer" href="<?php echo $webitself["fblink"];?>" class="INSIDEISC"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                <a target="_blank" rel="noopener noreferrer" href="<?php echo $webitself["fblink"]; ?>" class="INSIDEISC"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                                         <path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z" />
                                     </svg>
                                     Facebook</a>
-                                <a target="_blank" rel="noopener noreferrer" href="<?php echo $webitself["iglink"];?>" class="INSIDEISC"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                <a target="_blank" rel="noopener noreferrer" href="<?php echo $webitself["iglink"]; ?>" class="INSIDEISC"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                                         <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
                                     </svg>
                                     Instagram</a>

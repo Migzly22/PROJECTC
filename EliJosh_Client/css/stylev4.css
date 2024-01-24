@@ -387,7 +387,7 @@ a{
     .content{
         margin-top: 1em;
         display: grid;
-        grid-template-columns: auto auto;
+        grid-template-columns: auto;
         gap: 1em;
         padding: 1em;
     }
