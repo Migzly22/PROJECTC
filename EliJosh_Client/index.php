@@ -127,6 +127,20 @@ $webitself = mysqli_fetch_assoc($sqlqueryrunwebitself);
         </ul>
 
     </nav>
+    <style>
+        .specialdateinput22 {
+            padding: .5em;
+            background: transparent;
+            border: 0;
+            color: #fff;
+            border-bottom: 1px solid #fff;
+        }
+
+        .specialdateinput22::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            /* Invert the color of the calendar icon */
+        }
+    </style>
     <form action="" id="BOOKINGSSS">
         <section class="HOMEWHOLE" id="HOME">
             <div class="MiddlePARTv2">
@@ -150,21 +164,9 @@ $webitself = mysqli_fetch_assoc($sqlqueryrunwebitself);
                         CHECK-IN
                     </div>
                     <label for="Checkin">
-                        <div class="Databelow" id="CHECKINDATEA">
-                            <div class="Number">
-                                -
-                            </div>
-                            <div class="smallernumber">
-                                / -
-
-                                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                                    <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-352a96 96 0 1 1 0 192 96 96 0 1 1 0-192z" />
-                                </svg>
-                            </div>
-
-                        </div>
+                        <input type="date" name="Checkin" id="Checkin" class="specialdateinput22">
                     </label>
-                    <input type="date" name="Checkin" id="Checkin" style="display: none;">
+                    <!--<input type="date" name="Checkin" id="Checkin" style="display: none;">-->
                 </div>
                 <div class="formDTL">
                     <div class="LABELTARGET">
