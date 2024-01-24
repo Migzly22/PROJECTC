@@ -505,7 +505,7 @@ $webitself = mysqli_fetch_assoc($sqlqueryrunwebitself);
     </section>
 
     <style>
-        .imagebgv2 {
+        .iframecontainer {
             position: relative;
             width: 100%;
             height: 100dvh;
@@ -513,27 +513,19 @@ $webitself = mysqli_fetch_assoc($sqlqueryrunwebitself);
             z-index: 1;
             object-fit: cover;
         }
+        .iframecontainer iframe{
+            width: 100%;
+            height: 100%;
+        }
     </style>
     <section class="ABOUT" style="background-color: #3f9cc1;" id="ALLABOUTTHATROOMS">
-        <?php
-        $videoDirectory = "../RoomsEtcImg/Videos/";
-
-        // Get all video files in the directory
-        $videoFiles = glob($videoDirectory . "*.mp4");
-
-        // Display each video file as a video player
-        foreach ($videoFiles as $videoPath) {
-        ?>
-            <video id="myVideo" class="imagebgv2" controls>
-                <source src="<?php  echo $videoPath; ?>" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        <?php
-        }
-        ?>
+        <div class="iframecontainer">
+            <?php
+            echo $webitself['vidlink'];
+            ?>
+        </div>
 
     </section>
-
     <section class="gallary mtop " id="GALLERY">
         <div class="container">
             <div class="heading_top flex1">
