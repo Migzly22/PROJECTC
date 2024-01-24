@@ -21,13 +21,13 @@ $webitself = mysqli_fetch_assoc($sqlqueryrunwebitself);
 		<div class="RESERVATIONBTNS">
 			<div class="btn-download2" onclick="this.querySelector('a').click()">
 				<a href="./index.php?nzlz=content_slider" class="">
-					<i class='bx bxs-image-alt' ></i>
+					<i class='bx bxs-image-alt'></i>
 					<span class="text">Slider Images</span>
 				</a>
 			</div>
 			<div class="btn-download2" onclick="this.querySelector('a').click()">
 				<a href="./index.php?nzlz=content_gallery" class="">
-					<i class='bx bxs-image-alt' ></i>
+					<i class='bx bxs-image-alt'></i>
 					<span class="text">Gallery Images</span>
 				</a>
 			</div>
@@ -140,6 +140,22 @@ $webitself = mysqli_fetch_assoc($sqlqueryrunwebitself);
 
 						</td>
 					</tr>
+					<tr>
+						<td style="display: flex;justify-content:center;">
+							<i class="fa-solid fa-play"></i>
+						</td>
+						<td>
+							<?php
+							echo $webitself["vidlink"];
+							?>
+						</td>
+						<td class="TableBtns">
+							<div class="EditBTN" onclick="Editdata2()">
+								<i class='bx bx-edit-alt'></i>
+							</div>
+
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -201,15 +217,67 @@ $webitself = mysqli_fetch_assoc($sqlqueryrunwebitself);
 			}
 		}
 	}
+	async function Editdata2() {
+		const {
+			value: text
+		} = await Swal.fire({
+			input: "textarea",
+			inputLabel: "Video Link",
+			inputPlaceholder: "Paste your embedded link here...",
+			inputAttributes: {
+				"aria-label": "Type your message here"
+			},
+			showCancelButton: true
+		});
+		if (text) {
+			if (text && text.trim().length > 0) {
+				let formData = new FormData();
+				formData.append('sqlcode', text);
+				formData.append('process', 'Video Link');
+
+				// Perform AJAX request to your PHP script
+				$.ajax({
+					url: './AjaxLogic/contentmain.php',
+					type: 'POST',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function(response) {
+						// Handle the response from the server
+						Swal.fire({
+							title: 'Success!',
+							text: '',
+							icon: 'success',
+						});
+						document.getElementById('MAINDATA').innerHTML = response
+					},
+					error: function(xhr, status, error) {
+						// Handle errors
+						Swal.fire({
+							title: 'Error!',
+							text: 'An error occurred while uploading the image.',
+							icon: 'error',
+						});
+					}
+				});
+			} else {
+				Swal.fire({
+					title: "",
+					text: "Invalid input. Please enter a non-empty message.",
+					icon: "error"
+				});
+			}
+		}
+	}
 	async function Editdata(title, data) {
 		const {
 			value: text
 		} = await Swal.fire({
-			title: "Edit "+title,
+			title: "Edit " + title,
 			input: "text",
-			inputLabel: "Enter your "+ title,
+			inputLabel: "Enter your " + title,
 			inputPlaceholder: "",
-			inputValue : data,
+			inputValue: data,
 			showCancelButton: true
 		});
 		if (text) {

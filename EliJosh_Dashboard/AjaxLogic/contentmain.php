@@ -28,8 +28,18 @@ switch ($_POST['process']) {
     case 'Instagram Link':
         $newsqlcode = "UPDATE aboutsection SET iglink = '" . $_POST["sqlcode"] . "' WHERE webid = 1;";
         break;
+    case 'Video Link':
+        $newsqlcode = "UPDATE aboutsection SET vidlink = ? WHERE webid = 1;";
+        $stmt = $conn->prepare($newsqlcode);
+
+        // Bind the parameter
+        $stmt->bind_param("s", $_POST["sqlcode"]);
+
+        // Execute the statement
+        $stmt->execute();
+        break;
 }
-if($_POST['process'] != 'About'){
+if ($_POST['process'] != 'About' || $_POST['process'] != 'Video Link') {
     mysqli_query($conn, $newsqlcode);
 }
 
@@ -97,7 +107,7 @@ $webitself = mysqli_fetch_assoc($sqlqueryrunwebitself);
                         ?>
                     </td>
                     <td class="TableBtns">
-                        <div class="EditBTN"  onclick="About(`<?php echo $webitself['about']; ?>`)">
+                        <div class="EditBTN" onclick="About(`<?php echo $webitself['about']; ?>`)">
                             <i class='bx bx-edit-alt'></i>
                         </div>
 
@@ -170,6 +180,22 @@ $webitself = mysqli_fetch_assoc($sqlqueryrunwebitself);
 
                     </td>
                 </tr>
+                <tr>
+						<td style="display: flex;justify-content:center;">
+							<i class="fa-solid fa-play"></i>
+						</td>
+						<td>
+							<?php
+							echo $webitself["vidlink"];
+							?>
+						</td>
+						<td class="TableBtns">
+							<div class="EditBTN" onclick="Editdata2()">
+								<i class='bx bx-edit-alt'></i>
+							</div>
+
+						</td>
+					</tr>
             </tbody>
         </table>
     </div>
