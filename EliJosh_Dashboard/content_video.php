@@ -17,18 +17,12 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 				</li>
 				<li><i class='bx bx-chevron-right'></i></li>
 				<li>
-					<a class="active" href="#">Slider Images</a>
+					<a class="active" href="#">Video</a>
 				</li>
 			</ul>
 		</div>
 
 	</div>
-	<div class="box-add" onclick="ADDROOM()">
-		<a href=""></a>
-		<i class='bx bxs-add-to-queue'></i>
-	</div>
-
-
 
 	<Style>
 		.Listopener {
@@ -115,46 +109,43 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 			background: #CFE8FF;
 
 		}
+
+        .imagebgv2 {
+            position: relative;
+            width: 100%;
+            height: 100dvh;
+            border-radius: 10px;
+            z-index: 1;
+            object-fit: cover;
+        }
+
 	</Style>
 
 	<ul class="box-info" id='datatable'>
 
 		<?php
-		$folderPath = '../RoomsEtcImg/Sliders';
+		$videoDirectory = "../RoomsEtcImg/Videos/";
 
-		// Get the list of all files in the folder
-		$files = scandir($folderPath);
-
-		// Filter out only image files (you can customize the list of allowed extensions)
-		$allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-
-		$imageFiles = array_filter($files, function ($file) use ($allowedExtensions) {
-			$extension = pathinfo($file, PATHINFO_EXTENSION);
-			return in_array(strtolower($extension), $allowedExtensions);
-		});
-
-
-		// Generate HTML markup for each image
-		$imageFilesnew = array_values($imageFiles);
-		$arrayLength = count($imageFilesnew);
+		// Get all video files in the directory
+		$videoFiles = glob($videoDirectory . "*.mp4");
 		$data = "";
 		// Generate HTML markup for each image
-		foreach ($imageFilesnew as $imageFile) {
-			$imagePath = "../RoomsEtcImg/Sliders/" . $imageFile;
-
-
+		foreach ($videoFiles as $videoPath) {
 			$data .= "<li class='Listopener'>
-				<div class='boxxy02'>
-					<img src='$imagePath' alt=''>
-				</div>
-				<div class='buttonholder02'>
-					<button class='bex EditBTN' onclick='DELETEBTN(`$imageFile`)'><i class='fa-solid fa-trash'></i></button>
-				</div>
-			</li>
-			<input type='hidden' id='ARRAYLENGHT' value='$arrayLength'>";
+				<video id='myVideo' class='imagebgv2' controls>
+					<source src='$videoPath' type='video/mp4'>
+					
+				</video>
+			<div class='buttonholder02'>
+				<button class='bex EditBTN' onclick='ADDROOM()'><i class='fa-solid fa-pen'></i></button>
+			</div>
+		</li>";
 		}
 		echo $data;
+
+
 		?>
+
 
 	</ul>
 
@@ -175,18 +166,9 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 	}
 </script>
 <script>
-	async function DELETEBTN(imgname) {
-		const newgal = await AjaxSendv3(imgname, "Contentv2", "&Process=Deletion")
-		document.getElementById('datatable').innerHTML = newgal
-		Swal.fire({
-			title: "",
-			text: "Deleted Successfully",
-			icon: "success"
-		});
-	}
 
 	async function ADDROOM() {
-		let num = parseInt(document.getElementById('ARRAYLENGHT').value)
+		let num = parseInt(`<?php echo $arrayLength; ?>`)
 		if (num >= 5) {
 			Swal.fire({
 				title: "",
@@ -196,10 +178,10 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 			return
 		}
 		await Swal.fire({
-			title: 'Select an image',
+			title: 'Select an video',
 			input: 'file',
 			inputAttributes: {
-				accept: 'image/*',
+				accept: 'video/*', // Accept any video file type
 			},
 			showCancelButton: true,
 			confirmButtonText: 'Upload',
@@ -207,13 +189,13 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 			preConfirm: (file) => {
 				// You can use FormData to send the file to your PHP script using AJAX
 				let formData = new FormData();
-				formData.append('image', file);
+				formData.append('video', file);
 				formData.append('Process', 'Add');
 				formData.append('sqlcode', 'Add');
 
 				// Perform AJAX request to your PHP script
 				$.ajax({
-					url: './AjaxLogic/Contentv2.php',
+					url: './AjaxLogic/Contentv3.php',
 					type: 'POST',
 					data: formData,
 					contentType: false,

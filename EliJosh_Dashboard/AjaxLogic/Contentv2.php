@@ -29,7 +29,7 @@ switch ($_POST["Process"]) {
     case 'Add':
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
             $uploadDir = '../../RoomsEtcImg/Sliders/';
-            $uniqueName = time().'_' . $_FILES['image']['name'];
+            $uniqueName = time() . '_' . $_FILES['image']['name'];
             $uploadFile = $uploadDir . $uniqueName;
 
             if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
@@ -58,6 +58,9 @@ $imageFiles = array_filter($files, function ($file) use ($allowedExtensions) {
 
 $data = "";
 // Generate HTML markup for each image
+$imageFilesnew = array_values($imageFiles);
+$arrayLength = count($imageFilesnew);
+// Generate HTML markup for each image
 foreach ($imageFiles as $imageFile) {
     $imagePath = "../RoomsEtcImg/Sliders/" . $imageFile;
 
@@ -68,6 +71,6 @@ foreach ($imageFiles as $imageFile) {
     <div class='buttonholder02'>
         <button class='bex EditBTN' onclick='DELETEBTN(`$imageFile`)'><i class='fa-solid fa-trash'></i></button>
     </div>
-</li>";
+</li><input type='hidden' id='ARRAYLENGHT' value='$arrayLength'>";
 }
 echo $data;

@@ -1,13 +1,10 @@
 <?php
-$sqlcode1 = "SELECT * FROM rooms ORDER BY RoomID";
-
-$queryrun1 = mysqli_query($conn, $sqlcode1);
-
-
+$sqlcodeforwebitself = "SELECT * FROM `aboutsection`";
+$sqlqueryrunwebitself = mysqli_query($conn, $sqlcodeforwebitself);
+$webitself = mysqli_fetch_assoc($sqlqueryrunwebitself);
 ?>
-
-<!-- DASHBOARD MAIN -->
-<main>
+<!-- SETTINGS MAIN -->
+<main id="MAINDATA">
 	<div class="head-title">
 		<div class="left">
 			<h1>Content</h1>
@@ -17,203 +14,162 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 				</li>
 				<li><i class='bx bx-chevron-right'></i></li>
 				<li>
-					<a class="active" href="#">Info Content</a>
+					<a class="active" href="#">Home</a>
 				</li>
 			</ul>
 		</div>
+		<div class="RESERVATIONBTNS">
+			<div class="btn-download2" onclick="this.querySelector('a').click()">
+				<a href="./index.php?nzlz=content_slider" class="">
+					<i class='bx bxs-image-alt' ></i>
+					<span class="text">Slider Images</span>
+				</a>
+			</div>
+			<div class="btn-download2" onclick="this.querySelector('a').click()">
+				<a href="./index.php?nzlz=content_gallery" class="">
+					<i class='bx bxs-image-alt' ></i>
+					<span class="text">Gallery Images</span>
+				</a>
+			</div>
+			<!--
+			<div class="btn-download2" onclick="this.querySelector('a').click()">
+				<a href="./index.php?nzlz=content_video" class="">
+					<i class='bx bxs-video' ></i>
+					<span class="text">Video</span>
+				</a>
+			</div>
+			-->
+		</div>
+	</div>
+
+
+	<div class="table-data">
+		<div class="order">
+			<div class="head">
+				<h3>About Information</h3>
+			</div>
+			<table>
+				<thead>
+					<tr>
+						<th></th>
+						<th></th>
+						<th style="text-align: center;"><i class='bx bx-cog'></i></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+
+						</td>
+						<td style="text-align: justify;padding:1em;">
+							<?php
+							echo $webitself["about"];
+							?>
+						</td>
+						<td class="TableBtns">
+							<div class="EditBTN" onclick="About(`<?php echo $webitself['about']; ?>`)">
+								<i class='bx bx-edit-alt'></i>
+							</div>
+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 
 	</div>
-	<div class="box-add" onclick="ADDROOM()">
-		<a href=""></a>
-		<i class='bx bxs-add-to-queue'></i>
+	<div class="table-data">
+		<div class="order">
+			<div class="head">
+				<h3>Contact Information</h3>
+			</div>
+			<table>
+				<thead>
+					<tr>
+						<th></th>
+						<th></th>
+						<th style="text-align: center;"><i class='bx bx-cog'></i></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td style="display: flex;justify-content:center;padding:2em;">
+							<i class="fa-solid fa-phone"></i>
+						</td>
+						<td>
+							<?php
+							echo $webitself["contactnum"];
+							?>
+						</td>
+						<td class="TableBtns">
+							<div class="EditBTN" onclick="Editdata(`Contact No.`,`<?php echo $webitself['contactnum']; ?>`)">
+								<i class='bx bx-edit-alt'></i>
+							</div>
+
+						</td>
+					</tr>
+					<tr>
+						<td style="display: flex;justify-content:center;">
+							<i class="fa-brands fa-facebook-f"></i>
+						</td>
+						<td>
+							<?php
+							echo $webitself["fblink"];
+							?>
+						</td>
+						<td class="TableBtns">
+							<div class="EditBTN" onclick="Editdata(`Facebook Link`,`<?php echo $webitself['fblink']; ?>`)">
+								<i class='bx bx-edit-alt'></i>
+							</div>
+
+						</td>
+					</tr>
+					<tr>
+						<td style="display: flex;justify-content:center;">
+							<i class="fa-brands fa-instagram"></i>
+						</td>
+						<td>
+							<?php
+							echo $webitself["iglink"];
+							?>
+						</td>
+						<td class="TableBtns">
+							<div class="EditBTN" onclick="Editdata(`Instagram Link`,`<?php echo $webitself['iglink']; ?>`)">
+								<i class='bx bx-edit-alt'></i>
+							</div>
+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
 	</div>
-
-
-
-	<Style>
-		.Listopener {
-			position: relative;
-		}
-
-		.boxxy02 {
-			background-color: red;
-			width: 100%;
-			height: 200px;
-			border-radius: 10px;
-			overflow: hidden;
-		}
-
-		.boxxy02 img {
-			width: 100%;
-			height: 100%;
-		}
-
-		.smalltexting {
-			max-width: 200px;
-		}
-
-		.buttonholder02 {
-			position: absolute;
-			padding: .7em;
-			border-radius: 10px;
-			left: 50%;
-			bottom: 0;
-			translate: -50% 50%;
-			font-weight: bold;
-
-		}
-
-		.buttonholder02 button {
-			padding: .5em;
-			border-radius: 10px;
-			border: 1px solid #333;
-		}
-
-		.buttonholder02 .DeleteBTN:hover {
-			color: #FD7238;
-			background: #FFE0D3;
-		}
-
-		.buttonholder02 .EditBTN:hover {
-			color: #0000fe;
-			background: #CFE8FF;
-
-		}
-
-		.NameofTarger {
-			position: absolute;
-			top: 0;
-			left: 50%;
-			translate: -50% -50%;
-		}
-
-
-		.swal2Put {
-			width: 250px;
-		}
-
-		#content main .box-info {
-			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-			grid-gap: 24px;
-			margin-top: 36px;
-		}
-
-		.SPECIALBTNN02 button {
-			padding: .5em;
-			border-radius: 10px;
-			border: 1px solid #333;
-		}
-
-		.SPECIALBTNN02 .DeleteBTN:hover {
-			color: #FD7238;
-			background: #FFE0D3;
-		}
-
-		.SPECIALBTNN02 .EditBTN:hover {
-			color: #0000fe;
-			background: #CFE8FF;
-
-		}
-	</Style>
-
-	<ul class="box-info" id='datatable'>
-
-		<?php
-		$folderPath = '../RoomsEtcImg/Sliders';
-
-		// Get the list of all files in the folder
-		$files = scandir($folderPath);
-
-		// Filter out only image files (you can customize the list of allowed extensions)
-		$allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-
-		$imageFiles = array_filter($files, function ($file) use ($allowedExtensions) {
-			$extension = pathinfo($file, PATHINFO_EXTENSION);
-			return in_array(strtolower($extension), $allowedExtensions);
-		});
-
-
-		// Generate HTML markup for each image
-		$imageFilesnew = array_values($imageFiles);
-		$arrayLength = count($imageFilesnew);
-		$data = "";
-		// Generate HTML markup for each image
-		foreach ($imageFilesnew as $imageFile) {
-			$imagePath = "../RoomsEtcImg/Sliders/" . $imageFile;
-
-
-			$data .= "<li class='Listopener'>
-				<div class='boxxy02'>
-					<img src='$imagePath' alt=''>
-				</div>
-				<div class='buttonholder02'>
-					<button class='bex EditBTN' onclick='DELETEBTN(`$imageFile`)'><i class='fa-solid fa-trash'></i></button>
-				</div>
-			</li>";
-		}
-		echo $data;
-		?>
-
-
-	</ul>
-
-
 </main>
-<!-- DASHBOARD MAIN -->
+<!-- SETTINGS MAIN -->
 <script>
-	function openModal() {
-		// Display the modal and overlay
-		document.getElementById('modal').style.display = 'block';
-		document.getElementById('overlay').style.display = 'block';
-	}
-
-	function closeModal() {
-		// Hide the modal and overlay
-		document.getElementById('modal').style.display = 'none';
-		document.getElementById('overlay').style.display = 'none';
-	}
-</script>
-<script>
-	async function DELETEBTN(imgname) {
-		const newgal = await AjaxSendv3(imgname, "Contentv2", "&Process=Deletion")
-		document.getElementById('datatable').innerHTML = newgal
-		Swal.fire({
-			title: "",
-			text: "Deleted Successfully",
-			icon: "success"
-		});
-	}
-
-	async function ADDROOM() {
-		let num = parseInt(`<?php echo $arrayLength; ?>`)
-		if (num >= 5) {
-			Swal.fire({
-				title: "",
-				text: "Sorry, you have reached the maximum allowed number of images in the slider.",
-				icon: "info"
-			});
-			return
-		}
-		await Swal.fire({
-			title: 'Select an image',
-			input: 'file',
+	async function About(data) {
+		const {
+			value: text
+		} = await Swal.fire({
+			input: "textarea",
+			inputLabel: "About",
+			inputPlaceholder: "Type your message here...",
 			inputAttributes: {
-				accept: 'image/*',
+				"aria-label": "Type your message here"
 			},
-			showCancelButton: true,
-			confirmButtonText: 'Upload',
-			showLoaderOnConfirm: true,
-			preConfirm: (file) => {
-				// You can use FormData to send the file to your PHP script using AJAX
+			inputValue: data,
+			showCancelButton: true
+		});
+		if (text) {
+			if (text && text.trim().length > 0) {
 				let formData = new FormData();
-				formData.append('image', file);
-				formData.append('Process', 'Add');
-				formData.append('sqlcode', 'Add');
+				formData.append('sqlcode', text);
+				formData.append('process', 'About');
 
 				// Perform AJAX request to your PHP script
 				$.ajax({
-					url: './AjaxLogic/Contentv2.php',
+					url: './AjaxLogic/contentmain.php',
 					type: 'POST',
 					data: formData,
 					contentType: false,
@@ -225,7 +181,7 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 							text: '',
 							icon: 'success',
 						});
-						document.getElementById('datatable').innerHTML = response
+						document.getElementById('MAINDATA').innerHTML = response
 					},
 					error: function(xhr, status, error) {
 						// Handle errors
@@ -236,8 +192,64 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 						});
 					}
 				});
-			},
+			} else {
+				Swal.fire({
+					title: "",
+					text: "Invalid input. Please enter a non-empty message.",
+					icon: "error"
+				});
+			}
+		}
+	}
+	async function Editdata(title, data) {
+		const {
+			value: text
+		} = await Swal.fire({
+			title: "Edit "+title,
+			input: "text",
+			inputLabel: "Enter your "+ title,
+			inputPlaceholder: "",
+			inputValue : data,
+			showCancelButton: true
 		});
+		if (text) {
+			if (text && text.trim().length > 0) {
+				let formData = new FormData();
+				formData.append('sqlcode', text);
+				formData.append('process', title);
 
+				// Perform AJAX request to your PHP script
+				$.ajax({
+					url: './AjaxLogic/contentmain.php',
+					type: 'POST',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function(response) {
+						// Handle the response from the server
+						Swal.fire({
+							title: 'Success!',
+							text: '',
+							icon: 'success',
+						});
+						document.getElementById('MAINDATA').innerHTML = response
+					},
+					error: function(xhr, status, error) {
+						// Handle errors
+						Swal.fire({
+							title: 'Error!',
+							text: 'An error occurred while uploading the image.',
+							icon: 'error',
+						});
+					}
+				});
+			} else {
+				Swal.fire({
+					title: "",
+					text: "Invalid input. Please enter a non-empty message.",
+					icon: "error"
+				});
+			}
+		}
 	}
 </script>

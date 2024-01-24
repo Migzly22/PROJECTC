@@ -504,6 +504,36 @@ $webitself = mysqli_fetch_assoc($sqlqueryrunwebitself);
         </div>
     </section>
 
+    <style>
+        .imagebgv2 {
+            position: relative;
+            width: 100%;
+            height: 100dvh;
+            border-radius: 10px;
+            z-index: 1;
+            object-fit: cover;
+        }
+    </style>
+    <section class="ABOUT" style="background-color: #3f9cc1;" id="ALLABOUTTHATROOMS">
+        <?php
+        $videoDirectory = "../RoomsEtcImg/Videos/";
+
+        // Get all video files in the directory
+        $videoFiles = glob($videoDirectory . "*.mp4");
+
+        // Display each video file as a video player
+        foreach ($videoFiles as $videoPath) {
+        ?>
+            <video id="myVideo" class="imagebgv2" controls>
+                <source src="<?php  echo $videoPath; ?>" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        <?php
+        }
+        ?>
+
+    </section>
+
     <section class="gallary mtop " id="GALLERY">
         <div class="container">
             <div class="heading_top flex1">

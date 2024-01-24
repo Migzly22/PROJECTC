@@ -17,7 +17,7 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 				</li>
 				<li><i class='bx bx-chevron-right'></i></li>
 				<li>
-					<a class="active" href="#">Slider Images</a>
+					<a class="active" href="#">Info Content</a>
 				</li>
 			</ul>
 		</div>
@@ -150,11 +150,11 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 				<div class='buttonholder02'>
 					<button class='bex EditBTN' onclick='DELETEBTN(`$imageFile`)'><i class='fa-solid fa-trash'></i></button>
 				</div>
-			</li>
-			<input type='hidden' id='ARRAYLENGHT' value='$arrayLength'>";
+			</li>";
 		}
 		echo $data;
 		?>
+
 
 	</ul>
 
@@ -186,7 +186,7 @@ $queryrun1 = mysqli_query($conn, $sqlcode1);
 	}
 
 	async function ADDROOM() {
-		let num = parseInt(document.getElementById('ARRAYLENGHT').value)
+		let num = parseInt(`<?php echo $arrayLength; ?>`)
 		if (num >= 5) {
 			Swal.fire({
 				title: "",

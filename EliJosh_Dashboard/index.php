@@ -616,7 +616,7 @@ if (!isset($_SESSION["USERID"]) || !isset($_SESSION["ACCESS"])) {
 					</a>
 				</li>
 				<li class="<?php echo ($activecode == 8) ? "active" : ""; ?>">
-					<a href="./index.php?nzlz=content_gallery">
+					<a href="./index.php?nzlz=content">
 						<i class='bx bxs-collection'></i>
 						<span class="text">Content</span>
 					</a>
