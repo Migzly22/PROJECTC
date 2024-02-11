@@ -23,8 +23,8 @@ function sending($to,$html){
   $mail->SMTPDebug  = 0;  
   $mail->CharSet='UTF-8';
   //$mail->Host       = "smtp.mail.yahoo.com";
-  $mail->Username   = "noncre123@gmail.com";
-  $mail->Password   = "cajbokiljmnuzgow";
+  $mail->Username   = "elijosh111923@gmail.com";
+  $mail->Password   = "iqwpzdplinhlhasa";
   $mail->SetFrom("elijosh111923@gmail.com",'ElijoshResort&EventPlace');
   $mail->SMTPOptions = array(
   'ssl' => [

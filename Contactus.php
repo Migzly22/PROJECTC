@@ -29,8 +29,8 @@ function sending($to,$html){
   $mail->SMTPDebug  = 0;  
   $mail->CharSet='UTF-8';
   //$mail->Host       = "smtp.mail.yahoo.com";
-  $mail->Username   = "noncre123@gmail.com";
-  $mail->Password   = "cajbokiljmnuzgow";
+  $mail->Username   = "elijosh111923@gmail.com";
+  $mail->Password   = "iqwpzdplinhlhasa";
   $mail->SetFrom("elijosh111923@gmail.com",'ElijoshResort');
   $mail->SMTPOptions = array(
   'ssl' => [
@@ -47,15 +47,15 @@ function sending($to,$html){
   $mail->send();
 }
 
-//sending($_POST['to'],$_POST['subject'],$_POST['message']);
+//sending($_GET['to'],$_GET['subject'],$_GET['message']);
 $array1 = array("text"=>"Sent Successfully","icon"=>"success");
 
-$data1 = $_POST['data1'];//subject
-$data2 = $_POST['data2'];//message
-$data3 = $_POST['data3'];//name
-$data4 = $_POST['data4'];//email
+$data1 = $_GET['data1'];//subject
+$data2 = $_GET['data2'];//message
+$data3 = $_GET['data3'];//name
+$data4 = $_GET['data4'];//email
 
-if($_POST["data1"] === "" && $_POST["data2"] === ""){
+if($_GET["data1"] === "" && $_GET["data2"] === ""){
   $data3 = $_SESSION["BasicContactinfo"]["NAME"];
   $data4 = $_SESSION["BasicContactinfo"]["Email"];
 }
