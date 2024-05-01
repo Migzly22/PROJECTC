@@ -40,7 +40,7 @@ $targetlinks = isset($_GET["nzlz"]) ? $_GET["nzlz"] : "booking";
 	<title>Admin | EliJosh Resort & Events Place</title>
 	<link rel="icon" type="image/x-icon" href="./img/title_logo.ico">
 
-	<script src="https://www.paypal.com/sdk/js?client-id=ASOqstSFrYa4HOtKpsdNhQV8_RvIiHFc0447LO_Vm-QMLhHObWY8dclfI84oymETpgdVBgWo4zgdLc3V"></script>
+	<script src="https://www.paypal.com/sdk/js?client-id=AT5hayGPfCenF8pOB0oMvKEXD67u_BrLvgg6hZ6xX7VdwygRQNnd2-5vza2rYScl5uTAcRrhp_VWFlqw"></script>
 </head>
 <style>
 	/* Override default styles for the textarea */

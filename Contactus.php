@@ -50,12 +50,12 @@ function sending($to,$html){
 //sending($_GET['to'],$_GET['subject'],$_GET['message']);
 $array1 = array("text"=>"Sent Successfully","icon"=>"success");
 
-$data1 = $_GET['data1'];//subject
-$data2 = $_GET['data2'];//message
-$data3 = $_GET['data3'];//name
-$data4 = $_GET['data4'];//email
+$data1 = $_POST['data1'];//subject
+$data2 = $_POST['data2'];//message
+$data3 = $_POST['data3'];//name
+$data4 = $_POST['data4'];//email
 
-if($_GET["data1"] === "" && $_GET["data2"] === ""){
+if($_POST["data1"] === "" && $_POST["data2"] === ""){
   $data3 = $_SESSION["BasicContactinfo"]["NAME"];
   $data4 = $_SESSION["BasicContactinfo"]["Email"];
 }
